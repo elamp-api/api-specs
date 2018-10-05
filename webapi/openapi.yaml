@@ -1,0 +1,2309 @@
+openapi: '3.0.0'
+info:
+  title: eLamp Web API
+  description: ''
+  termsOfService: "https://www.elamp.fr/"
+  version: "1.0.0"
+  contact:
+    name: API support
+    email: support@elamp.fr
+  license:
+    name: eLamp
+    url: https://www.elamp.fr/
+servers:
+  - url: https://api.elamp.fr/v1
+tags:
+  - name: compose
+    description: libraries, skills, qualifiers and skills profiles endpoints
+  - name: run
+    description: powers, validations endpoints
+  - name: search
+    description: search and analytics endpoints
+  - name: admin
+    description: users, groups, roles, applications endpoints
+  - name: library
+    description: libraries endpoints
+  - name: skill
+    description: skills endpoints
+  - name: qualifier
+    description: qualifiers endpoints
+  - name: skill profile
+    description: skills profiles endpoints
+  - name: power
+    description: powers endpoints
+  - name: validation
+    description: validations endpoints
+components:
+  securitySchemes:
+      elamp_auth:
+        type: oauth2
+        flows:
+          authorizationCode:
+            authorizationUrl: https://elamp.fr/oauth/auth
+            tokenUrl: https://elamp.fr/oauth/token
+            scopes:
+              skills.library.read: read your skill libraries
+              skills.library: read and manage your skill libraries
+              skills.skill.read: read your skills
+              skills.skill: read and manage your skills
+              skills.qualifier.read: read your qualifiers
+              skills.qualifier: read and manage your qualifiers
+              skills.profile.read: read your skills profiles
+              skills.profile: read and manage your skills profiles
+
+              powers.read: read your powers (competencies)
+              powers: read and manage your powers
+              skills.validations.read: read your power validations
+              skills.validations: read and manage your power validations
+
+              search.search: execute search query
+              search.analyze: execute analytics query
+  schemas:
+    key_identifier:
+      description: unique resource identifier
+      type: string
+      example: 'KEY1'
+    externalId:
+      description: external resource identifier (if provided by your internal information system)
+      type: string
+      example: 'EXT1'
+    kind:
+      description: kind of a model object
+      type: string
+    color:
+      type: string
+      description: color string in hexadecimal format (#ffc800)
+      example: '#ffc800'
+    logo:
+      type: string
+      description: logo identifier (marketing)
+      example: 'marketing'
+    image:
+      description: image urls
+      type: object
+      properties:
+        url:
+          type: string
+          description: image's url
+    base_model:
+      type: object
+      properties:
+        _key:
+          $ref: '#/components/schemas/key_identifier'
+        externalId:
+          $ref: '#/components/schemas/externalId'
+        kind:
+          $ref: '#/components/schemas/kind'
+        created:
+          description: created date
+          type: string
+          format: date-time
+        updated:
+          description: updated date
+          type: string
+          format: date-time
+        deleted:
+          description: indicates if the resource was deleted or not
+          type: boolean
+          default: false
+    skill_base_model:
+      allOf:
+        - $ref: '#/components/schemas/base_model'
+        - type: object
+          properties:
+            name:
+              description: name of the resource
+              type: string
+              example: my name
+            description:
+              type: string
+              description: description of the resource
+              example: my description
+            color:
+              $ref: '#/components/schemas/color'
+            logo:
+              $ref: '#/components/schemas/logo'
+    library:
+      allOf:
+        - $ref: '#/components/schemas/skill_base_model'
+        - type: object
+          properties:
+            image:
+              $ref: '#/components/schemas/image'
+            family_tag:
+              type: string
+              description: library's family tag. used to group libraries in wider domains
+      example:
+        {
+          "_key": "LIB1",
+          "externalId": "EXTID1",
+          "kind": "skills#library",
+          "name": "library name",
+          "description": "library description",
+          "color": "#ffc800",
+          "logo": "marketing",
+          "image": {
+            "url": "my-photo-url.jpg"
+          },
+          "family_tag": "my domain",
+          "created": "2018-10-05T11:44:08.724Z",
+          "updated": "2018-10-05T11:44:08.724Z",
+          "deleted": false
+        }
+    skill:
+      allOf:
+        - $ref: '#/components/schemas/skill_base_model'
+        - type: object
+          properties:
+            image:
+              $ref: '#/components/schemas/image'
+            custom_fields:
+              type: object
+              description: any custom fields defined on the skill
+            library_context:
+              type: string
+              description: library context's identifier. defines the skill's main library context.
+            powerable:
+              type: boolean
+              description: indicates if the skill can be added to an user as a power
+              default: true
+            validated:
+              type: boolean
+              description: indicates if the skill was validated or not
+              default: true
+      example:
+        {
+          "_key": "SKI1",
+          "externalId": "EXTID1",
+          "kind": "skills#skill",
+          "name": "skill name",
+          "pretty_name": "skill pretty name",
+          "description": "skill description",
+          "color": "#ffc800",
+          "logo": "marketing",
+          "image": {
+            "url": "my-photo-url.jpg"
+          },
+          "custom_fields": {
+            "criticiy": 2
+          },
+          "library_context": "LIB1",
+          "powerable": true,
+          "validated": true,
+          "created": "2018-10-05T11:44:08.724Z",
+          "updated": "2018-10-05T11:44:08.724Z",
+          "deleted": false
+        }
+    qualifier:
+      allOf:
+        - $ref: '#/components/schemas/skill_base_model'
+        - type: object
+          properties:
+            custom_fields:
+              type: object
+              description: any custom fields defined on the qualifier
+            field_type:
+              type: string
+              enum:
+                - TEXT
+                - NUMERIC
+                - MULTIVALUES
+              description: field type.
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/qualifier_field'
+    qualifier_field:
+      description: qualifier's field definition
+      type: object
+      properties:
+        type:
+          type: string
+          description: field type
+        validators:
+          type: object
+        decorators:
+          type: object
+
+    qualifier_value:
+      description: qualifier's value
+      example: "qualifier_value"
+      oneOf:
+        - type: string
+        - type: number
+        - type: array
+          items:
+            type: string
+    qualifier_input_data:
+      type: object
+      description: qualifier data to add on a power, skill, skills profile, ...
+      properties:
+        _key:
+          $ref: '#/components/schemas/key_identifier'
+        value:
+          $ref: '#/components/schemas/qualifier_value'
+    skill_profile:
+      allOf:
+        - $ref: '#/components/schemas/skill_base_model'
+        - type: object
+          properties:
+            custom_fields:
+              type: object
+              description: any custom fields defined on the skill profile
+            pattern:
+              $ref: '#/components/schemas/search_pattern'
+    power:
+      allOf:
+        - $ref: '#/components/schemas/base_model'
+        - type: object
+          properties:
+            skill:
+              $ref: '#/components/schemas/skill'
+            qualifiers:
+              type: array
+              items:
+                $ref: '#/components/schemas/qualifier_input_data'
+            validations:
+              type: array
+              items:
+                $ref: '#/components/schemas/validation'
+            type:
+              type: string
+              enum:
+                - interested
+                - learn
+                - have
+                - upgrade
+                - suggest
+              default: have
+              description: |
+                indicates the power degree : is user interested, want to learn, have the skill, want to upgrade, is it suggestion ?
+            active:
+              type: boolean
+              description: indicates if the power is active or not
+    validation:
+      allOf:
+        - $ref: '#/components/schemas/base_model'
+        - type: object
+          properties:
+            author:
+              $ref: '#/components/schemas/resource'
+            comment:
+              type: string
+              description: validation's comment
+            user_context:
+              type: object
+              description: indicates the context of the user who validated the skill (manager, bot, ...)
+            context:
+              type: object
+              description: indicates in which context the user was validated (on project, on a specific task, while analyzing conversations, ...)
+    resource:
+      type: object
+      properties:
+        _key:
+          $ref: '#/components/schemas/key_identifier'
+        kind:
+          $ref: '#/components/schemas/kind'
+        displayName:
+          type: string
+          description: resource's display name
+        image:
+          $ref: '#/components/schemas/image'
+
+    must_query_condition:
+      type: object
+      properties:
+        id:
+          type: string
+          description: skill identifier
+        qualifiers:
+          type: array
+          description: qualifier applied to the search
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: qualifier identifier
+              value:
+                type: string
+                description: reference value that will be compared to the searched values
+              comparator:
+                type: string
+                description: comparator used to compare the provided value
+                enum:
+                  - EQ
+                  - NEQ
+                  - LT
+                  - GT
+                  - LTE
+                  - GTE
+                  - LIKE
+                  - IN
+                  - NOT_IN
+    should_query_condition:
+      type: object
+      properties:
+        id:
+          type: string
+          description: skill identifier
+        qualifiers:
+          type: array
+          description: qualifier applied to the search
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: qualifier identifier
+              value:
+                type: string
+                description: reference value that will be compared to the searched values
+              comparator:
+                type: string
+                description: comparator used to compare the provided value
+                enum:
+                  - EQ
+                  - NEQ
+                  - LT
+                  - GT
+                  - LTE
+                  - GTE
+                  - LIKE
+                  - IN
+                  - NOT_IN
+        boost:
+          type: number
+          minimum: 0
+          maximum: 10
+          default: 5
+          example: 8
+          description: boost to apply to this should query condition
+    filter_query_condition:
+      type: object
+      properties:
+        users:
+          description: array of user identifiers to filter on
+          type: array
+          items:
+            type: string
+            description: user identifier
+        groups:
+          description: array of group identifiers to filter on
+          type: array
+          items:
+            type: string
+            description: group identifier
+    search_pattern:
+      type: object
+      properties:
+        must:
+          $ref: '#/components/schemas/must_query_condition'
+        should:
+          $ref: '#/components/schemas/should_query_condition'
+    search_result:
+      type: object
+      properties:
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+          example: 0.67
+          description: matching score of the search result regarding the search query (between 0 and 1)
+        resource:
+          $ref: '#/components/schemas/resource'
+        data:
+          description: list of power data used in matching computation
+          type: array
+          items:
+            $ref: '#/components/schemas/power'
+    invalid_schema:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: invalid_schema
+    not_found:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: not_found
+    not_authed:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: not_authed
+    forbidden:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: forbidden
+    unexpected_error:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: server_error
+  parameters:
+    auth_param:
+      name: authorization
+      in: header
+      description: auth token to set in Authorization header to authenticate request
+      required: true
+      schema:
+        type: string
+        example: 'Bearer <YOUR_TOKEN>'
+    key_param:
+      name: _key
+      in: path
+      description: unique resource identifier
+      required: true
+      schema:
+        type: string
+    fields_param:
+      name: fields
+      in: query
+      description: fields to return in response
+      required: false
+      schema:
+        type: string
+        example: '_key,name,created'
+    offset_param:
+      name: offset
+      in: query
+      description: number of items to skip
+      required: false
+      schema:
+        type: integer
+        format: int32
+    size_param:
+      name: size
+      in: query
+      description: max records to return
+      required: false
+      schema:
+        type: integer
+        format: int32
+  requestBodies:
+    library_create_body:
+      description: library data to create a library
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my name
+              description:
+                type: string
+                example: my description
+              color:
+                $ref: '#/components/schemas/color'
+              logo:
+                $ref: '#/components/schemas/logo'
+              image:
+                $ref: '#/components/schemas/image'
+              family_tag:
+                type: string
+                description: library's family tag. used to group libraries in wider domains
+                example: my domain
+            required:
+              - name
+    library_update_body:
+      description: library data to update a library
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my name
+              description:
+                type: string
+                example: my description
+              color:
+                $ref: '#/components/schemas/color'
+              logo:
+                $ref: '#/components/schemas/logo'
+              image:
+                $ref: '#/components/schemas/image'
+              family_tag:
+                type: string
+                description: library's family tag. used to group libraries in wider domains
+                example: my domain
+    skill_create_body:
+      description: data to create a skill
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my name
+              description:
+                type: string
+                example: my description
+              color:
+                $ref: '#/components/schemas/color'
+              logo:
+                $ref: '#/components/schemas/logo'
+              image:
+                $ref: '#/components/schemas/image'
+              custom_fields:
+                type: object
+                description: any custom fields that defines the skill
+              parents:
+                type: array
+                items:
+                  type: string
+                  description: library or skill identifier
+                  example: LIB1
+              inherit_qualifiers:
+                type: boolean
+                description: indicates if the new skill should inherit qualifiers from its parents
+              powerable:
+                type: boolean
+                description: indicates if the new skill can be added by an user as a power.
+            required:
+              - name
+    skill_update_body:
+      description: data to update a skill
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my name
+              description:
+                type: string
+                example: my description
+              color:
+                $ref: '#/components/schemas/color'
+              logo:
+                $ref: '#/components/schemas/logo'
+              image:
+                $ref: '#/components/schemas/image'
+              custom_fields:
+                type: object
+                description: any custom fields that defines the skill
+              inherit_qualifiers:
+                type: boolean
+                description: indicates if the new skill should inherit qualifiers from its parents
+              powerable:
+                type: boolean
+                description: indicates if the new skill can be added by an user as a power.
+    skill_update_qualifiers_body:
+      description: data to update skill qualifier
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              qualifiers:
+                description: list of qualifier's identifiers
+                type: array
+                items:
+                  type: string
+                  description: qualifier's identifier
+    qualifier_create_body:
+      description: data to create a qualifier object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my name
+              description:
+                type: string
+                example: my description
+              color:
+                $ref: '#/components/schemas/color'
+              logo:
+                $ref: '#/components/schemas/logo'
+              custom_fields:
+                type: object
+                description: any custom fields that defines the qualifier
+              field_type:
+                type: string
+                enum:
+                  - TEXT
+                  - NUMERIC
+                  - MULTIVALUES
+                description: field type.
+              fields:
+                type: array
+                items:
+                  $ref: '#/components/schemas/qualifier_field'
+    qualifier_update_body:
+      description: data to update a qualifier object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my name
+              description:
+                type: string
+                example: my description
+              color:
+                $ref: '#/components/schemas/color'
+              logo:
+                $ref: '#/components/schemas/logo'
+              custom_fields:
+                type: object
+                description: any custom fields that defines the qualifier
+    skill_profile_create_body:
+      description: data to create a skills profile object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my name
+              description:
+                type: string
+                example: my description
+              color:
+                $ref: '#/components/schemas/color'
+              logo:
+                $ref: '#/components/schemas/logo'
+              custom_fields:
+                type: object
+                description: any custom fields that defines the qualifier
+              pattern:
+                $ref: '#/components/schemas/search_pattern'
+            required:
+              - name
+    skill_profile_update_body:
+      description: data to update a skills profile object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my name
+              description:
+                type: string
+                example: my description
+              color:
+                $ref: '#/components/schemas/color'
+              logo:
+                $ref: '#/components/schemas/logo'
+              custom_fields:
+                type: object
+                description: any custom fields that defines the qualifier
+              pattern:
+                $ref: '#/components/schemas/search_pattern'
+    search_query_body:
+      description: search query
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              kind:
+                description: kind of resource to search on.
+                type: string
+                enum:
+                  - resource
+              suggests:
+                description: include suggestions or not
+                type: boolean
+                default: false
+              must:
+                $ref: '#/components/schemas/must_query_condition'
+              should:
+                $ref: '#/components/schemas/should_query_condition'
+              filters:
+                $ref: '#/components/schemas/filter_query_condition'
+    power_create_body:
+      description: data to create a power
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - resource
+              - skill
+            properties:
+              resource:
+                type: string
+                description: user identifier
+              skill:
+                type: string
+                description: skill identifier
+              description:
+                type: string
+                description: power's details
+              qualifiers:
+                type: array
+                description: array of qualifier to include in the power
+                items:
+                  $ref: '#/components/schemas/qualifier_input_data'
+              active:
+                type: boolean
+                description: indicates if a power is active or not
+                default: true
+    power_update_body:
+      description: data to update a power
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+                description: power's details
+              qualifiers:
+                type: array
+                description: array of qualifier to include in the power
+                items:
+                  $ref: '#/components/schemas/qualifier_input_data'
+              active:
+                type: boolean
+                description: indicates if a power is active or not
+                default: true
+    qualifier_values_body:
+      description: data to update a qualifier value
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/qualifier_input_data'
+    validation_create_body:
+      description: data schema to create a validation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                type: string
+                description: user's identifier to validate
+              skill:
+                type: string
+                description: skill's identifier to validate
+              qualifiers:
+                type: array
+                items:
+                  $ref: '#/components/schemas/qualifier_input_data'
+              comment:
+                type: string
+                description: validation's comment
+                example: my comment about the current validation
+    validation_update_body:
+      description: data schema to update a validation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              qualifiers:
+                type: array
+                items:
+                  $ref: '#/components/schemas/qualifier_input_data'
+              comment:
+                type: string
+                description: validation's comment
+                example: my comment about the current validation
+  responses:
+    invalid_schema_error:
+      description: invalid schema.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/invalid_schema'
+    not_found_error:
+      description: the resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/not_found'
+    not_authed_error:
+      description: you need to provide valid credentials to authenticate request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/not_authed'
+    forbidden_error:
+      description: you are not allowed to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/forbidden'
+    unexpected_error:
+      description: an unexpected error occured.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unexpected_error'
+
+paths:
+  /libraries:
+    get:
+      operationId: skills.libraries.list
+      summary: lists libraries
+      description: returns a list of available **skills libraries**
+      tags:
+        - compose
+        - library
+      responses:
+        '200':
+          description: a list of skills libraries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 23
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/library'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - skills.library.read
+    post:
+      operationId: skills.libraries.create
+      summary: creates libraries
+      description: creates a new **skills library**
+      tags:
+        - compose
+        - library
+      requestBody:
+        $ref: '#/components/requestBodies/library_create_body'
+      responses:
+        '200':
+          description: the created skills library
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/library'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - skills.library
+
+
+  /libraries/{_key}:
+    get:
+      operationId: skills.libraries.get
+      summary: gets a library by key
+      description: returns a **skills library** by key.
+      tags:
+        - compose
+        - library
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **library** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/library'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.library.read
+
+    patch:
+      operationId: skills.libraries.update
+      summary: updates a library by key
+      description: |
+        returns the updated **library**.
+      tags:
+        - compose
+        - library
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/library_update_body'
+      responses:
+        200:
+          description: The updated **library** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/library'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.library
+    delete:
+      operationId: skills.libraries.delete
+      summary: deletes a library by key
+      description: |
+        returns the deleted **library**.
+      tags:
+        - compose
+        - library
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: The deleted **library** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/library'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.library
+
+  /libraries/{_key}/subscribe:
+    post:
+      operationId: skills.libraries.subscribe
+      summary: subscribe to a library by key
+      description: returns the subscribed **skills library**.
+      tags:
+        - compose
+        - library
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **library** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/library'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.library
+  /libraries/{_key}/unsubscribe:
+    post:
+      operationId: skills.libraries.unsubscribe
+      summary: unsubscribe to a library by key
+      description: returns the unsubscribed **skills library**.
+      tags:
+        - compose
+        - library
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **library** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/library'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.library
+
+  /skills:
+    get:
+      operationId: skills.skills.list
+      summary: list skills
+      description: returns a list of **skills**.
+      tags:
+        - compose
+        - skill
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A list of **skill** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 2
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/skill'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.skill.read
+    post:
+      operationId: skills.skill.create
+      summary: creates skills
+      description: creates a new **skills**
+      tags:
+        - compose
+        - skill
+      requestBody:
+        $ref: '#/components/requestBodies/skill_create_body'
+      responses:
+        '200':
+          description: the created skill
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - skills.skill
+  /skills/search:
+    get:
+      operationId: skills.skill.search
+      summary: searches skill by name
+      description: returns a list of **skill** objects.
+      tags:
+        - compose
+        - skill
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A list of **skill** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/skill'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.skill.read
+
+  /skills/{_key}:
+    get:
+      operationId: skills.skill.get
+      summary: gets a skill by key
+      description: returns a **skill** by key.
+      tags:
+        - compose
+        - skill
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **skill** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.skill.read
+
+    patch:
+      operationId: skills.skill.update
+      summary: updates a skill by key
+      description: returns the updated **skill**.
+      tags:
+        - compose
+        - skill
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/skill_update_body'
+      responses:
+        200:
+          description: The updated **skill** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.skill
+    delete:
+      operationId: skills.skill.delete
+      summary: deletes a skill by key
+      description: returns the deleted **skill**.
+      tags:
+        - compose
+        - skill
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: The updated **skill** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.skill
+
+  /skills/{_key}/qualifiers:
+    get:
+      operationId: skills.skill.list_qualifiers
+      summary: list qualifiers of a skill identified by key
+      description: returns a list of **qualifier** objects for the requested skill.
+      tags:
+        - compose
+        - skill
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A list of **qualifier** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/qualifier'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.skill.read
+          - skills.qualifier.read
+    post:
+      operationId: skills.skill.add_qualifiers
+      summary: add qualifiers to a skill identified by key
+      description: returns a list of **qualifier** objects for the requested skill.
+      tags:
+        - compose
+        - skill
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/skill_update_qualifiers_body'
+      responses:
+        200:
+          description: A list of **qualifier** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/qualifier'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.skill
+          - skills.qualifier
+    delete:
+      operationId: skills.skill.remove_qualifiers
+      summary: remove qualifiers from a skill identified by key
+      description: returns a list of **qualifier** objects for the requested skill.
+      tags:
+        - compose
+        - skill
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A list of **qualifier** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/qualifier'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.skill
+          - skills.qualifier
+
+  /qualifiers:
+    get:
+      operationId: skills.qualifiers.list
+      summary: list qualifiers
+      description: returns a list of **qualifiers**.
+      tags:
+        - compose
+        - qualifier
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A list of **qualifier** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 2
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/qualifier'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.qualifier.read
+    post:
+      operationId: skills.qualifier.create
+      summary: creates qulaifier
+      description: creates a new **qualifier**
+      tags:
+        - compose
+        - qualifier
+      requestBody:
+        $ref: '#/components/requestBodies/qualifier_create_body'
+      responses:
+        '200':
+          description: the created skill
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - skills.skill
+
+  /qualifiers/{_key}:
+    get:
+      operationId: skills.qualifier.get
+      summary: gets a qualifier by key
+      description: returns a **qualifier** by key.
+      tags:
+        - compose
+        - qualifier
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **qualifier** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/qualifier'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.qualifier.read
+
+    patch:
+      operationId: skills.qualifier.update
+      summary: updates a qualifier by key
+      description: returns the updated **qualifier**.
+      tags:
+        - compose
+        - qualifier
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/qualifier_update_body'
+      responses:
+        200:
+          description: The updated **qualifier** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/qualifier'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.qualifier
+    delete:
+      operationId: skills.qualifier.delete
+      summary: deletes a qualifier by key
+      description: returns the deleted **qualifier**.
+      tags:
+        - compose
+        - qualifier
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: The updated **qualifier** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/qualifier'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.qualifier
+  /qualifiers/{_key}/skills:
+    get:
+      operationId: skills.qualifier.list_skills
+      summary: lists skills associated to the qualifier identified by key
+      description: returns a list of **skills** associated to the qualifier identified by key.
+      tags:
+        - compose
+        - qualifier
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A iist of **skill** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/skill'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.qualifier.read
+          - skills.skill.read
+  /qualifiers/{_key}/powers:
+    get:
+      operationId: skills.qualifier.list_powers
+      summary: lists powers associated to the qualifier identified by key
+      description: returns a list of **powers** associated to the qualifier identified by key.
+      tags:
+        - compose
+        - qualifier
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A iist of **power** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/power'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.qualifier.read
+          - powers.read
+
+  /profiles:
+    get:
+      operationId: skills.profile.list
+      summary: list profiles
+      description: returns a list of **profiles**.
+      tags:
+        - compose
+        - skill profile
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A list of **skills profiles** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 2
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/skill_profile'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.profile.read
+    post:
+      operationId: skills.profile.create
+      summary: creates skills profile
+      description: creates a new **skills profile**
+      tags:
+        - compose
+        - skill profile
+      requestBody:
+        $ref: '#/components/requestBodies/skill_profile_create_body'
+      responses:
+        '200':
+          description: the created skill profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill_profile'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - skills.profile
+  /profiles/matching:
+    get:
+      operationId: skills.profile.matching
+      summary: list profiles that match with an user
+      description: returns a list of **profiles** that match with an user.
+      tags:
+        - compose
+        - skill profile
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+        - name: user
+          description: requested user identifier. if not provided, execute matching against the current user
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of **skills profiles** objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 2
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            score:
+                              type: number
+                              example: 0.56
+                        - $ref: '#/components/schemas/skill_profile'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.profile.read
+  /profiles/{_key}:
+    get:
+      operationId: skills.profile.get
+      summary: gets a skills profile  by key
+      description: returns a **skills profile** by key.
+      tags:
+        - compose
+        - skill profile
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **skills profile** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill_profile'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.profile.read
+
+    patch:
+      operationId: skills.profile.update
+      summary: updates a skills profile by key
+      description: returns the updated **skills profile**.
+      tags:
+        - compose
+        - skill profile
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/skill_profile_update_body'
+      responses:
+        200:
+          description: The updated **skills profile** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill_profile'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.profile
+    delete:
+      operationId: skills.profile.delete
+      summary: deletes a skills profile by key
+      description: returns the deleted **skills profile**.
+      tags:
+        - compose
+        - skill profile
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: The updated **skills profile** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/skill_profile'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.profile
+
+  /search:
+    post:
+      operationId: search.search
+      summary: execute search query
+      description: execute search query
+      tags:
+        - search
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/search_query_body'
+      responses:
+        '200':
+          description: a list of **resource** objects that match the search query.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/search_result'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - search.search
+
+
+  /powers:
+    get:
+      operationId: powers.list
+      summary: list powers of an user
+      description: returns a list of **power** objects for an user
+      tags:
+        - run
+        - power
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+        - name: user
+          description: user identifier. if not provided, returns powers of the current user
+          in: query
+          required: false
+          schema:
+            type: string
+            description: user identifier
+      responses:
+        '200':
+          description: a list of **power** objects for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/power'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - powers.read
+    post:
+      operationId: powers.create
+      summary: create power for an user
+      description: creates a **power** object for an user
+      tags:
+        - run
+        - power
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/power_create_body'
+      responses:
+        '200':
+          description: return the created **power** object for the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/power'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - powers
+  /powers/{_key}:
+    get:
+      operationId: powers.get
+      summary: gets a power  by key
+      description: returns a **power** object by key.
+      tags:
+        - run
+        - power
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **power** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/power'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - powers.read
+
+    patch:
+      operationId: powers.update
+      summary: updates a power by key
+      description: returns the updated **power**.
+      tags:
+        - run
+        - power
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/power_update_body'
+      responses:
+        200:
+          description: The updated **power** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/power'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - powers
+    delete:
+      operationId: powers.delete
+      summary: deletes a power by key
+      description: returns the deleted **power**.
+      tags:
+        - run
+        - power
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: The updated **power** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/power'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - powers
+
+  /powers/{_key}/qualifiers:
+    get:
+      operationId: powers.list_qualifiers
+      summary: lists qualifiers for a power identified by key
+      description: returns a list of **qualifier with value** object for the power identified by key.
+      tags:
+        - run
+        - power
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A list of **qualifier with value** objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/power'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - powers.read
+          - skills.qualifier.read
+    post:
+      operationId: powers.add_qualifiers
+      summary: adds qualifiers for a power identified by key
+      description: returns the **power** object identified by key.
+      tags:
+        - run
+        - power
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/qualifier_values_body'
+      responses:
+        200:
+          description: power object identified by key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/power'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - powers
+          - skills.qualifier
+    delete:
+      operationId: powers.remove_qualifiers
+      summary: removes qualifiers for a power identified by key
+      description: returns the **power** object identified by key.
+      tags:
+        - run
+        - power
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: power object identified by key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/power'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - powers
+          - skills.qualifier
+
+  /skill.validations:
+    get:
+      operationId: skills.validations.list
+      summary: list skills validations of an user
+      description: returns a list of **validations** objects for an user
+      tags:
+        - run
+        - validation
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+        - name: user
+          description: user identifier. if not provided, returns validations of the current user
+          in: query
+          required: false
+          schema:
+            type: string
+            description: user identifier
+        - name: skill
+          description: skill identifier. used to get validations on a specific skill
+          in: query
+          required: false
+          schema:
+            type: string
+            description: skill identifier
+      responses:
+        '200':
+          description: a list of **validation** objects for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/validation'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - skills.validations.read
+    post:
+      operationId: skills.validation.create
+      summary: create a validation for an user
+      description: creates a **validation** object for an user
+      tags:
+        - run
+        - validation
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/validation_create_body'
+      responses:
+        '200':
+          description: return the created **validation** object for the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - skills.validations
+  /skill.validations/{_key}:
+    get:
+      operationId: skills.validations.get
+      summary: gets a validation by key
+      description: returns a **validation** object by key.
+      tags:
+        - run
+        - validation
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **validation** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.validations.read
+
+    patch:
+      operationId: skills.validations.update
+      summary: updates a validation by key
+      description: returns the updated **validation**.
+      tags:
+        - run
+        - validation
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/validation_update_body'
+      responses:
+        200:
+          description: The updated **validation** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.validations
+    delete:
+      operationId: skills.validations.delete
+      summary: deletes a validation by key
+      description: returns the deleted **validation**.
+      tags:
+        - run
+        - validation
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: The updated **validation** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/power'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - skills.validations
