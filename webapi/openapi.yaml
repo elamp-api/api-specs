@@ -40,7 +40,7 @@ components:
         type: oauth2
         flows:
           authorizationCode:
-            authorizationUrl: https://elamp.fr/oauth/auth
+            authorizationUrl: https://elamp.fr/oauth/authorize
             tokenUrl: https://elamp.fr/oauth/token
             scopes:
               skills.library.read: read your skill libraries
