@@ -1,6 +1,7 @@
 openapi: '3.0.0'
 info:
   title: eLamp Web API
+  x-logo: https://d13ohmdfxbevj9.cloudfront.net/assets/img/LOGO-SLOGAN-COLOR-ALPHA-SMALL.png
   description: ''
   termsOfService: "https://www.elamp.fr/"
   version: "1.0.0"
@@ -879,6 +880,9 @@ paths:
       tags:
         - compose
         - library
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
       responses:
         '200':
           description: a list of skills libraries
@@ -908,6 +912,9 @@ paths:
       tags:
         - compose
         - library
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
       requestBody:
         $ref: '#/components/requestBodies/library_create_body'
       responses:
@@ -1094,7 +1101,6 @@ paths:
         - compose
         - skill
       parameters:
-        - $ref: '#/components/parameters/key_param'
         - $ref: '#/components/parameters/auth_param'
         - $ref: '#/components/parameters/fields_param'
       responses:
@@ -1411,7 +1417,6 @@ paths:
         - compose
         - qualifier
       parameters:
-        - $ref: '#/components/parameters/key_param'
         - $ref: '#/components/parameters/auth_param'
         - $ref: '#/components/parameters/fields_param'
       responses:
@@ -1647,7 +1652,6 @@ paths:
         - compose
         - skill profile
       parameters:
-        - $ref: '#/components/parameters/key_param'
         - $ref: '#/components/parameters/auth_param'
         - $ref: '#/components/parameters/fields_param'
       responses:
