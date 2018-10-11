@@ -54,8 +54,8 @@ components:
 
               powers.read: read your powers (competencies)
               powers: read and manage your powers
-              skills.validations.read: read your power validations
-              skills.validations: read and manage your power validations
+              skills.validation.read: read your power validations
+              skills.validation: read and manage your power validations
 
               search.search: execute search query
               search.analyze: execute analytics query
