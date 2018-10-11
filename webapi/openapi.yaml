@@ -186,7 +186,7 @@ components:
             "url": "my-photo-url.jpg"
           },
           "custom_fields": {
-            "criticiy": 2
+            "criticity": 2
           },
           "library_context": "LIB1",
           "powerable": true,
