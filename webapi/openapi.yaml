@@ -264,10 +264,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/qualifier_input_data'
-            validations:
-              type: array
-              items:
-                $ref: '#/components/schemas/validation'
             type:
               type: string
               enum:
