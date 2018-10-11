@@ -43,19 +43,19 @@ components:
             authorizationUrl: https://elamp.fr/oauth/authorize
             tokenUrl: https://elamp.fr/oauth/token
             scopes:
-              skills.library.read: read your skill libraries
-              skills.library: read and manage your skill libraries
-              skills.skill.read: read your skills
-              skills.skill: read and manage your skills
-              skills.qualifier.read: read your qualifiers
-              skills.qualifier: read and manage your qualifiers
-              skills.profile.read: read your skills profiles
-              skills.profile: read and manage your skills profiles
+              skill.library.read: read your skill libraries
+              skill.library: read and manage your skill libraries
+              skill.skill.read: read your skills
+              skill.skill: read and manage your skills
+              skill.qualifier.read: read your qualifiers
+              skill.qualifier: read and manage your qualifiers
+              skill.profile.read: read your skills profiles
+              skill.profile: read and manage your skills profiles
 
-              powers.read: read your powers (competencies)
-              powers: read and manage your powers
-              skills.validation.read: read your power validations
-              skills.validation: read and manage your power validations
+              power.read: read your powers (competencies)
+              power: read and manage your powers
+              skill.validation.read: read your power validations
+              skill.validation: read and manage your power validations
 
               search.search: execute search query
               search.analyze: execute analytics query
