@@ -1,0 +1,2050 @@
+{
+	"info": {
+		"_postman_id": "ec319a8f-754e-47a4-983d-c27e6de5d657",
+		"name": "eLamp Web API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "libraries",
+			"description": "Folder for libraries",
+			"item": [
+				{
+					"name": "lists libraries",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/libraries?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"libraries"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "returns a list of available **skills libraries**"
+					},
+					"response": []
+				},
+				{
+					"name": "creates libraries",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "library data to create a library"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/libraries?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"libraries"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "creates a new **skills library**"
+					},
+					"response": []
+				},
+				{
+					"name": "gets a library by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/libraries/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"libraries",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a **skills library** by key."
+					},
+					"response": []
+				},
+				{
+					"name": "updates a library by key",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "library data to update a library"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/libraries/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"libraries",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the updated **library**.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "deletes a library by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/libraries/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"libraries",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the deleted **library**.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "subscribe to a library by key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/libraries/:_key/subscribe?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"libraries",
+								":_key",
+								"subscribe"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the subscribed **skills library**."
+					},
+					"response": []
+				},
+				{
+					"name": "unsubscribe to a library by key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/libraries/:_key/unsubscribe?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"libraries",
+								":_key",
+								"unsubscribe"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the unsubscribed **skills library**."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "powers",
+			"description": "Folder for powers",
+			"item": [
+				{
+					"name": "list powers of an user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/powers?fields={{fields}}&user={{user}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"powers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								},
+								{
+									"key": "user",
+									"value": "{{user}}"
+								}
+							]
+						},
+						"description": "returns a list of **power** objects for an user"
+					},
+					"response": []
+				},
+				{
+					"name": "create power for an user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to create a power"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/powers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"powers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "creates a **power** object for an user"
+					},
+					"response": []
+				},
+				{
+					"name": "gets a power  by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/powers/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"powers",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a **power** object by key."
+					},
+					"response": []
+				},
+				{
+					"name": "updates a power by key",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to update a power"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/powers/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"powers",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the updated **power**."
+					},
+					"response": []
+				},
+				{
+					"name": "deletes a power by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/powers/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"powers",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the deleted **power**."
+					},
+					"response": []
+				},
+				{
+					"name": "lists qualifiers for a power identified by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/powers/:_key/qualifiers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"powers",
+								":_key",
+								"qualifiers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a list of **qualifier with value** object for the power identified by key."
+					},
+					"response": []
+				},
+				{
+					"name": "adds qualifiers for a power identified by key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to update a qualifier value"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/powers/:_key/qualifiers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"powers",
+								":_key",
+								"qualifiers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the **power** object identified by key."
+					},
+					"response": []
+				},
+				{
+					"name": "removes qualifiers for a power identified by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/powers/:_key/qualifiers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"powers",
+								":_key",
+								"qualifiers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the **power** object identified by key."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profiles",
+			"description": "Folder for profiles",
+			"item": [
+				{
+					"name": "list profiles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/profiles?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"profiles"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "returns a list of **profiles**."
+					},
+					"response": []
+				},
+				{
+					"name": "creates skills profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to create a skills profile object"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/profiles",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"profiles"
+							]
+						},
+						"description": "creates a new **skills profile**"
+					},
+					"response": []
+				},
+				{
+					"name": "list profiles that match with an user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/profiles/matching?fields={{fields}}&user={{user}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"profiles",
+								"matching"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								},
+								{
+									"key": "user",
+									"value": "{{user}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a list of **profiles** that match with an user."
+					},
+					"response": []
+				},
+				{
+					"name": "gets a skills profile  by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/profiles/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"profiles",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a **skills profile** by key."
+					},
+					"response": []
+				},
+				{
+					"name": "updates a skills profile by key",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to update a skills profile object"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/profiles/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"profiles",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the updated **skills profile**."
+					},
+					"response": []
+				},
+				{
+					"name": "deletes a skills profile by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/profiles/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"profiles",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the deleted **skills profile**."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "qualifiers",
+			"description": "Folder for qualifiers",
+			"item": [
+				{
+					"name": "list qualifiers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/qualifiers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"qualifiers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "returns a list of **qualifiers**."
+					},
+					"response": []
+				},
+				{
+					"name": "creates qulaifier",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to create a qualifier object"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/qualifiers",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"qualifiers"
+							]
+						},
+						"description": "creates a new **qualifier**"
+					},
+					"response": []
+				},
+				{
+					"name": "gets a qualifier by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/qualifiers/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"qualifiers",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a **qualifier** by key."
+					},
+					"response": []
+				},
+				{
+					"name": "updates a qualifier by key",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to update a qualifier object"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/qualifiers/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"qualifiers",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the updated **qualifier**."
+					},
+					"response": []
+				},
+				{
+					"name": "deletes a qualifier by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/qualifiers/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"qualifiers",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the deleted **qualifier**."
+					},
+					"response": []
+				},
+				{
+					"name": "lists powers associated to the qualifier identified by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/qualifiers/:_key/powers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"qualifiers",
+								":_key",
+								"powers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a list of **powers** associated to the qualifier identified by key."
+					},
+					"response": []
+				},
+				{
+					"name": "lists skills associated to the qualifier identified by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/qualifiers/:_key/skills?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"qualifiers",
+								":_key",
+								"skills"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a list of **skills** associated to the qualifier identified by key."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "search",
+			"description": "Folder for search",
+			"item": [
+				{
+					"name": "execute search query",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "search query"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/search?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"search"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "execute search query"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "skill.validations",
+			"description": "Folder for skill.validations",
+			"item": [
+				{
+					"name": "list skills validations of an user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skill.validations?fields={{fields}}&user={{user}}&skill={{skill}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skill.validations"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								},
+								{
+									"key": "user",
+									"value": "{{user}}"
+								},
+								{
+									"key": "skill",
+									"value": "{{skill}}"
+								}
+							]
+						},
+						"description": "returns a list of **validations** objects for an user"
+					},
+					"response": []
+				},
+				{
+					"name": "create a validation for an user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data schema to create a validation"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skill.validations?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skill.validations"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "creates a **validation** object for an user"
+					},
+					"response": []
+				},
+				{
+					"name": "gets a validation by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skill.validations/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skill.validations",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a **validation** object by key."
+					},
+					"response": []
+				},
+				{
+					"name": "updates a validation by key",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data schema to update a validation"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skill.validations/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skill.validations",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the updated **validation**."
+					},
+					"response": []
+				},
+				{
+					"name": "deletes a validation by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skill.validations/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skill.validations",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the deleted **validation**."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "skills",
+			"description": "Folder for skills",
+			"item": [
+				{
+					"name": "list skills",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "returns a list of **skills**."
+					},
+					"response": []
+				},
+				{
+					"name": "creates skills",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to create a skill"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills"
+							]
+						},
+						"description": "creates a new **skills**"
+					},
+					"response": []
+				},
+				{
+					"name": "searches skill by name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills/search?q={{q}}&fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "{{q}}"
+								},
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "returns a list of **skill** objects."
+					},
+					"response": []
+				},
+				{
+					"name": "gets a skill by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a **skill** by key."
+					},
+					"response": []
+				},
+				{
+					"name": "updates a skill by key",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to update a skill"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the updated **skill**."
+					},
+					"response": []
+				},
+				{
+					"name": "deletes a skill by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the deleted **skill**."
+					},
+					"response": []
+				},
+				{
+					"name": "list qualifiers of a skill identified by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills/:_key/qualifiers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills",
+								":_key",
+								"qualifiers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a list of **qualifier** objects for the requested skill."
+					},
+					"response": []
+				},
+				{
+					"name": "add qualifiers to a skill identified by key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data to update skill qualifier"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills/:_key/qualifiers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills",
+								":_key",
+								"qualifiers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a list of **qualifier** objects for the requested skill."
+					},
+					"response": []
+				},
+				{
+					"name": "remove qualifiers from a skill identified by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/skills/:_key/qualifiers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"skills",
+								":_key",
+								"qualifiers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a list of **qualifier** objects for the requested skill."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authentication",
+			"description": "",
+			"item": [
+				{
+					"name": "JWT authentication",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+									"description": "Indicates which grant flow is used (here JWT Bearer Flow)",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"description": "Your client ID",
+									"type": "text"
+								},
+								{
+									"key": "assertion",
+									"value": "{{jwt_assertion}}",
+									"description": "Your JWT token signed with your private key",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://www.elamp.fr/oauth/token",
+							"protocol": "https",
+							"host": [
+								"www",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						},
+						"description": "How to authenticate with the JWT Bearer Flow"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
