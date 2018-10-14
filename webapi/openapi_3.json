@@ -1,0 +1,3687 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "contact": {
+      "email": "support@elamp.fr",
+      "name": "API support"
+    },
+    "description": "",
+    "license": {
+      "name": "eLamp",
+      "url": "https://www.elamp.fr/"
+    },
+    "termsOfService": "https://www.elamp.fr/",
+    "title": "eLamp Web API",
+    "version": "1.0.0",
+    "x-logo": "https://d13ohmdfxbevj9.cloudfront.net/assets/img/LOGO-SLOGAN-COLOR-ALPHA-SMALL.png"
+  },
+  "servers": [
+    {
+      "url": "https://api.elamp.fr/v1"
+    }
+  ],
+  "paths": {
+    "/libraries": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 23,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/library"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of skills libraries"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.library.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "library"
+        ],
+        "description": "returns a list of available **skills libraries**",
+        "operationId": "skills.libraries.list",
+        "summary": "lists libraries"
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/library"
+                }
+              }
+            },
+            "description": "the created skills library"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.library"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "library"
+        ],
+        "description": "creates a new **skills library**",
+        "operationId": "skills.libraries.create",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/library_create_body"
+        },
+        "summary": "creates libraries"
+      }
+    },
+    "/libraries/{_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/library"
+                }
+              }
+            },
+            "description": "The deleted **library** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.library"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "library"
+        ],
+        "description": "returns the deleted **library**.\n",
+        "operationId": "skills.libraries.delete",
+        "summary": "deletes a library by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/library"
+                }
+              }
+            },
+            "description": "A **library** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.library.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "library"
+        ],
+        "description": "returns a **skills library** by key.",
+        "operationId": "skills.libraries.get",
+        "summary": "gets a library by key"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/library"
+                }
+              }
+            },
+            "description": "The updated **library** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.library"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "library"
+        ],
+        "description": "returns the updated **library**.\n",
+        "operationId": "skills.libraries.update",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/library_update_body"
+        },
+        "summary": "updates a library by key"
+      }
+    },
+    "/libraries/{_key}/subscribe": {
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/library"
+                }
+              }
+            },
+            "description": "A **library** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.library"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "library"
+        ],
+        "description": "returns the subscribed **skills library**.",
+        "operationId": "skills.libraries.subscribe",
+        "summary": "subscribe to a library by key"
+      }
+    },
+    "/libraries/{_key}/unsubscribe": {
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/library"
+                }
+              }
+            },
+            "description": "A **library** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.library"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "library"
+        ],
+        "description": "returns the unsubscribed **skills library**.",
+        "operationId": "skills.libraries.unsubscribe",
+        "summary": "unsubscribe to a library by key"
+      }
+    },
+    "/powers": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          },
+          {
+            "description": "user identifier. if not provided, returns powers of the current user",
+            "in": "query",
+            "name": "user",
+            "required": false,
+            "schema": {
+              "description": "user identifier",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/power"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of **power** objects for the user"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "powers.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "power"
+        ],
+        "description": "returns a list of **power** objects for an user",
+        "operationId": "powers.list",
+        "summary": "list powers of an user"
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/power"
+                }
+              }
+            },
+            "description": "return the created **power** object for the user"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "powers"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "power"
+        ],
+        "description": "creates a **power** object for an user",
+        "operationId": "powers.create",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/power_create_body"
+        },
+        "summary": "create power for an user"
+      }
+    },
+    "/powers/{_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/power"
+                }
+              }
+            },
+            "description": "The updated **power** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "powers"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "power"
+        ],
+        "description": "returns the deleted **power**.",
+        "operationId": "powers.delete",
+        "summary": "deletes a power by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/power"
+                }
+              }
+            },
+            "description": "A **power** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "powers.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "power"
+        ],
+        "description": "returns a **power** object by key.",
+        "operationId": "powers.get",
+        "summary": "gets a power  by key"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/power"
+                }
+              }
+            },
+            "description": "The updated **power** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "powers"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "power"
+        ],
+        "description": "returns the updated **power**.",
+        "operationId": "powers.update",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/power_update_body"
+        },
+        "summary": "updates a power by key"
+      }
+    },
+    "/powers/{_key}/qualifiers": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/power"
+                }
+              }
+            },
+            "description": "power object identified by key."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "powers",
+              "skills.qualifier"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "power"
+        ],
+        "description": "returns the **power** object identified by key.",
+        "operationId": "powers.remove_qualifiers",
+        "summary": "removes qualifiers for a power identified by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/power"
+                }
+              }
+            },
+            "description": "A list of **qualifier with value** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "powers.read",
+              "skills.qualifier.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "power"
+        ],
+        "description": "returns a list of **qualifier with value** object for the power identified by key.",
+        "operationId": "powers.list_qualifiers",
+        "summary": "lists qualifiers for a power identified by key"
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/power"
+                }
+              }
+            },
+            "description": "power object identified by key."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "powers",
+              "skills.qualifier"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "power"
+        ],
+        "description": "returns the **power** object identified by key.",
+        "operationId": "powers.add_qualifiers",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/qualifier_values_body"
+        },
+        "summary": "adds qualifiers for a power identified by key"
+      }
+    },
+    "/profiles": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 2,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/skill_profile"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A list of **skills profiles** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.profile.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill profile"
+        ],
+        "description": "returns a list of **profiles**.",
+        "operationId": "skills.profile.list",
+        "summary": "list profiles"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill_profile"
+                }
+              }
+            },
+            "description": "the created skill profile"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.profile"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill profile"
+        ],
+        "description": "creates a new **skills profile**",
+        "operationId": "skills.profile.create",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/skill_profile_create_body"
+        },
+        "summary": "creates skills profile"
+      }
+    },
+    "/profiles/matching": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          },
+          {
+            "description": "requested user identifier. if not provided, execute matching against the current user",
+            "in": "query",
+            "name": "user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 2,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "score": {
+                                "example": 0.56,
+                                "type": "number"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "$ref": "#/components/schemas/skill_profile"
+                          }
+                        ]
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A list of **skills profiles** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.profile.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill profile"
+        ],
+        "description": "returns a list of **profiles** that match with an user.",
+        "operationId": "skills.profile.matching",
+        "summary": "list profiles that match with an user"
+      }
+    },
+    "/profiles/{_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill_profile"
+                }
+              }
+            },
+            "description": "The updated **skills profile** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.profile"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill profile"
+        ],
+        "description": "returns the deleted **skills profile**.",
+        "operationId": "skills.profile.delete",
+        "summary": "deletes a skills profile by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill_profile"
+                }
+              }
+            },
+            "description": "A **skills profile** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.profile.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill profile"
+        ],
+        "description": "returns a **skills profile** by key.",
+        "operationId": "skills.profile.get",
+        "summary": "gets a skills profile  by key"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill_profile"
+                }
+              }
+            },
+            "description": "The updated **skills profile** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.profile"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill profile"
+        ],
+        "description": "returns the updated **skills profile**.",
+        "operationId": "skills.profile.update",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/skill_profile_update_body"
+        },
+        "summary": "updates a skills profile by key"
+      }
+    },
+    "/qualifiers": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 2,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/qualifier"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A list of **qualifier** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.qualifier.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "qualifier"
+        ],
+        "description": "returns a list of **qualifiers**.",
+        "operationId": "skills.qualifiers.list",
+        "summary": "list qualifiers"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill"
+                }
+              }
+            },
+            "description": "the created skill"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "qualifier"
+        ],
+        "description": "creates a new **qualifier**",
+        "operationId": "skills.qualifier.create",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/qualifier_create_body"
+        },
+        "summary": "creates qulaifier"
+      }
+    },
+    "/qualifiers/{_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/qualifier"
+                }
+              }
+            },
+            "description": "The updated **qualifier** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.qualifier"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "qualifier"
+        ],
+        "description": "returns the deleted **qualifier**.",
+        "operationId": "skills.qualifier.delete",
+        "summary": "deletes a qualifier by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/qualifier"
+                }
+              }
+            },
+            "description": "A **qualifier** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.qualifier.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "qualifier"
+        ],
+        "description": "returns a **qualifier** by key.",
+        "operationId": "skills.qualifier.get",
+        "summary": "gets a qualifier by key"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/qualifier"
+                }
+              }
+            },
+            "description": "The updated **qualifier** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.qualifier"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "qualifier"
+        ],
+        "description": "returns the updated **qualifier**.",
+        "operationId": "skills.qualifier.update",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/qualifier_update_body"
+        },
+        "summary": "updates a qualifier by key"
+      }
+    },
+    "/qualifiers/{_key}/powers": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/power"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A iist of **power** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.qualifier.read",
+              "powers.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "qualifier"
+        ],
+        "description": "returns a list of **powers** associated to the qualifier identified by key.",
+        "operationId": "skills.qualifier.list_powers",
+        "summary": "lists powers associated to the qualifier identified by key"
+      }
+    },
+    "/qualifiers/{_key}/skills": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/skill"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A iist of **skill** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.qualifier.read",
+              "skills.skill.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "qualifier"
+        ],
+        "description": "returns a list of **skills** associated to the qualifier identified by key.",
+        "operationId": "skills.qualifier.list_skills",
+        "summary": "lists skills associated to the qualifier identified by key"
+      }
+    },
+    "/search": {
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/search_result"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of **resource** objects that match the search query."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "search.search"
+            ]
+          }
+        ],
+        "tags": [
+          "search"
+        ],
+        "description": "execute search query",
+        "operationId": "search.search",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/search_query_body"
+        },
+        "summary": "execute search query"
+      }
+    },
+    "/skill.validations": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          },
+          {
+            "description": "user identifier. if not provided, returns validations of the current user",
+            "in": "query",
+            "name": "user",
+            "required": false,
+            "schema": {
+              "description": "user identifier",
+              "type": "string"
+            }
+          },
+          {
+            "description": "skill identifier. used to get validations on a specific skill",
+            "in": "query",
+            "name": "skill",
+            "required": false,
+            "schema": {
+              "description": "skill identifier",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/validation"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of **validation** objects for the user"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.validations.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "validation"
+        ],
+        "description": "returns a list of **validations** objects for an user",
+        "operationId": "skills.validations.list",
+        "summary": "list skills validations of an user"
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validation"
+                }
+              }
+            },
+            "description": "return the created **validation** object for the user"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.validations"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "validation"
+        ],
+        "description": "creates a **validation** object for an user",
+        "operationId": "skills.validation.create",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/validation_create_body"
+        },
+        "summary": "create a validation for an user"
+      }
+    },
+    "/skill.validations/{_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/power"
+                }
+              }
+            },
+            "description": "The updated **validation** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.validations"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "validation"
+        ],
+        "description": "returns the deleted **validation**.",
+        "operationId": "skills.validations.delete",
+        "summary": "deletes a validation by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validation"
+                }
+              }
+            },
+            "description": "A **validation** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.validations.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "validation"
+        ],
+        "description": "returns a **validation** object by key.",
+        "operationId": "skills.validations.get",
+        "summary": "gets a validation by key"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validation"
+                }
+              }
+            },
+            "description": "The updated **validation** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.validations"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "validation"
+        ],
+        "description": "returns the updated **validation**.",
+        "operationId": "skills.validations.update",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/validation_update_body"
+        },
+        "summary": "updates a validation by key"
+      }
+    },
+    "/skills": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 2,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/skill"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A list of **skill** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "returns a list of **skills**.",
+        "operationId": "skills.skills.list",
+        "summary": "list skills"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill"
+                }
+              }
+            },
+            "description": "the created skill"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "creates a new **skills**",
+        "operationId": "skills.skill.create",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/skill_create_body"
+        },
+        "summary": "creates skills"
+      }
+    },
+    "/skills/search": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/skill"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A list of **skill** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "returns a list of **skill** objects.",
+        "operationId": "skills.skill.search",
+        "summary": "searches skill by name"
+      }
+    },
+    "/skills/{_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill"
+                }
+              }
+            },
+            "description": "The updated **skill** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "returns the deleted **skill**.",
+        "operationId": "skills.skill.delete",
+        "summary": "deletes a skill by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill"
+                }
+              }
+            },
+            "description": "A **skill** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "returns a **skill** by key.",
+        "operationId": "skills.skill.get",
+        "summary": "gets a skill by key"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/skill"
+                }
+              }
+            },
+            "description": "The updated **skill** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "returns the updated **skill**.",
+        "operationId": "skills.skill.update",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/skill_update_body"
+        },
+        "summary": "updates a skill by key"
+      }
+    },
+    "/skills/{_key}/qualifiers": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/qualifier"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A list of **qualifier** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill",
+              "skills.qualifier"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "returns a list of **qualifier** objects for the requested skill.",
+        "operationId": "skills.skill.remove_qualifiers",
+        "summary": "remove qualifiers from a skill identified by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/qualifier"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A list of **qualifier** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill.read",
+              "skills.qualifier.read"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "returns a list of **qualifier** objects for the requested skill.",
+        "operationId": "skills.skill.list_qualifiers",
+        "summary": "list qualifiers of a skill identified by key"
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/qualifier"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "A list of **qualifier** objects."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "skills.skill",
+              "skills.qualifier"
+            ]
+          }
+        ],
+        "tags": [
+          "compose",
+          "skill"
+        ],
+        "description": "returns a list of **qualifier** objects for the requested skill.",
+        "operationId": "skills.skill.add_qualifiers",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/skill_update_qualifiers_body"
+        },
+        "summary": "add qualifiers to a skill identified by key"
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "auth_param": {
+        "description": "auth token to set in Authorization header to authenticate request",
+        "in": "header",
+        "name": "authorization",
+        "required": true,
+        "schema": {
+          "example": "Bearer <YOUR_TOKEN>",
+          "type": "string"
+        }
+      },
+      "fields_param": {
+        "description": "fields to return in response",
+        "in": "query",
+        "name": "fields",
+        "required": false,
+        "schema": {
+          "example": "_key,name,created",
+          "type": "string"
+        }
+      },
+      "key_param": {
+        "description": "unique resource identifier",
+        "in": "path",
+        "name": "_key",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "offset_param": {
+        "description": "number of items to skip",
+        "in": "query",
+        "name": "offset",
+        "required": false,
+        "schema": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "size_param": {
+        "description": "max records to return",
+        "in": "query",
+        "name": "size",
+        "required": false,
+        "schema": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "responses": {
+      "forbidden_error": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/forbidden"
+            }
+          }
+        },
+        "description": "you are not allowed to perform this action."
+      },
+      "invalid_schema_error": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/invalid_schema"
+            }
+          }
+        },
+        "description": "invalid schema."
+      },
+      "not_authed_error": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/not_authed"
+            }
+          }
+        },
+        "description": "you need to provide valid credentials to authenticate request."
+      },
+      "not_found_error": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/not_found"
+            }
+          }
+        },
+        "description": "the resource was not found."
+      },
+      "unexpected_error": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/unexpected_error"
+            }
+          }
+        },
+        "description": "an unexpected error occured."
+      }
+    },
+    "requestBodies": {
+      "library_create_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "color": {
+                  "$ref": "#/components/schemas/color"
+                },
+                "description": {
+                  "example": "my description",
+                  "type": "string"
+                },
+                "family_tag": {
+                  "description": "library's family tag. used to group libraries in wider domains",
+                  "example": "my domain",
+                  "type": "string"
+                },
+                "image": {
+                  "$ref": "#/components/schemas/image"
+                },
+                "logo": {
+                  "$ref": "#/components/schemas/logo"
+                },
+                "name": {
+                  "example": "my name",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "library data to create a library"
+      },
+      "library_update_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "color": {
+                  "$ref": "#/components/schemas/color"
+                },
+                "description": {
+                  "example": "my description",
+                  "type": "string"
+                },
+                "family_tag": {
+                  "description": "library's family tag. used to group libraries in wider domains",
+                  "example": "my domain",
+                  "type": "string"
+                },
+                "image": {
+                  "$ref": "#/components/schemas/image"
+                },
+                "logo": {
+                  "$ref": "#/components/schemas/logo"
+                },
+                "name": {
+                  "example": "my name",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "library data to update a library"
+      },
+      "power_create_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "active": {
+                  "default": true,
+                  "description": "indicates if a power is active or not",
+                  "type": "boolean"
+                },
+                "description": {
+                  "description": "power's details",
+                  "type": "string"
+                },
+                "qualifiers": {
+                  "description": "array of qualifier to include in the power",
+                  "items": {
+                    "$ref": "#/components/schemas/qualifier_input_data"
+                  },
+                  "type": "array"
+                },
+                "resource": {
+                  "description": "user identifier",
+                  "type": "string"
+                },
+                "skill": {
+                  "description": "skill identifier",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource",
+                "skill"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to create a power"
+      },
+      "power_update_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "active": {
+                  "default": true,
+                  "description": "indicates if a power is active or not",
+                  "type": "boolean"
+                },
+                "description": {
+                  "description": "power's details",
+                  "type": "string"
+                },
+                "qualifiers": {
+                  "description": "array of qualifier to include in the power",
+                  "items": {
+                    "$ref": "#/components/schemas/qualifier_input_data"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to update a power"
+      },
+      "qualifier_create_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "color": {
+                  "$ref": "#/components/schemas/color"
+                },
+                "custom_fields": {
+                  "description": "any custom fields that defines the qualifier",
+                  "type": "object"
+                },
+                "description": {
+                  "example": "my description",
+                  "type": "string"
+                },
+                "field_type": {
+                  "description": "field type.",
+                  "enum": [
+                    "TEXT",
+                    "NUMERIC",
+                    "MULTIVALUES"
+                  ],
+                  "type": "string"
+                },
+                "fields": {
+                  "items": {
+                    "$ref": "#/components/schemas/qualifier_field"
+                  },
+                  "type": "array"
+                },
+                "logo": {
+                  "$ref": "#/components/schemas/logo"
+                },
+                "name": {
+                  "example": "my name",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to create a qualifier object"
+      },
+      "qualifier_update_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "color": {
+                  "$ref": "#/components/schemas/color"
+                },
+                "custom_fields": {
+                  "description": "any custom fields that defines the qualifier",
+                  "type": "object"
+                },
+                "description": {
+                  "example": "my description",
+                  "type": "string"
+                },
+                "logo": {
+                  "$ref": "#/components/schemas/logo"
+                },
+                "name": {
+                  "example": "my name",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to update a qualifier object"
+      },
+      "qualifier_values_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/qualifier_input_data"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "description": "data to update a qualifier value"
+      },
+      "search_query_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "filters": {
+                  "$ref": "#/components/schemas/filter_query_condition"
+                },
+                "kind": {
+                  "description": "kind of resource to search on.",
+                  "enum": [
+                    "resource"
+                  ],
+                  "type": "string"
+                },
+                "must": {
+                  "$ref": "#/components/schemas/must_query_condition"
+                },
+                "suggests": {
+                  "default": false,
+                  "description": "include suggestions or not",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "search query"
+      },
+      "skill_create_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "color": {
+                  "$ref": "#/components/schemas/color"
+                },
+                "custom_fields": {
+                  "description": "any custom fields that defines the skill",
+                  "type": "object"
+                },
+                "description": {
+                  "example": "my description",
+                  "type": "string"
+                },
+                "image": {
+                  "$ref": "#/components/schemas/image"
+                },
+                "inherit_qualifiers": {
+                  "description": "indicates if the new skill should inherit qualifiers from its parents",
+                  "type": "boolean"
+                },
+                "logo": {
+                  "$ref": "#/components/schemas/logo"
+                },
+                "name": {
+                  "example": "my name",
+                  "type": "string"
+                },
+                "parents": {
+                  "items": {
+                    "description": "library or skill identifier",
+                    "example": "LIB1",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "powerable": {
+                  "description": "indicates if the new skill can be added by an user as a power.",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to create a skill"
+      },
+      "skill_profile_create_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "color": {
+                  "$ref": "#/components/schemas/color"
+                },
+                "custom_fields": {
+                  "description": "any custom fields that defines the qualifier",
+                  "type": "object"
+                },
+                "description": {
+                  "example": "my description",
+                  "type": "string"
+                },
+                "logo": {
+                  "$ref": "#/components/schemas/logo"
+                },
+                "name": {
+                  "example": "my name",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/components/schemas/search_pattern"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to create a skills profile object"
+      },
+      "skill_profile_update_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "color": {
+                  "$ref": "#/components/schemas/color"
+                },
+                "custom_fields": {
+                  "description": "any custom fields that defines the qualifier",
+                  "type": "object"
+                },
+                "description": {
+                  "example": "my description",
+                  "type": "string"
+                },
+                "logo": {
+                  "$ref": "#/components/schemas/logo"
+                },
+                "name": {
+                  "example": "my name",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/components/schemas/search_pattern"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to update a skills profile object"
+      },
+      "skill_update_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "color": {
+                  "$ref": "#/components/schemas/color"
+                },
+                "custom_fields": {
+                  "description": "any custom fields that defines the skill",
+                  "type": "object"
+                },
+                "description": {
+                  "example": "my description",
+                  "type": "string"
+                },
+                "image": {
+                  "$ref": "#/components/schemas/image"
+                },
+                "inherit_qualifiers": {
+                  "description": "indicates if the new skill should inherit qualifiers from its parents",
+                  "type": "boolean"
+                },
+                "logo": {
+                  "$ref": "#/components/schemas/logo"
+                },
+                "name": {
+                  "example": "my name",
+                  "type": "string"
+                },
+                "powerable": {
+                  "description": "indicates if the new skill can be added by an user as a power.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to update a skill"
+      },
+      "skill_update_qualifiers_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "qualifiers": {
+                  "description": "list of qualifier's identifiers",
+                  "items": {
+                    "description": "qualifier's identifier",
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data to update skill qualifier"
+      },
+      "validation_create_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "comment": {
+                  "description": "validation's comment",
+                  "example": "my comment about the current validation",
+                  "type": "string"
+                },
+                "qualifiers": {
+                  "items": {
+                    "$ref": "#/components/schemas/qualifier_input_data"
+                  },
+                  "type": "array"
+                },
+                "skill": {
+                  "description": "skill's identifier to validate",
+                  "type": "string"
+                },
+                "user": {
+                  "description": "user's identifier to validate",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data schema to create a validation"
+      },
+      "validation_update_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "comment": {
+                  "description": "validation's comment",
+                  "example": "my comment about the current validation",
+                  "type": "string"
+                },
+                "qualifiers": {
+                  "items": {
+                    "$ref": "#/components/schemas/qualifier_input_data"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data schema to update a validation"
+      }
+    },
+    "schemas": {
+      "base_model": {
+        "properties": {
+          "_key": {
+            "$ref": "#/components/schemas/key_identifier"
+          },
+          "created": {
+            "description": "created date",
+            "format": "date-time",
+            "type": "string"
+          },
+          "deleted": {
+            "default": false,
+            "description": "indicates if the resource was deleted or not",
+            "type": "boolean"
+          },
+          "externalId": {
+            "$ref": "#/components/schemas/externalId"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/kind"
+          },
+          "updated": {
+            "description": "updated date",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "color": {
+        "description": "color string in hexadecimal format (#ffc800)",
+        "example": "#ffc800",
+        "type": "string"
+      },
+      "externalId": {
+        "description": "external resource identifier (if provided by your internal information system)",
+        "example": "EXT1",
+        "type": "string"
+      },
+      "filter_query_condition": {
+        "properties": {
+          "groups": {
+            "description": "array of group identifiers to filter on",
+            "items": {
+              "description": "group identifier",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "users": {
+            "description": "array of user identifiers to filter on",
+            "items": {
+              "description": "user identifier",
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "forbidden": {
+        "properties": {
+          "error": {
+            "example": "forbidden",
+            "type": "string"
+          },
+          "ok": {
+            "example": false,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "image": {
+        "description": "image urls",
+        "properties": {
+          "url": {
+            "description": "image's url",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "invalid_schema": {
+        "properties": {
+          "error": {
+            "example": "invalid_schema",
+            "type": "string"
+          },
+          "ok": {
+            "example": false,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "key_identifier": {
+        "description": "unique resource identifier",
+        "example": "KEY1",
+        "type": "string"
+      },
+      "kind": {
+        "description": "kind of a model object",
+        "type": "string"
+      },
+      "library": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/skill_base_model"
+          },
+          {
+            "properties": {
+              "family_tag": {
+                "description": "library's family tag. used to group libraries in wider domains",
+                "type": "string"
+              },
+              "image": {
+                "$ref": "#/components/schemas/image"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "example": {
+          "_key": "LIB1",
+          "color": "#ffc800",
+          "created": "2018-10-05T11:44:08.724Z",
+          "deleted": false,
+          "description": "library description",
+          "externalId": "EXTID1",
+          "family_tag": "my domain",
+          "image": {
+            "url": "my-photo-url.jpg"
+          },
+          "kind": "skills#library",
+          "logo": "marketing",
+          "name": "library name",
+          "updated": "2018-10-05T11:44:08.724Z"
+        }
+      },
+      "logo": {
+        "description": "logo identifier (marketing)",
+        "example": "marketing",
+        "type": "string"
+      },
+      "must_query_condition": {
+        "properties": {
+          "id": {
+            "description": "skill identifier",
+            "type": "string"
+          },
+          "qualifiers": {
+            "description": "qualifier applied to the search",
+            "items": {
+              "properties": {
+                "comparator": {
+                  "description": "comparator used to compare the provided value",
+                  "enum": [
+                    "EQ",
+                    "NEQ",
+                    "LT",
+                    "GT",
+                    "LTE",
+                    "GTE",
+                    "LIKE",
+                    "IN",
+                    "NOT_IN"
+                  ],
+                  "type": "string"
+                },
+                "id": {
+                  "description": "qualifier identifier",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "reference value that will be compared to the searched values",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "not_authed": {
+        "properties": {
+          "error": {
+            "example": "not_authed",
+            "type": "string"
+          },
+          "ok": {
+            "example": false,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "not_found": {
+        "properties": {
+          "error": {
+            "example": "not_found",
+            "type": "string"
+          },
+          "ok": {
+            "example": false,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "power": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_model"
+          },
+          {
+            "properties": {
+              "active": {
+                "description": "indicates if the power is active or not",
+                "type": "boolean"
+              },
+              "qualifiers": {
+                "items": {
+                  "$ref": "#/components/schemas/qualifier_input_data"
+                },
+                "type": "array"
+              },
+              "skill": {
+                "$ref": "#/components/schemas/skill"
+              },
+              "type": {
+                "default": "have",
+                "description": "indicates the power degree : is user interested, want to learn, have the skill, want to upgrade, is it suggestion ?\n",
+                "enum": [
+                  "interested",
+                  "learn",
+                  "have",
+                  "upgrade",
+                  "suggest"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "qualifier": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/skill_base_model"
+          },
+          {
+            "properties": {
+              "custom_fields": {
+                "description": "any custom fields defined on the qualifier",
+                "type": "object"
+              },
+              "field_type": {
+                "description": "field type.",
+                "enum": [
+                  "TEXT",
+                  "NUMERIC",
+                  "MULTIVALUES"
+                ],
+                "type": "string"
+              },
+              "fields": {
+                "items": {
+                  "$ref": "#/components/schemas/qualifier_field"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "qualifier_field": {
+        "description": "qualifier's field definition",
+        "properties": {
+          "decorators": {
+            "type": "object"
+          },
+          "type": {
+            "description": "field type",
+            "type": "string"
+          },
+          "validators": {
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "qualifier_input_data": {
+        "description": "qualifier data to add on a power, skill, skills profile, ...",
+        "properties": {
+          "_key": {
+            "$ref": "#/components/schemas/key_identifier"
+          },
+          "value": {
+            "$ref": "#/components/schemas/qualifier_value"
+          }
+        },
+        "type": "object"
+      },
+      "qualifier_value": {
+        "description": "qualifier's value",
+        "example": "qualifier_value",
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        ]
+      },
+      "resource": {
+        "properties": {
+          "_key": {
+            "$ref": "#/components/schemas/key_identifier"
+          },
+          "displayName": {
+            "description": "resource's display name",
+            "type": "string"
+          },
+          "image": {
+            "$ref": "#/components/schemas/image"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/kind"
+          }
+        },
+        "type": "object"
+      },
+      "search_pattern": {
+        "properties": {
+          "must": {
+            "$ref": "#/components/schemas/must_query_condition"
+          }
+        },
+        "type": "object"
+      },
+      "search_result": {
+        "properties": {
+          "data": {
+            "description": "list of power data used in matching computation",
+            "items": {
+              "$ref": "#/components/schemas/power"
+            },
+            "type": "array"
+          },
+          "resource": {
+            "$ref": "#/components/schemas/resource"
+          },
+          "score": {
+            "description": "matching score of the search result regarding the search query (between 0 and 1)",
+            "example": 0.67,
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "should_query_condition": {
+        "properties": {
+          "boost": {
+            "default": 5,
+            "description": "boost to apply to this should query condition",
+            "example": 8,
+            "maximum": 10,
+            "minimum": 0,
+            "type": "number"
+          },
+          "id": {
+            "description": "skill identifier",
+            "type": "string"
+          },
+          "qualifiers": {
+            "description": "qualifier applied to the search",
+            "items": {
+              "properties": {
+                "comparator": {
+                  "description": "comparator used to compare the provided value",
+                  "enum": [
+                    "EQ",
+                    "NEQ",
+                    "LT",
+                    "GT",
+                    "LTE",
+                    "GTE",
+                    "LIKE",
+                    "IN",
+                    "NOT_IN"
+                  ],
+                  "type": "string"
+                },
+                "id": {
+                  "description": "qualifier identifier",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "reference value that will be compared to the searched values",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "skill": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/skill_base_model"
+          },
+          {
+            "properties": {
+              "custom_fields": {
+                "description": "any custom fields defined on the skill",
+                "type": "object"
+              },
+              "image": {
+                "$ref": "#/components/schemas/image"
+              },
+              "library_context": {
+                "description": "library context's identifier. defines the skill's main library context.",
+                "type": "string"
+              },
+              "powerable": {
+                "default": true,
+                "description": "indicates if the skill can be added to an user as a power",
+                "type": "boolean"
+              },
+              "validated": {
+                "default": true,
+                "description": "indicates if the skill was validated or not",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "example": {
+          "_key": "SKI1",
+          "color": "#ffc800",
+          "created": "2018-10-05T11:44:08.724Z",
+          "custom_fields": {
+            "criticity": 2
+          },
+          "deleted": false,
+          "description": "skill description",
+          "externalId": "EXTID1",
+          "image": {
+            "url": "my-photo-url.jpg"
+          },
+          "kind": "skills#skill",
+          "library_context": "LIB1",
+          "logo": "marketing",
+          "name": "skill name",
+          "powerable": true,
+          "pretty_name": "skill pretty name",
+          "updated": "2018-10-05T11:44:08.724Z",
+          "validated": true
+        }
+      },
+      "skill_base_model": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_model"
+          },
+          {
+            "properties": {
+              "color": {
+                "$ref": "#/components/schemas/color"
+              },
+              "description": {
+                "description": "description of the resource",
+                "example": "my description",
+                "type": "string"
+              },
+              "logo": {
+                "$ref": "#/components/schemas/logo"
+              },
+              "name": {
+                "description": "name of the resource",
+                "example": "my name",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "skill_profile": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/skill_base_model"
+          },
+          {
+            "properties": {
+              "custom_fields": {
+                "description": "any custom fields defined on the skill profile",
+                "type": "object"
+              },
+              "pattern": {
+                "$ref": "#/components/schemas/search_pattern"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "unexpected_error": {
+        "properties": {
+          "error": {
+            "example": "server_error",
+            "type": "string"
+          },
+          "ok": {
+            "example": false,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "validation": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_model"
+          },
+          {
+            "properties": {
+              "author": {
+                "$ref": "#/components/schemas/resource"
+              },
+              "comment": {
+                "description": "validation's comment",
+                "type": "string"
+              },
+              "context": {
+                "description": "indicates in which context the user was validated (on project, on a specific task, while analyzing conversations, ...)",
+                "type": "object"
+              },
+              "user_context": {
+                "description": "indicates the context of the user who validated the skill (manager, bot, ...)",
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "elamp_auth": {
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://elamp.fr/oauth/authorize",
+            "scopes": {
+              "power": "read and manage your powers",
+              "power.read": "read your powers (competencies)",
+              "search.analyze": "execute analytics query",
+              "search.search": "execute search query",
+              "skill.library": "read and manage your skill libraries",
+              "skill.library.read": "read your skill libraries",
+              "skill.profile": "read and manage your skills profiles",
+              "skill.profile.read": "read your skills profiles",
+              "skill.qualifier": "read and manage your qualifiers",
+              "skill.qualifier.read": "read your qualifiers",
+              "skill.skill": "read and manage your skills",
+              "skill.skill.read": "read your skills",
+              "skill.validation": "read and manage your power validations",
+              "skill.validation.read": "read your power validations"
+            },
+            "tokenUrl": "https://elamp.fr/oauth/token"
+          }
+        },
+        "type": "oauth2"
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "libraries, skills, qualifiers and skills profiles endpoints",
+      "name": "compose"
+    },
+    {
+      "description": "powers, validations endpoints",
+      "name": "run"
+    },
+    {
+      "description": "search and analytics endpoints",
+      "name": "search"
+    },
+    {
+      "description": "users, groups, roles, applications endpoints",
+      "name": "admin"
+    },
+    {
+      "description": "libraries endpoints",
+      "name": "library"
+    },
+    {
+      "description": "skills endpoints",
+      "name": "skill"
+    },
+    {
+      "description": "qualifiers endpoints",
+      "name": "qualifier"
+    },
+    {
+      "description": "skills profiles endpoints",
+      "name": "skill profile"
+    },
+    {
+      "description": "powers endpoints",
+      "name": "power"
+    },
+    {
+      "description": "validations endpoints",
+      "name": "validation"
+    }
+  ]
+}
