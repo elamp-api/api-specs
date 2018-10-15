@@ -77,7 +77,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.library.read"
+              "skill.library.read"
             ]
           }
         ],
@@ -170,7 +170,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.library"
+              "skill.library"
             ]
           }
         ],
@@ -252,7 +252,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.library"
+              "skill.library"
             ]
           }
         ],
@@ -326,7 +326,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.library.read"
+              "skill.library.read"
             ]
           }
         ],
@@ -441,7 +441,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.library"
+              "skill.library"
             ]
           }
         ],
@@ -517,7 +517,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.library"
+              "skill.library"
             ]
           }
         ],
@@ -593,7 +593,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.library"
+              "skill.library"
             ]
           }
         ],
@@ -670,7 +670,7 @@
         "security": [
           {
             "elamp_auth": [
-              "powers.read"
+              "power.read"
             ]
           }
         ],
@@ -766,7 +766,7 @@
         "security": [
           {
             "elamp_auth": [
-              "powers"
+              "power"
             ]
           }
         ],
@@ -848,7 +848,7 @@
         "security": [
           {
             "elamp_auth": [
-              "powers"
+              "power"
             ]
           }
         ],
@@ -922,7 +922,7 @@
         "security": [
           {
             "elamp_auth": [
-              "powers.read"
+              "power.read"
             ]
           }
         ],
@@ -1031,7 +1031,7 @@
         "security": [
           {
             "elamp_auth": [
-              "powers"
+              "power"
             ]
           }
         ],
@@ -1107,8 +1107,8 @@
         "security": [
           {
             "elamp_auth": [
-              "powers",
-              "skills.qualifier"
+              "power",
+              "skill.qualifier"
             ]
           }
         ],
@@ -1182,8 +1182,8 @@
         "security": [
           {
             "elamp_auth": [
-              "powers.read",
-              "skills.qualifier.read"
+              "power.read",
+              "skill.qualifier.read"
             ]
           }
         ],
@@ -1271,8 +1271,8 @@
         "security": [
           {
             "elamp_auth": [
-              "powers",
-              "skills.qualifier"
+              "power",
+              "skill.qualifier"
             ]
           }
         ],
@@ -1353,7 +1353,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.profile.read"
+              "skill.profile.read"
             ]
           }
         ],
@@ -1431,7 +1431,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.profile"
+              "skill.profile"
             ]
           }
         ],
@@ -1538,7 +1538,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.profile.read"
+              "skill.profile.read"
             ]
           }
         ],
@@ -1620,7 +1620,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.profile"
+              "skill.profile"
             ]
           }
         ],
@@ -1694,7 +1694,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.profile.read"
+              "skill.profile.read"
             ]
           }
         ],
@@ -1808,7 +1808,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.profile"
+              "skill.profile"
             ]
           }
         ],
@@ -1889,7 +1889,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.qualifier.read"
+              "skill.qualifier.read"
             ]
           }
         ],
@@ -1976,7 +1976,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill"
+              "skill.skill"
             ]
           }
         ],
@@ -2058,7 +2058,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.qualifier"
+              "skill.qualifier"
             ]
           }
         ],
@@ -2132,7 +2132,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.qualifier.read"
+              "skill.qualifier.read"
             ]
           }
         ],
@@ -2243,7 +2243,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.qualifier"
+              "skill.qualifier"
             ]
           }
         ],
@@ -2331,8 +2331,8 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.qualifier.read",
-              "powers.read"
+              "skill.qualifier.read",
+              "power.read"
             ]
           }
         ],
@@ -2420,8 +2420,8 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.qualifier.read",
-              "skills.skill.read"
+              "skill.qualifier.read",
+              "skill.skill.read"
             ]
           }
         ],
@@ -2605,7 +2605,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.validations.read"
+              "skill.validation.read"
             ]
           }
         ],
@@ -2692,7 +2692,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.validations"
+              "skill.validation"
             ]
           }
         ],
@@ -2774,7 +2774,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.validations"
+              "skill.validation"
             ]
           }
         ],
@@ -2848,7 +2848,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.validations.read"
+              "skill.validation.read"
             ]
           }
         ],
@@ -2952,7 +2952,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.validations"
+              "skill.validation"
             ]
           }
         ],
@@ -3033,7 +3033,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill.read"
+              "skill.skill.read"
             ]
           }
         ],
@@ -3127,7 +3127,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill"
+              "skill.skill"
             ]
           }
         ],
@@ -3213,7 +3213,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill.read"
+              "skill.skill.read"
             ]
           }
         ],
@@ -3295,7 +3295,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill"
+              "skill.skill"
             ]
           }
         ],
@@ -3369,7 +3369,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill.read"
+              "skill.skill.read"
             ]
           }
         ],
@@ -3491,7 +3491,7 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill"
+              "skill.skill"
             ]
           }
         ],
@@ -3579,8 +3579,8 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill",
-              "skills.qualifier"
+              "skill.skill",
+              "skill.qualifier"
             ]
           }
         ],
@@ -3666,8 +3666,8 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill.read",
-              "skills.qualifier.read"
+              "skill.skill.read",
+              "skill.qualifier.read"
             ]
           }
         ],
@@ -3774,8 +3774,8 @@
         "security": [
           {
             "elamp_auth": [
-              "skills.skill",
-              "skills.qualifier"
+              "skill.skill",
+              "skill.qualifier"
             ]
           }
         ],
