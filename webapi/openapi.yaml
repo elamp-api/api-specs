@@ -900,7 +900,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - skills.library.read
+          - skill.library.read
     post:
       operationId: skills.libraries.create
       summary: creates libraries
@@ -926,7 +926,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - skills.library
+          - skill.library
 
 
   /libraries/{_key}:
@@ -958,7 +958,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.library.read
+          - skill.library.read
 
     patch:
       operationId: skills.libraries.update
@@ -993,7 +993,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.library
+          - skill.library
     delete:
       operationId: skills.libraries.delete
       summary: deletes a library by key
@@ -1025,7 +1025,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.library
+          - skill.library
 
   /libraries/{_key}/subscribe:
     post:
@@ -1056,7 +1056,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.library
+          - skill.library
   /libraries/{_key}/unsubscribe:
     post:
       operationId: skills.libraries.unsubscribe
@@ -1086,7 +1086,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.library
+          - skill.library
 
   /skills:
     get:
@@ -1124,7 +1124,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.skill.read
+          - skill.skill.read
     post:
       operationId: skills.skill.create
       summary: creates skills
@@ -1147,7 +1147,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - skills.skill
+          - skill.skill
   /skills/search:
     get:
       operationId: skills.skill.search
@@ -1188,7 +1188,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.skill.read
+          - skill.skill.read
 
   /skills/{_key}:
     get:
@@ -1219,7 +1219,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.skill.read
+          - skill.skill.read
 
     patch:
       operationId: skills.skill.update
@@ -1253,7 +1253,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.skill
+          - skill.skill
     delete:
       operationId: skills.skill.delete
       summary: deletes a skill by key
@@ -1284,7 +1284,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.skill
+          - skill.skill
 
   /skills/{_key}/qualifiers:
     get:
@@ -1323,8 +1323,8 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.skill.read
-          - skills.qualifier.read
+          - skill.skill.read
+          - skill.qualifier.read
     post:
       operationId: skills.skill.add_qualifiers
       summary: add qualifiers to a skill identified by key
@@ -1363,8 +1363,8 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.skill
-          - skills.qualifier
+          - skill.skill
+          - skill.qualifier
     delete:
       operationId: skills.skill.remove_qualifiers
       summary: remove qualifiers from a skill identified by key
@@ -1401,8 +1401,8 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.skill
-          - skills.qualifier
+          - skill.skill
+          - skill.qualifier
 
   /qualifiers:
     get:
@@ -1440,7 +1440,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.qualifier.read
+          - skill.qualifier.read
     post:
       operationId: skills.qualifier.create
       summary: creates qulaifier
@@ -1463,7 +1463,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - skills.skill
+          - skill.skill
 
   /qualifiers/{_key}:
     get:
@@ -1494,7 +1494,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.qualifier.read
+          - skill.qualifier.read
 
     patch:
       operationId: skills.qualifier.update
@@ -1528,7 +1528,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.qualifier
+          - skill.qualifier
     delete:
       operationId: skills.qualifier.delete
       summary: deletes a qualifier by key
@@ -1559,7 +1559,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.qualifier
+          - skill.qualifier
   /qualifiers/{_key}/skills:
     get:
       operationId: skills.qualifier.list_skills
@@ -1597,8 +1597,8 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.qualifier.read
-          - skills.skill.read
+          - skill.qualifier.read
+          - skill.skill.read
   /qualifiers/{_key}/powers:
     get:
       operationId: skills.qualifier.list_powers
@@ -1636,8 +1636,8 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.qualifier.read
-          - powers.read
+          - skill.qualifier.read
+          - power.read
 
   /profiles:
     get:
@@ -1675,7 +1675,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.profile.read
+          - skill.profile.read
     post:
       operationId: skills.profile.create
       summary: creates skills profile
@@ -1698,7 +1698,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - skills.profile
+          - skill.profile
   /profiles/matching:
     get:
       operationId: skills.profile.matching
@@ -1747,7 +1747,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.profile.read
+          - skill.profile.read
   /profiles/{_key}:
     get:
       operationId: skills.profile.get
@@ -1777,7 +1777,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.profile.read
+          - skill.profile.read
 
     patch:
       operationId: skills.profile.update
@@ -1811,7 +1811,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.profile
+          - skill.profile
     delete:
       operationId: skills.profile.delete
       summary: deletes a skills profile by key
@@ -1842,7 +1842,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.profile
+          - skill.profile
 
   /search:
     post:
@@ -1921,7 +1921,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - powers.read
+          - power.read
     post:
       operationId: powers.create
       summary: create power for an user
@@ -1947,7 +1947,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - powers
+          - power
   /powers/{_key}:
     get:
       operationId: powers.get
@@ -1977,7 +1977,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - powers.read
+          - power.read
 
     patch:
       operationId: powers.update
@@ -2011,7 +2011,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - powers
+          - power
     delete:
       operationId: powers.delete
       summary: deletes a power by key
@@ -2042,7 +2042,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - powers
+          - power
 
   /powers/{_key}/qualifiers:
     get:
@@ -2073,8 +2073,8 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - powers.read
-          - skills.qualifier.read
+          - power.read
+          - skill.qualifier.read
     post:
       operationId: powers.add_qualifiers
       summary: adds qualifiers for a power identified by key
@@ -2105,8 +2105,8 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - powers
-          - skills.qualifier
+          - power
+          - skill.qualifier
     delete:
       operationId: powers.remove_qualifiers
       summary: removes qualifiers for a power identified by key
@@ -2135,8 +2135,8 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - powers
-          - skills.qualifier
+          - power
+          - skill.qualifier
 
   /skill.validations:
     get:
@@ -2185,7 +2185,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - skills.validations.read
+          - skill.validation.read
     post:
       operationId: skills.validation.create
       summary: create a validation for an user
@@ -2211,7 +2211,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - skills.validations
+          - skill.validation
   /skill.validations/{_key}:
     get:
       operationId: skills.validations.get
@@ -2241,7 +2241,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.validations.read
+          - skill.validation.read
 
     patch:
       operationId: skills.validations.update
@@ -2275,7 +2275,7 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.validations
+          - skill.validation
     delete:
       operationId: skills.validations.delete
       summary: deletes a validation by key
@@ -2306,4 +2306,4 @@ paths:
           $ref: '#/components/responses/unexpected_error'
       security:
         - elamp_auth:
-          - skills.validations
+          - skill.validation
