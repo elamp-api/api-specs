@@ -2575,7 +2575,7 @@ paths:
           - power.read
   /resources/{user_id}/skill.validations:
     get:
-      operationId: resources.powers.list
+      operationId: resources.skill_validations.list
       summary: lists validations of user identified by <user_id>
       description: returns a list of **validations** object.
       tags:
