@@ -34,6 +34,10 @@ tags:
     description: powers endpoints
   - name: validation
     description: validations endpoints
+  - name: pin
+    description: pins endpoints
+  - name: resource
+    description: resources endpoints gather multiple information about a specific user resource
 components:
   securitySchemes:
       elamp_auth:
@@ -56,6 +60,8 @@ components:
               power: read and manage your powers
               skill.validation.read: read your power validations
               skill.validation: read and manage your power validations
+              pin.read: read pins
+              pin: read and manage pins
 
               search.search: execute search query
               search.analyze: execute analytics query
@@ -294,6 +300,24 @@ components:
             context:
               type: object
               description: indicates in which context the user was validated (on project, on a specific task, while analyzing conversations, ...)
+    pin:
+      allOf:
+        - $ref: '#/components/schemas/base_model'
+        - type: object
+          properties:
+            type:
+              type: string
+              description: pin object's type. Can be either profile.pin_job or profile.pin_training.
+            data:
+              type: object
+              description: pin object's data.
+    user_pin:
+      allOf:
+        - $ref: '#/components/schemas/base_model'
+        - type: object
+          properties:
+            activity:
+              $ref: '#/components/schemas/pin'
     resource:
       type: object
       properties:
@@ -472,6 +496,13 @@ components:
       name: _key
       in: path
       description: unique resource identifier
+      required: true
+      schema:
+        type: string
+    user_id_param:
+      name: user_id
+      in: path
+      description: unique user resource identifier
       required: true
       schema:
         type: string
@@ -835,6 +866,35 @@ components:
                 type: string
                 description: validation's comment
                 example: my comment about the current validation
+    pin_create_body:
+      description: data schema to create a pin object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                type: string
+                description: user identifier
+              entity:
+                type: string
+                description: entity to pin to the user. Can be a skills profile (job or training)
+              type:
+                type: string
+                description: pin object's type. Can be either profile.pin_job or profile.pin_training
+              data:
+                type: object
+                description: pin object's data
+    pin_update_body:
+      description: data schema to update a pin object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: pin object's data
   responses:
     invalid_schema_error:
       description: invalid schema.
@@ -2307,3 +2367,322 @@ paths:
       security:
         - elamp_auth:
           - skill.validation
+  /pins:
+    get:
+      operationId: pins.list
+      summary: list pins of an user
+      description: returns a list of **pin** objects for an user
+      tags:
+        - run
+        - pin
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+        - name: user
+          description: user identifier. if not provided, returns pins of the current user
+          in: query
+          required: false
+          schema:
+            type: string
+            description: user identifier
+        - name: entity
+          description: entity identifier (optional)
+          in: query
+          required: false
+          schema:
+            type: string
+            description: entity identifier
+      responses:
+        '200':
+          description: a list of **pin** objects for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/pin'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - pin.read
+    post:
+      operationId: pins.create
+      summary: create a pin for an user
+      description: creates a **pin** object for an user
+      tags:
+        - run
+        - pin
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/pin_create_body'
+      responses:
+        '200':
+          description: return the created **pin** object for the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pin'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+      security:
+        - elamp_auth:
+          - skill.validation
+  /pins/{_key}:
+    get:
+      operationId: pins.get
+      summary: gets a pin by key
+      description: returns a **pin** object by key.
+      tags:
+        - run
+        - pin
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: A **pin** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pin'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - pin.read
+
+    patch:
+      operationId: pins.update
+      summary: updates a pin by key
+      description: returns the updated **pin**.
+      tags:
+        - run
+        - pin
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      requestBody:
+        $ref: '#/components/requestBodies/pin_update_body'
+      responses:
+        200:
+          description: The updated **pin** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pin'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - pin
+    delete:
+      operationId: skills.validations.delete
+      summary: deletes a pin by key
+      description: returns the deleted **pin**.
+      tags:
+        - run
+        - pin
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        200:
+          description: The updated **pin** object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pin'
+        400:
+          $ref: '#/components/responses/invalid_schema_error'
+        401:
+          $ref: '#/components/responses/not_authed_error'
+        403:
+          $ref: '#/components/responses/forbidden_error'
+        404:
+          $ref: '#/components/responses/not_found_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - pin
+  /resources/{user_id}/powers:
+    get:
+      operationId: resources.powers.list
+      summary: lists powers of user identified by <user_id>
+      description: returns a list of **powers** object.
+      tags:
+        - run
+        - resource
+      parameters:
+        - $ref: '#/components/parameters/user_id_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        '200':
+          description: a list of **powers** objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/power'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - power.read
+  /resources/{user_id}/skill.validations:
+    get:
+      operationId: resources.powers.list
+      summary: lists validations of user identified by <user_id>
+      description: returns a list of **validations** object.
+      tags:
+        - run
+        - resource
+      parameters:
+        - $ref: '#/components/parameters/user_id_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        '200':
+          description: a list of **validations** objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/validation'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - validation.read
+  /resources/{user_id}/pins/jobs:
+    get:
+      operationId: resources.job_pins.list
+      summary: lists jobs pinned by user identified by <user_id>
+      description: returns a list of **pinned jobs** object.
+      tags:
+        - run
+        - resource
+      parameters:
+        - $ref: '#/components/parameters/user_id_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        '200':
+          description: a list of **pinned jobs** objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user_pin'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - profile.read
+          - pin.read
+  /resources/{user_id}/pins/trainings:
+    get:
+      operationId: resources.training_pins.list
+      summary: lists trainings pinned by user identified by <user_id>
+      description: returns a list of **pinned trainings** object.
+      tags:
+        - run
+        - resource
+      parameters:
+        - $ref: '#/components/parameters/user_id_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        '200':
+          description: a list of **pinned trainings** objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user_pin'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - profile.read
+          - pin.read
