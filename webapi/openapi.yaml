@@ -2440,7 +2440,7 @@ paths:
           $ref: '#/components/responses/forbidden_error'
       security:
         - elamp_auth:
-          - skill.validation
+          - pin
   /pins/{_key}:
     get:
       operationId: pins.get
@@ -2506,7 +2506,7 @@ paths:
         - elamp_auth:
           - pin
     delete:
-      operationId: skills.validations.delete
+      operationId: pins.delete
       summary: deletes a pin by key
       description: returns the deleted **pin**.
       tags:
