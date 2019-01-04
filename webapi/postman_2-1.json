@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "ec319a8f-754e-47a4-983d-c27e6de5d657",
-		"name": "eLamp Web API",
+		"_postman_id": "0c7143b2-5735-403b-b25c-863f6bea496e",
+		"name": "eLamp Web API 1.0.1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -323,6 +323,245 @@
 							]
 						},
 						"description": "returns the unsubscribed **skills library**."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "pins",
+			"description": "Folder for pins",
+			"item": [
+				{
+					"name": "list pins of an user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/pins?fields={{fields}}&user={{user}}&entity={{entity}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"pins"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								},
+								{
+									"key": "user",
+									"value": "{{user}}"
+								},
+								{
+									"key": "entity",
+									"value": "{{entity}}"
+								}
+							]
+						},
+						"description": "returns a list of **pin** objects for an user"
+					},
+					"response": []
+				},
+				{
+					"name": "create a pin for an user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data schema to create a pin object"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/pins?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"pins"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "creates a **pin** object for an user"
+					},
+					"response": []
+				},
+				{
+					"name": "gets a pin by key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/pins/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"pins",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a **pin** object by key."
+					},
+					"response": []
+				},
+				{
+					"name": "updates a pin by key",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "data schema to update a pin object"
+						},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/pins/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"pins",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the updated **pin**."
+					},
+					"response": []
+				},
+				{
+					"name": "deletes a pin by key",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/pins/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"pins",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns the deleted **pin**."
 					},
 					"response": []
 				}
@@ -850,7 +1089,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "https://api.elamp.fr/v1/profiles/:_key?fields={{fields}}",
+							"raw": "https://api.elamp.fr/v1/profiles/:_key?fields={{fields}}&use_externalId={{use_externalId}}",
 							"protocol": "https",
 							"host": [
 								"api",
@@ -866,6 +1105,10 @@
 								{
 									"key": "fields",
 									"value": "{{fields}}"
+								},
+								{
+									"key": "use_externalId",
+									"value": "{{use_externalId}}"
 								}
 							],
 							"variable": [
@@ -1286,6 +1529,198 @@
 							]
 						},
 						"description": "returns a list of **skills** associated to the qualifier identified by key."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "resources",
+			"description": "Folder for resources",
+			"item": [
+				{
+					"name": "lists jobs pinned by user identified by <user_id>",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/resources/:user_id/pins/jobs?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"resources",
+								":user_id",
+								"pins",
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "returns a list of **pinned jobs** object."
+					},
+					"response": []
+				},
+				{
+					"name": "lists trainings pinned by user identified by <user_id>",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/resources/:user_id/pins/trainings?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"resources",
+								":user_id",
+								"pins",
+								"trainings"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "returns a list of **pinned trainings** object."
+					},
+					"response": []
+				},
+				{
+					"name": "lists powers of user identified by <user_id>",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/resources/:user_id/powers?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"resources",
+								":user_id",
+								"powers"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "returns a list of **powers** object."
+					},
+					"response": []
+				},
+				{
+					"name": "lists validations of user identified by <user_id>",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/resources/:user_id/skill.validations?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"resources",
+								":user_id",
+								"skill.validations"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "returns a list of **validations** object."
 					},
 					"response": []
 				}
@@ -1717,7 +2152,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "https://api.elamp.fr/v1/skills/:_key?fields={{fields}}",
+							"raw": "https://api.elamp.fr/v1/skills/:_key?fields={{fields}}&use_externalId={{use_externalId}}",
 							"protocol": "https",
 							"host": [
 								"api",
@@ -1733,6 +2168,10 @@
 								{
 									"key": "fields",
 									"value": "{{fields}}"
+								},
+								{
+									"key": "use_externalId",
+									"value": "{{use_externalId}}"
 								}
 							],
 							"variable": [
