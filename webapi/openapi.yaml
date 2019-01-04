@@ -514,6 +514,14 @@ components:
       schema:
         type: string
         example: '_key,name,created'
+    use_externalId_param:
+      name: use_externalId
+      in: query
+      description: boolean indicating if externalId must be used instead of eLamp identifier in order to fetch resource
+      required: false
+      schema:
+        type: boolean
+        example: true
     offset_param:
       name: offset
       in: query
@@ -1262,6 +1270,7 @@ paths:
         - $ref: '#/components/parameters/key_param'
         - $ref: '#/components/parameters/auth_param'
         - $ref: '#/components/parameters/fields_param'
+        - $ref: '#/components/parameters/use_externalId_param'
       responses:
         200:
           description: A **skill** object.
@@ -1820,6 +1829,7 @@ paths:
         - $ref: '#/components/parameters/key_param'
         - $ref: '#/components/parameters/auth_param'
         - $ref: '#/components/parameters/fields_param'
+        - $ref: '#/components/parameters/use_externalId_param'
       responses:
         200:
           description: A **skills profile** object.
