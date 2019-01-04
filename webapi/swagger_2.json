@@ -606,6 +606,427 @@
         "summary": "unsubscribe to a library by key"
       }
     },
+    "/pins": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "user identifier. if not provided, returns pins of the current user",
+            "in": "query",
+            "name": "user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "entity identifier (optional)",
+            "in": "query",
+            "name": "entity",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of **pin** objects for the user",
+            "schema": {
+              "properties": {
+                "count": {
+                  "example": 3,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/pin"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "returns a list of **pin** objects for an user",
+        "operationId": "pins.list",
+        "summary": "list pins of an user"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "data schema to create a pin object",
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "data": {
+                  "description": "pin object's data",
+                  "type": "object"
+                },
+                "entity": {
+                  "description": "entity to pin to the user. Can be a skills profile (job or training)",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "pin object's type. Can be either profile.pin_job or profile.pin_training",
+                  "type": "string"
+                },
+                "user": {
+                  "description": "user identifier",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "return the created **pin** object for the user",
+            "schema": {
+              "$ref": "#/definitions/pin"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "creates a **pin** object for an user",
+        "operationId": "pins.create",
+        "summary": "create a pin for an user"
+      }
+    },
+    "/pins/{_key}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "unique resource identifier",
+            "in": "path",
+            "name": "_key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated **pin** object.",
+            "schema": {
+              "$ref": "#/definitions/pin"
+            }
+          },
+          "400": {
+            "description": "invalid schema.",
+            "schema": {
+              "$ref": "#/definitions/invalid_schema"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "404": {
+            "description": "the resource was not found.",
+            "schema": {
+              "$ref": "#/definitions/not_found"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "returns the deleted **pin**.",
+        "operationId": "pins.delete",
+        "summary": "deletes a pin by key"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "unique resource identifier",
+            "in": "path",
+            "name": "_key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A **pin** object.",
+            "schema": {
+              "$ref": "#/definitions/pin"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "404": {
+            "description": "the resource was not found.",
+            "schema": {
+              "$ref": "#/definitions/not_found"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "returns a **pin** object by key.",
+        "operationId": "pins.get",
+        "summary": "gets a pin by key"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "unique resource identifier",
+            "in": "path",
+            "name": "_key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "data schema to update a pin object",
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "data": {
+                  "description": "pin object's data",
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated **pin** object.",
+            "schema": {
+              "$ref": "#/definitions/pin"
+            }
+          },
+          "400": {
+            "description": "invalid schema.",
+            "schema": {
+              "$ref": "#/definitions/invalid_schema"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "404": {
+            "description": "the resource was not found.",
+            "schema": {
+              "$ref": "#/definitions/not_found"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "returns the updated **pin**.",
+        "operationId": "pins.update",
+        "summary": "updates a pin by key"
+      }
+    },
     "/powers": {
       "get": {
         "produces": [
@@ -1657,6 +2078,13 @@
             "name": "fields",
             "required": false,
             "type": "string"
+          },
+          {
+            "description": "boolean indicating if externalId must be used instead of eLamp identifier in order to fetch resource",
+            "in": "query",
+            "name": "use_externalId",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -2432,6 +2860,340 @@
         "description": "returns a list of **skills** associated to the qualifier identified by key.",
         "operationId": "skills.qualifier.list_skills",
         "summary": "lists skills associated to the qualifier identified by key"
+      }
+    },
+    "/resources/{user_id}/pins/jobs": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "unique user resource identifier",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of **pinned jobs** objects",
+            "schema": {
+              "properties": {
+                "count": {
+                  "example": 3,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/user_pin"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "profile.read",
+              "pin.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "resource"
+        ],
+        "description": "returns a list of **pinned jobs** object.",
+        "operationId": "resources.job_pins.list",
+        "summary": "lists jobs pinned by user identified by <user_id>"
+      }
+    },
+    "/resources/{user_id}/pins/trainings": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "unique user resource identifier",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of **pinned trainings** objects",
+            "schema": {
+              "properties": {
+                "count": {
+                  "example": 3,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/user_pin"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "profile.read",
+              "pin.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "resource"
+        ],
+        "description": "returns a list of **pinned trainings** object.",
+        "operationId": "resources.training_pins.list",
+        "summary": "lists trainings pinned by user identified by <user_id>"
+      }
+    },
+    "/resources/{user_id}/powers": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "unique user resource identifier",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of **powers** objects",
+            "schema": {
+              "properties": {
+                "count": {
+                  "example": 3,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/power"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "power.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "resource"
+        ],
+        "description": "returns a list of **powers** object.",
+        "operationId": "resources.powers.list",
+        "summary": "lists powers of user identified by <user_id>"
+      }
+    },
+    "/resources/{user_id}/skill.validations": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "unique user resource identifier",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of **validations** objects",
+            "schema": {
+              "properties": {
+                "count": {
+                  "example": 3,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/validation"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "validation.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "resource"
+        ],
+        "description": "returns a list of **validations** object.",
+        "operationId": "resources.skill_validations.list",
+        "summary": "lists validations of user identified by <user_id>"
       }
     },
     "/search": {
@@ -3332,6 +4094,13 @@
             "name": "fields",
             "required": false,
             "type": "string"
+          },
+          {
+            "description": "boolean indicating if externalId must be used instead of eLamp identifier in order to fetch resource",
+            "in": "query",
+            "name": "use_externalId",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -4002,6 +4771,26 @@
       },
       "type": "object"
     },
+    "pin": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        },
+        {
+          "properties": {
+            "data": {
+              "description": "pin object's data.",
+              "type": "object"
+            },
+            "type": {
+              "description": "pin object's type. Can be either profile.pin_job or profile.pin_training.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
     "power": {
       "allOf": [
         {
@@ -4328,6 +5117,21 @@
       },
       "type": "object"
     },
+    "user_pin": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        },
+        {
+          "properties": {
+            "activity": {
+              "$ref": "#/definitions/pin"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
     "validation": {
       "allOf": [
         {
@@ -4361,6 +5165,8 @@
       "authorizationUrl": "https://elamp.fr/oauth/authorize",
       "flow": "accessCode",
       "scopes": {
+        "pin": "read and manage pins",
+        "pin.read": "read pins",
         "power": "read and manage your powers",
         "power.read": "read your powers (competencies)",
         "search.analyze": "execute analytics query",
@@ -4420,6 +5226,14 @@
     {
       "description": "validations endpoints",
       "name": "validation"
+    },
+    {
+      "description": "pins endpoints",
+      "name": "pin"
+    },
+    {
+      "description": "resources endpoints gather multiple information about a specific user resource",
+      "name": "resource"
     }
   ],
   "x-components": {
@@ -4464,6 +5278,20 @@
           "format": "int32",
           "type": "integer"
         }
+      },
+      "use_externalId_param": {
+        "description": "boolean indicating if externalId must be used instead of eLamp identifier in order to fetch resource",
+        "in": "query",
+        "name": "use_externalId",
+        "required": false,
+        "type": "boolean"
+      },
+      "user_id_param": {
+        "description": "unique user resource identifier",
+        "in": "path",
+        "name": "user_id",
+        "required": true,
+        "type": "string"
       }
     },
     "responses": {
@@ -4561,6 +5389,46 @@
             "name": {
               "example": "my name",
               "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "pin_create_body": {
+        "description": "data schema to create a pin object",
+        "in": "body",
+        "name": "body",
+        "schema": {
+          "properties": {
+            "data": {
+              "description": "pin object's data",
+              "type": "object"
+            },
+            "entity": {
+              "description": "entity to pin to the user. Can be a skills profile (job or training)",
+              "type": "string"
+            },
+            "type": {
+              "description": "pin object's type. Can be either profile.pin_job or profile.pin_training",
+              "type": "string"
+            },
+            "user": {
+              "description": "user identifier",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "pin_update_body": {
+        "description": "data schema to update a pin object",
+        "in": "body",
+        "name": "body",
+        "schema": {
+          "properties": {
+            "data": {
+              "description": "pin object's data",
+              "type": "object"
             }
           },
           "type": "object"
