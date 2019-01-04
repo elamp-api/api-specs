@@ -392,6 +392,292 @@
         "summary": "unsubscribe to a library by key"
       }
     },
+    "/pins": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          },
+          {
+            "description": "user identifier. if not provided, returns pins of the current user",
+            "in": "query",
+            "name": "user",
+            "required": false,
+            "schema": {
+              "description": "user identifier",
+              "type": "string"
+            }
+          },
+          {
+            "description": "entity identifier (optional)",
+            "in": "query",
+            "name": "entity",
+            "required": false,
+            "schema": {
+              "description": "entity identifier",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/pin"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of **pin** objects for the user"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "returns a list of **pin** objects for an user",
+        "operationId": "pins.list",
+        "summary": "list pins of an user"
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pin"
+                }
+              }
+            },
+            "description": "return the created **pin** object for the user"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "creates a **pin** object for an user",
+        "operationId": "pins.create",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/pin_create_body"
+        },
+        "summary": "create a pin for an user"
+      }
+    },
+    "/pins/{_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pin"
+                }
+              }
+            },
+            "description": "The updated **pin** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "returns the deleted **pin**.",
+        "operationId": "pins.delete",
+        "summary": "deletes a pin by key"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pin"
+                }
+              }
+            },
+            "description": "A **pin** object."
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "returns a **pin** object by key.",
+        "operationId": "pins.get",
+        "summary": "gets a pin by key"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/key_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pin"
+                }
+              }
+            },
+            "description": "The updated **pin** object."
+          },
+          "400": {
+            "$ref": "#/components/responses/invalid_schema_error"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "pin"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "pin"
+        ],
+        "description": "returns the updated **pin**.",
+        "operationId": "pins.update",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/pin_update_body"
+        },
+        "summary": "updates a pin by key"
+      }
+    },
     "/powers": {
       "get": {
         "parameters": [
@@ -1079,6 +1365,9 @@
           },
           {
             "$ref": "#/components/parameters/fields_param"
+          },
+          {
+            "$ref": "#/components/parameters/use_externalId_param"
           }
         ],
         "responses": {
@@ -1571,6 +1860,260 @@
         "description": "returns a list of **skills** associated to the qualifier identified by key.",
         "operationId": "skills.qualifier.list_skills",
         "summary": "lists skills associated to the qualifier identified by key"
+      }
+    },
+    "/resources/{user_id}/pins/jobs": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/user_id_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/user_pin"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of **pinned jobs** objects"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "profile.read",
+              "pin.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "resource"
+        ],
+        "description": "returns a list of **pinned jobs** object.",
+        "operationId": "resources.job_pins.list",
+        "summary": "lists jobs pinned by user identified by <user_id>"
+      }
+    },
+    "/resources/{user_id}/pins/trainings": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/user_id_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/user_pin"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of **pinned trainings** objects"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "profile.read",
+              "pin.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "resource"
+        ],
+        "description": "returns a list of **pinned trainings** object.",
+        "operationId": "resources.training_pins.list",
+        "summary": "lists trainings pinned by user identified by <user_id>"
+      }
+    },
+    "/resources/{user_id}/powers": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/user_id_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/power"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of **powers** objects"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "power.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "resource"
+        ],
+        "description": "returns a list of **powers** object.",
+        "operationId": "resources.powers.list",
+        "summary": "lists powers of user identified by <user_id>"
+      }
+    },
+    "/resources/{user_id}/skill.validations": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/user_id_param"
+          },
+          {
+            "$ref": "#/components/parameters/auth_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "example": 3,
+                      "minimum": 0,
+                      "type": "number"
+                    },
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/validation"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "a list of **validations** objects"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "validation.read"
+            ]
+          }
+        ],
+        "tags": [
+          "run",
+          "resource"
+        ],
+        "description": "returns a list of **validations** object.",
+        "operationId": "resources.skill_validations.list",
+        "summary": "lists validations of user identified by <user_id>"
       }
     },
     "/search": {
@@ -2151,6 +2694,9 @@
           },
           {
             "$ref": "#/components/parameters/fields_param"
+          },
+          {
+            "$ref": "#/components/parameters/use_externalId_param"
           }
         ],
         "responses": {
@@ -2498,6 +3044,25 @@
           "format": "int32",
           "type": "integer"
         }
+      },
+      "use_externalId_param": {
+        "description": "boolean indicating if externalId must be used instead of eLamp identifier in order to fetch resource",
+        "in": "query",
+        "name": "use_externalId",
+        "required": false,
+        "schema": {
+          "example": true,
+          "type": "boolean"
+        }
+      },
+      "user_id_param": {
+        "description": "unique user resource identifier",
+        "in": "path",
+        "name": "user_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
       }
     },
     "responses": {
@@ -2623,6 +3188,50 @@
           }
         },
         "description": "library data to update a library"
+      },
+      "pin_create_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "data": {
+                  "description": "pin object's data",
+                  "type": "object"
+                },
+                "entity": {
+                  "description": "entity to pin to the user. Can be a skills profile (job or training)",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "pin object's type. Can be either profile.pin_job or profile.pin_training",
+                  "type": "string"
+                },
+                "user": {
+                  "description": "user identifier",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data schema to create a pin object"
+      },
+      "pin_update_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "data": {
+                  "description": "pin object's data",
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "data schema to update a pin object"
       },
       "power_create_body": {
         "content": {
@@ -3260,6 +3869,26 @@
         },
         "type": "object"
       },
+      "pin": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_model"
+          },
+          {
+            "properties": {
+              "data": {
+                "description": "pin object's data.",
+                "type": "object"
+              },
+              "type": {
+                "description": "pin object's type. Can be either profile.pin_job or profile.pin_training.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
       "power": {
         "allOf": [
           {
@@ -3586,6 +4215,21 @@
         },
         "type": "object"
       },
+      "user_pin": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_model"
+          },
+          {
+            "properties": {
+              "activity": {
+                "$ref": "#/components/schemas/pin"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
       "validation": {
         "allOf": [
           {
@@ -3620,6 +4264,8 @@
           "authorizationCode": {
             "authorizationUrl": "https://elamp.fr/oauth/authorize",
             "scopes": {
+              "pin": "read and manage pins",
+              "pin.read": "read pins",
               "power": "read and manage your powers",
               "power.read": "read your powers (competencies)",
               "search.analyze": "execute analytics query",
@@ -3682,6 +4328,14 @@
     {
       "description": "validations endpoints",
       "name": "validation"
+    },
+    {
+      "description": "pins endpoints",
+      "name": "pin"
+    },
+    {
+      "description": "resources endpoints gather multiple information about a specific user resource",
+      "name": "resource"
     }
   ]
 }
