@@ -3979,6 +3979,11 @@
           "_key": {
             "$ref": "#/components/schemas/key_identifier"
           },
+          "updated": {
+            "description": "an iso-8601 date to indicate when the qualifier was updated",
+            "format": "datetime",
+            "type": "string"
+          },
           "value": {
             "$ref": "#/components/schemas/qualifier_value"
           }
