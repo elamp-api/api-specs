@@ -249,6 +249,10 @@ components:
           $ref: '#/components/schemas/key_identifier'
         value:
           $ref: '#/components/schemas/qualifier_value'
+        updated:
+          type: string
+          format: datetime
+          description: an iso-8601 date to indicate when the qualifier was updated
     skill_profile:
       allOf:
         - $ref: '#/components/schemas/skill_base_model'
