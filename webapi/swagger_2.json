@@ -1650,10 +1650,15 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "items": {
-                "$ref": "#/definitions/qualifier_input_data"
+              "properties": {
+                "qualifiers": {
+                  "items": {
+                    "$ref": "#/definitions/qualifier_input_data"
+                  },
+                  "type": "array"
+                }
               },
-              "type": "array"
+              "type": "object"
             }
           }
         ],
@@ -5579,10 +5584,15 @@
         "in": "body",
         "name": "body",
         "schema": {
-          "items": {
-            "$ref": "#/definitions/qualifier_input_data"
+          "properties": {
+            "qualifiers": {
+              "items": {
+                "$ref": "#/definitions/qualifier_input_data"
+              },
+              "type": "array"
+            }
           },
-          "type": "array"
+          "type": "object"
         }
       },
       "search_query_body": {
