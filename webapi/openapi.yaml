@@ -839,9 +839,12 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/qualifier_input_data'
+            type: object
+            properties:
+              qualifiers:
+                type: array
+                items:
+                  $ref: '#/components/schemas/qualifier_input_data'
     validation_create_body:
       description: data schema to create a validation
       content:
