@@ -14,14 +14,8 @@ info:
 servers:
   - url: https://api.elamp.fr/v1
 tags:
-  - name: compose
-    description: libraries, skills, qualifiers and skills profiles endpoints
-  - name: run
-    description: powers, validations endpoints
   - name: search
     description: search and analytics endpoints
-  - name: admin
-    description: users, groups, roles, applications endpoints
   - name: library
     description: libraries endpoints
   - name: skill
@@ -949,7 +943,6 @@ paths:
       summary: lists libraries
       description: returns a list of available **skills libraries**
       tags:
-        - compose
         - library
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -981,7 +974,6 @@ paths:
       summary: creates libraries
       description: creates a new **skills library**
       tags:
-        - compose
         - library
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -1010,7 +1002,6 @@ paths:
       summary: gets a library by key
       description: returns a **skills library** by key.
       tags:
-        - compose
         - library
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1041,7 +1032,6 @@ paths:
       description: |
         returns the updated **library**.
       tags:
-        - compose
         - library
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1075,7 +1065,6 @@ paths:
       description: |
         returns the deleted **library**.
       tags:
-        - compose
         - library
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1108,7 +1097,6 @@ paths:
       summary: subscribe to a library by key
       description: returns the subscribed **skills library**.
       tags:
-        - compose
         - library
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1138,7 +1126,6 @@ paths:
       summary: unsubscribe to a library by key
       description: returns the unsubscribed **skills library**.
       tags:
-        - compose
         - library
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1169,7 +1156,6 @@ paths:
       summary: list skills
       description: returns a list of **skills**.
       tags:
-        - compose
         - skill
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -1205,7 +1191,6 @@ paths:
       summary: creates skills
       description: creates a new **skills**
       tags:
-        - compose
         - skill
       requestBody:
         $ref: '#/components/requestBodies/skill_create_body'
@@ -1229,7 +1214,6 @@ paths:
       summary: searches skill by name
       description: returns a list of **skill** objects.
       tags:
-        - compose
         - skill
       parameters:
         - name: q
@@ -1271,7 +1255,6 @@ paths:
       summary: gets a skill by key
       description: returns a **skill** by key.
       tags:
-        - compose
         - skill
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1302,7 +1285,6 @@ paths:
       summary: updates a skill by key
       description: returns the updated **skill**.
       tags:
-        - compose
         - skill
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1335,7 +1317,6 @@ paths:
       summary: deletes a skill by key
       description: returns the deleted **skill**.
       tags:
-        - compose
         - skill
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1368,7 +1349,6 @@ paths:
       summary: list qualifiers of a skill identified by key
       description: returns a list of **qualifier** objects for the requested skill.
       tags:
-        - compose
         - skill
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1406,7 +1386,6 @@ paths:
       summary: add qualifiers to a skill identified by key
       description: returns a list of **qualifier** objects for the requested skill.
       tags:
-        - compose
         - skill
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1446,7 +1425,6 @@ paths:
       summary: remove qualifiers from a skill identified by key
       description: returns a list of **qualifier** objects for the requested skill.
       tags:
-        - compose
         - skill
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1486,7 +1464,6 @@ paths:
       summary: list qualifiers
       description: returns a list of **qualifiers**.
       tags:
-        - compose
         - qualifier
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -1522,7 +1499,6 @@ paths:
       summary: creates qulaifier
       description: creates a new **qualifier**
       tags:
-        - compose
         - qualifier
       requestBody:
         $ref: '#/components/requestBodies/qualifier_create_body'
@@ -1547,7 +1523,6 @@ paths:
       summary: gets a qualifier by key
       description: returns a **qualifier** by key.
       tags:
-        - compose
         - qualifier
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1577,7 +1552,6 @@ paths:
       summary: updates a qualifier by key
       description: returns the updated **qualifier**.
       tags:
-        - compose
         - qualifier
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1610,7 +1584,6 @@ paths:
       summary: deletes a qualifier by key
       description: returns the deleted **qualifier**.
       tags:
-        - compose
         - qualifier
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1642,7 +1615,6 @@ paths:
       summary: lists skills associated to the qualifier identified by key
       description: returns a list of **skills** associated to the qualifier identified by key.
       tags:
-        - compose
         - qualifier
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1681,7 +1653,6 @@ paths:
       summary: lists powers associated to the qualifier identified by key
       description: returns a list of **powers** associated to the qualifier identified by key.
       tags:
-        - compose
         - qualifier
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1721,7 +1692,6 @@ paths:
       summary: list profiles
       description: returns a list of **profiles**.
       tags:
-        - compose
         - skill profile
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -1757,7 +1727,6 @@ paths:
       summary: creates skills profile
       description: creates a new **skills profile**
       tags:
-        - compose
         - skill profile
       requestBody:
         $ref: '#/components/requestBodies/skill_profile_create_body'
@@ -1781,7 +1750,6 @@ paths:
       summary: list profiles that match with an user
       description: returns a list of **profiles** that match with an user.
       tags:
-        - compose
         - skill profile
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1830,7 +1798,6 @@ paths:
       summary: gets a skills profile  by key
       description: returns a **skills profile** by key.
       tags:
-        - compose
         - skill profile
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1861,7 +1828,6 @@ paths:
       summary: updates a skills profile by key
       description: returns the updated **skills profile**.
       tags:
-        - compose
         - skill profile
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -1894,7 +1860,6 @@ paths:
       summary: deletes a skills profile by key
       description: returns the deleted **skills profile**.
       tags:
-        - compose
         - skill profile
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -1964,7 +1929,6 @@ paths:
       summary: list powers of an user
       description: returns a list of **power** objects for an user
       tags:
-        - run
         - power
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2004,7 +1968,6 @@ paths:
       summary: create power for an user
       description: creates a **power** object for an user
       tags:
-        - run
         - power
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2031,7 +1994,6 @@ paths:
       summary: gets a power  by key
       description: returns a **power** object by key.
       tags:
-        - run
         - power
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2061,7 +2023,6 @@ paths:
       summary: updates a power by key
       description: returns the updated **power**.
       tags:
-        - run
         - power
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2094,7 +2055,6 @@ paths:
       summary: deletes a power by key
       description: returns the deleted **power**.
       tags:
-        - run
         - power
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2127,7 +2087,6 @@ paths:
       summary: lists qualifiers for a power identified by key
       description: returns a list of **qualifier with value** object for the power identified by key.
       tags:
-        - run
         - power
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2157,7 +2116,6 @@ paths:
       summary: adds qualifiers for a power identified by key
       description: returns the **power** object identified by key.
       tags:
-        - run
         - power
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2189,7 +2147,6 @@ paths:
       summary: removes qualifiers for a power identified by key
       description: returns the **power** object identified by key.
       tags:
-        - run
         - power
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2221,7 +2178,6 @@ paths:
       summary: list skills validations of an user
       description: returns a list of **validations** objects for an user
       tags:
-        - run
         - validation
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2268,7 +2224,6 @@ paths:
       summary: create a validation for an user
       description: creates a **validation** object for an user
       tags:
-        - run
         - validation
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2295,7 +2250,6 @@ paths:
       summary: gets a validation by key
       description: returns a **validation** object by key.
       tags:
-        - run
         - validation
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2325,7 +2279,6 @@ paths:
       summary: updates a validation by key
       description: returns the updated **validation**.
       tags:
-        - run
         - validation
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2358,7 +2311,6 @@ paths:
       summary: deletes a validation by key
       description: returns the deleted **validation**.
       tags:
-        - run
         - validation
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2390,7 +2342,6 @@ paths:
       summary: list pins of an user
       description: returns a list of **pin** objects for an user
       tags:
-        - run
         - pin
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2437,7 +2388,6 @@ paths:
       summary: create a pin for an user
       description: creates a **pin** object for an user
       tags:
-        - run
         - pin
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2464,7 +2414,6 @@ paths:
       summary: gets a pin by key
       description: returns a **pin** object by key.
       tags:
-        - run
         - pin
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2494,7 +2443,6 @@ paths:
       summary: updates a pin by key
       description: returns the updated **pin**.
       tags:
-        - run
         - pin
       parameters:
         - $ref: '#/components/parameters/key_param'
@@ -2527,7 +2475,6 @@ paths:
       summary: deletes a pin by key
       description: returns the deleted **pin**.
       tags:
-        - run
         - pin
       parameters:
         - $ref: '#/components/parameters/auth_param'
@@ -2559,7 +2506,6 @@ paths:
       summary: lists powers of user identified by <user_id>
       description: returns a list of **powers** object.
       tags:
-        - run
         - resource
       parameters:
         - $ref: '#/components/parameters/user_id_param'
@@ -2596,7 +2542,6 @@ paths:
       summary: lists validations of user identified by <user_id>
       description: returns a list of **validations** object.
       tags:
-        - run
         - resource
       parameters:
         - $ref: '#/components/parameters/user_id_param'
@@ -2633,7 +2578,6 @@ paths:
       summary: lists jobs pinned by user identified by <user_id>
       description: returns a list of **pinned jobs** object.
       tags:
-        - run
         - resource
       parameters:
         - $ref: '#/components/parameters/user_id_param'
@@ -2671,7 +2615,6 @@ paths:
       summary: lists trainings pinned by user identified by <user_id>
       description: returns a list of **pinned trainings** object.
       tags:
-        - run
         - resource
       parameters:
         - $ref: '#/components/parameters/user_id_param'
