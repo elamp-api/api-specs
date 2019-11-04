@@ -32,6 +32,8 @@ tags:
     description: pins endpoints
   - name: resource
     description: resources endpoints gather multiple information about a specific user resource
+  - name: IAM
+    description: Identity and Access Management
 components:
   securitySchemes:
       elamp_auth:
@@ -49,7 +51,6 @@ components:
               skill.qualifier: read and manage your qualifiers
               skill.profile.read: read your skills profiles
               skill.profile: read and manage your skills profiles
-
               power.read: read your powers (competencies)
               power: read and manage your powers
               skill.validation.read: read your power validations
@@ -86,6 +87,33 @@ components:
         url:
           type: string
           description: image's url
+    experiences:
+      type: object
+      description: user's experience
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        company:
+          type: string
+        location:
+          type: string
+        startDate:
+          type: string
+          format: datetime
+          description: an iso-8601 date to indicate when the experience was started
+        endDate:
+          type: string
+          format: datetime
+          description: an iso-8601 date to indicate when the experience was ended
+        skills:
+          type: array
+          items:
+            type: object
+            properties:
+              _key:
+                type: string
     base_model:
       type: object
       properties:
@@ -328,6 +356,90 @@ components:
           description: resource's display name
         image:
           $ref: '#/components/schemas/image'
+    user:
+      allOf:
+        - $ref: '#/components/schemas/base_model'
+        - type: object
+          properties:
+            givenName:
+              type: string
+            familyName:
+              type: string
+            displayName:
+              type: string
+            image:
+              $ref: '#/components/schemas/image'
+            experiences:
+              $ref: '#/components/schemas/experiences'
+            custom_fields:
+              type: object
+              description: list of custom fields you want to add on an user profile
+            groups:
+              type: array
+              items:
+                type: string
+            roles:
+              type: array
+              items:
+                type: string
+            last_login:
+              type: string
+              format: datetime
+              description: an iso-8601 date to indicate when the qualifier was updated
+            active:
+              type: boolean
+      example:
+        {
+          "_key": "U1",
+          "externalId": "EXTID1",
+          "kind": "users#user",
+          "givenName": "GivenName 1",
+          "familyName": "Family-Name",
+          "displayName": "GivenName 1 Family-Name",
+          "custom_fields": {
+            "my_custom_field": 1,
+            "my_custom_field2": "VALUE2"
+          },
+          "groups": ["G1", "G2", "G3"],
+          "roles": ["R1", "R2"],
+          "experiences": [
+            {
+              "title": "Tech Lead @ MyCompany",
+              "description": "Build developer-friendly APIs for customers",
+              "company": "MyCompany",
+              "startDate": "2010-02-05T11:44:08.724Z",
+              "endDate": "2018-10-05T11:44:08.724Z",
+              "skills": [
+                {"_key": "SKI1"}  
+              ]
+            }
+          ],
+          "last_login": "2018-10-05T11:44:08.724Z",
+          "created": "2018-10-05T11:44:08.724Z",
+          "updated": "2018-10-05T11:44:08.724Z",
+          "active": true,
+          "deleted": false
+        }
+    group:
+      allOf:
+        - $ref: '#/components/schemas/base_model'
+        - type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+      example:
+        {
+          "_key": "G1",
+          "externalId": "EXTID1",
+          "kind": "users#group",
+          "name": "My Group 1",
+          "description": "Short description of the group",
+          "created": "2018-10-05T11:44:08.724Z",
+          "updated": "2018-10-05T11:44:08.724Z",
+          "deleted": false
+        }
 
     must_query_condition:
       type: object
@@ -536,6 +648,30 @@ components:
       schema:
         type: integer
         format: int32
+    startDate_param:
+      name: startDate
+      in: query
+      description: startDate to filter results on
+      required: false
+      schema:
+        type: string
+        format: date
+    endDate_param:
+      name: endDate
+      in: query
+      description: endDate to filter results on
+      required: false
+      schema:
+        type: string
+        format: date
+    last_param:
+      name: last
+      in: query
+      description: show temporal diff data
+      required: false
+      schema:
+        type: boolean
+        example: true
   requestBodies:
     library_create_body:
       description: library data to create a library
@@ -1160,6 +1296,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/auth_param'
         - $ref: '#/components/parameters/fields_param'
+        - $ref: '#/components/parameters/last_param'
+        - $ref: '#/components/parameters/startDate_param'
+        - $ref: '#/components/parameters/endDate_param'
       responses:
         200:
           description: A list of **skill** objects.
@@ -1922,7 +2061,6 @@ paths:
         - elamp_auth:
           - search.search
 
-
   /powers:
     get:
       operationId: powers.list
@@ -1933,6 +2071,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/auth_param'
         - $ref: '#/components/parameters/fields_param'
+        - $ref: '#/components/parameters/last_param'
+        - $ref: '#/components/parameters/startDate_param'
+        - $ref: '#/components/parameters/endDate_param'
         - name: user
           description: user identifier. if not provided, returns powers of the current user
           in: query
@@ -2646,3 +2787,131 @@ paths:
         - elamp_auth:
           - profile.read
           - pin.read
+  
+  /users:
+    get:
+      operationId: iam.users.list
+      summary: lists users
+      description: returns a list of **user** objects.
+      tags:
+        - IAM
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        '200':
+          description: a list of **user** objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - user.read
+
+  /users/{_key}:
+    get:
+      operationId: iam.users.get
+      summary: get user by id
+      description: returns an **user** object.
+      tags:
+        - IAM
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        '200':
+          description: a single **user** object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - user.read
+
+  /groups:
+    get:
+      operationId: iam.groups.list
+      summary: lists groups
+      description: returns a list of **group** objects.
+      tags:
+        - IAM
+      parameters:
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        '200':
+          description: a list of **group** objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    minimum: 0
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/group'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - group.read
+
+  /groups/{_key}:
+    get:
+      operationId: iam.groups.get
+      summary: get group by id
+      description: returns a single **group** object.
+      tags:
+        - IAM
+      parameters:
+        - $ref: '#/components/parameters/key_param'
+        - $ref: '#/components/parameters/auth_param'
+        - $ref: '#/components/parameters/fields_param'
+      responses:
+        '200':
+          description: a single **group** object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '401':
+          $ref: '#/components/responses/not_authed_error'
+        '403':
+          $ref: '#/components/responses/forbidden_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      security:
+        - elamp_auth:
+          - group.read
