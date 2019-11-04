@@ -21,6 +21,150 @@
     "https"
   ],
   "paths": {
+    "/groups": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of **group** objects",
+            "schema": {
+              "properties": {
+                "count": {
+                  "example": 3,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/group"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "group.read"
+            ]
+          }
+        ],
+        "tags": [
+          "IAM"
+        ],
+        "description": "returns a list of **group** objects.",
+        "operationId": "iam.groups.list",
+        "summary": "lists groups"
+      }
+    },
+    "/groups/{_key}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "unique resource identifier",
+            "in": "path",
+            "name": "_key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a single **group** object",
+            "schema": {
+              "$ref": "#/definitions/group"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "group.read"
+            ]
+          }
+        ],
+        "tags": [
+          "IAM"
+        ],
+        "description": "returns a single **group** object.",
+        "operationId": "iam.groups.get",
+        "summary": "get group by id"
+      }
+    },
     "/libraries": {
       "get": {
         "produces": [
@@ -82,8 +226,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "library"
+          "COMPOSE"
         ],
         "description": "returns a list of available **skills libraries**",
         "operationId": "skills.libraries.list",
@@ -175,8 +318,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "library"
+          "COMPOSE"
         ],
         "description": "creates a new **skills library**",
         "operationId": "skills.libraries.create",
@@ -257,8 +399,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "library"
+          "COMPOSE"
         ],
         "description": "returns the deleted **library**.\n",
         "operationId": "skills.libraries.delete",
@@ -331,8 +472,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "library"
+          "COMPOSE"
         ],
         "description": "returns a **skills library** by key.",
         "operationId": "skills.libraries.get",
@@ -446,8 +586,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "library"
+          "COMPOSE"
         ],
         "description": "returns the updated **library**.\n",
         "operationId": "skills.libraries.update",
@@ -522,8 +661,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "library"
+          "COMPOSE"
         ],
         "description": "returns the subscribed **skills library**.",
         "operationId": "skills.libraries.subscribe",
@@ -598,8 +736,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "library"
+          "COMPOSE"
         ],
         "description": "returns the unsubscribed **skills library**.",
         "operationId": "skills.libraries.unsubscribe",
@@ -682,8 +819,7 @@
           }
         ],
         "tags": [
-          "run",
-          "pin"
+          "RUN"
         ],
         "description": "returns a list of **pin** objects for an user",
         "operationId": "pins.list",
@@ -766,8 +902,7 @@
           }
         ],
         "tags": [
-          "run",
-          "pin"
+          "RUN"
         ],
         "description": "creates a **pin** object for an user",
         "operationId": "pins.create",
@@ -848,8 +983,7 @@
           }
         ],
         "tags": [
-          "run",
-          "pin"
+          "RUN"
         ],
         "description": "returns the deleted **pin**.",
         "operationId": "pins.delete",
@@ -922,8 +1056,7 @@
           }
         ],
         "tags": [
-          "run",
-          "pin"
+          "RUN"
         ],
         "description": "returns a **pin** object by key.",
         "operationId": "pins.get",
@@ -1019,8 +1152,7 @@
           }
         ],
         "tags": [
-          "run",
-          "pin"
+          "RUN"
         ],
         "description": "returns the updated **pin**.",
         "operationId": "pins.update",
@@ -1044,6 +1176,29 @@
             "description": "fields to return in response",
             "in": "query",
             "name": "fields",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "show temporal diff data",
+            "in": "query",
+            "name": "last",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "description": "startDate to filter results on",
+            "format": "date",
+            "in": "query",
+            "name": "startDate",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "endDate to filter results on",
+            "format": "date",
+            "in": "query",
+            "name": "endDate",
             "required": false,
             "type": "string"
           },
@@ -1096,8 +1251,7 @@
           }
         ],
         "tags": [
-          "run",
-          "power"
+          "RUN"
         ],
         "description": "returns a list of **power** objects for an user",
         "operationId": "powers.list",
@@ -1192,8 +1346,7 @@
           }
         ],
         "tags": [
-          "run",
-          "power"
+          "RUN"
         ],
         "description": "creates a **power** object for an user",
         "operationId": "powers.create",
@@ -1274,8 +1427,7 @@
           }
         ],
         "tags": [
-          "run",
-          "power"
+          "RUN"
         ],
         "description": "returns the deleted **power**.",
         "operationId": "powers.delete",
@@ -1348,8 +1500,7 @@
           }
         ],
         "tags": [
-          "run",
-          "power"
+          "RUN"
         ],
         "description": "returns a **power** object by key.",
         "operationId": "powers.get",
@@ -1457,8 +1608,7 @@
           }
         ],
         "tags": [
-          "run",
-          "power"
+          "RUN"
         ],
         "description": "returns the updated **power**.",
         "operationId": "powers.update",
@@ -1534,8 +1684,7 @@
           }
         ],
         "tags": [
-          "run",
-          "power"
+          "RUN"
         ],
         "description": "returns the **power** object identified by key.",
         "operationId": "powers.remove_qualifiers",
@@ -1609,8 +1758,7 @@
           }
         ],
         "tags": [
-          "run",
-          "power"
+          "RUN"
         ],
         "description": "returns a list of **qualifier with value** object for the power identified by key.",
         "operationId": "powers.list_qualifiers",
@@ -1703,8 +1851,7 @@
           }
         ],
         "tags": [
-          "run",
-          "power"
+          "RUN"
         ],
         "description": "returns the **power** object identified by key.",
         "operationId": "powers.add_qualifiers",
@@ -1784,8 +1931,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill profile"
+          "COMPOSE"
         ],
         "description": "returns a list of **profiles**.",
         "operationId": "skills.profile.list",
@@ -1862,8 +2008,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill profile"
+          "COMPOSE"
         ],
         "description": "creates a new **skills profile**",
         "operationId": "skills.profile.create",
@@ -1969,8 +2114,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill profile"
+          "COMPOSE"
         ],
         "description": "returns a list of **profiles** that match with an user.",
         "operationId": "skills.profile.matching",
@@ -2051,8 +2195,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill profile"
+          "COMPOSE"
         ],
         "description": "returns the deleted **skills profile**.",
         "operationId": "skills.profile.delete",
@@ -2132,8 +2275,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill profile"
+          "COMPOSE"
         ],
         "description": "returns a **skills profile** by key.",
         "operationId": "skills.profile.get",
@@ -2246,8 +2388,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill profile"
+          "COMPOSE"
         ],
         "description": "returns the updated **skills profile**.",
         "operationId": "skills.profile.update",
@@ -2327,8 +2468,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "qualifier"
+          "COMPOSE"
         ],
         "description": "returns a list of **qualifiers**.",
         "operationId": "skills.qualifiers.list",
@@ -2414,8 +2554,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "qualifier"
+          "COMPOSE"
         ],
         "description": "creates a new **qualifier**",
         "operationId": "skills.qualifier.create",
@@ -2496,8 +2635,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "qualifier"
+          "COMPOSE"
         ],
         "description": "returns the deleted **qualifier**.",
         "operationId": "skills.qualifier.delete",
@@ -2570,8 +2708,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "qualifier"
+          "COMPOSE"
         ],
         "description": "returns a **qualifier** by key.",
         "operationId": "skills.qualifier.get",
@@ -2681,8 +2818,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "qualifier"
+          "COMPOSE"
         ],
         "description": "returns the updated **qualifier**.",
         "operationId": "skills.qualifier.update",
@@ -2770,8 +2906,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "qualifier"
+          "COMPOSE"
         ],
         "description": "returns a list of **powers** associated to the qualifier identified by key.",
         "operationId": "skills.qualifier.list_powers",
@@ -2859,8 +2994,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "qualifier"
+          "COMPOSE"
         ],
         "description": "returns a list of **skills** associated to the qualifier identified by key.",
         "operationId": "skills.qualifier.list_skills",
@@ -2943,8 +3077,7 @@
           }
         ],
         "tags": [
-          "run",
-          "resource"
+          "RUN"
         ],
         "description": "returns a list of **pinned jobs** object.",
         "operationId": "resources.job_pins.list",
@@ -3027,8 +3160,7 @@
           }
         ],
         "tags": [
-          "run",
-          "resource"
+          "RUN"
         ],
         "description": "returns a list of **pinned trainings** object.",
         "operationId": "resources.training_pins.list",
@@ -3110,8 +3242,7 @@
           }
         ],
         "tags": [
-          "run",
-          "resource"
+          "RUN"
         ],
         "description": "returns a list of **powers** object.",
         "operationId": "resources.powers.list",
@@ -3193,8 +3324,7 @@
           }
         ],
         "tags": [
-          "run",
-          "resource"
+          "RUN"
         ],
         "description": "returns a list of **validations** object.",
         "operationId": "resources.skill_validations.list",
@@ -3294,7 +3424,7 @@
           }
         ],
         "tags": [
-          "search"
+          "SEARCH"
         ],
         "description": "execute search query",
         "operationId": "search.search",
@@ -3377,8 +3507,7 @@
           }
         ],
         "tags": [
-          "run",
-          "validation"
+          "RUN"
         ],
         "description": "returns a list of **validations** objects for an user",
         "operationId": "skills.validations.list",
@@ -3464,8 +3593,7 @@
           }
         ],
         "tags": [
-          "run",
-          "validation"
+          "RUN"
         ],
         "description": "creates a **validation** object for an user",
         "operationId": "skills.validation.create",
@@ -3546,8 +3674,7 @@
           }
         ],
         "tags": [
-          "run",
-          "validation"
+          "RUN"
         ],
         "description": "returns the deleted **validation**.",
         "operationId": "skills.validations.delete",
@@ -3620,8 +3747,7 @@
           }
         ],
         "tags": [
-          "run",
-          "validation"
+          "RUN"
         ],
         "description": "returns a **validation** object by key.",
         "operationId": "skills.validations.get",
@@ -3724,8 +3850,7 @@
           }
         ],
         "tags": [
-          "run",
-          "validation"
+          "RUN"
         ],
         "description": "returns the updated **validation**.",
         "operationId": "skills.validations.update",
@@ -3749,6 +3874,29 @@
             "description": "fields to return in response",
             "in": "query",
             "name": "fields",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "show temporal diff data",
+            "in": "query",
+            "name": "last",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "description": "startDate to filter results on",
+            "format": "date",
+            "in": "query",
+            "name": "startDate",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "endDate to filter results on",
+            "format": "date",
+            "in": "query",
+            "name": "endDate",
             "required": false,
             "type": "string"
           }
@@ -3805,8 +3953,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "returns a list of **skills**.",
         "operationId": "skills.skills.list",
@@ -3899,8 +4046,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "creates a new **skills**",
         "operationId": "skills.skill.create",
@@ -3985,8 +4131,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "returns a list of **skill** objects.",
         "operationId": "skills.skill.search",
@@ -4067,8 +4212,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "returns the deleted **skill**.",
         "operationId": "skills.skill.delete",
@@ -4148,8 +4292,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "returns a **skill** by key.",
         "operationId": "skills.skill.get",
@@ -4270,8 +4413,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "returns the updated **skill**.",
         "operationId": "skills.skill.update",
@@ -4359,8 +4501,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "returns a list of **qualifier** objects for the requested skill.",
         "operationId": "skills.skill.remove_qualifiers",
@@ -4446,8 +4587,7 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "returns a list of **qualifier** objects for the requested skill.",
         "operationId": "skills.skill.list_qualifiers",
@@ -4554,12 +4694,155 @@
           }
         ],
         "tags": [
-          "compose",
-          "skill"
+          "COMPOSE"
         ],
         "description": "returns a list of **qualifier** objects for the requested skill.",
         "operationId": "skills.skill.add_qualifiers",
         "summary": "add qualifiers to a skill identified by key"
+      }
+    },
+    "/users": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of **user** objects",
+            "schema": {
+              "properties": {
+                "count": {
+                  "example": 3,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/user"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "user.read"
+            ]
+          }
+        ],
+        "tags": [
+          "IAM"
+        ],
+        "description": "returns a list of **user** objects.",
+        "operationId": "iam.users.list",
+        "summary": "lists users"
+      }
+    },
+    "/users/{_key}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "unique resource identifier",
+            "in": "path",
+            "name": "_key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "auth token to set in Authorization header to authenticate request",
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "fields to return in response",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a single **user** object",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "401": {
+            "description": "you need to provide valid credentials to authenticate request.",
+            "schema": {
+              "$ref": "#/definitions/not_authed"
+            }
+          },
+          "403": {
+            "description": "you are not allowed to perform this action.",
+            "schema": {
+              "$ref": "#/definitions/forbidden"
+            }
+          },
+          "default": {
+            "description": "an unexpected error occured.",
+            "schema": {
+              "$ref": "#/definitions/unexpected_error"
+            }
+          }
+        },
+        "security": [
+          {
+            "elamp_auth": [
+              "user.read"
+            ]
+          }
+        ],
+        "tags": [
+          "IAM"
+        ],
+        "description": "returns an **user** object.",
+        "operationId": "iam.users.get",
+        "summary": "get user by id"
       }
     }
   },
@@ -4597,6 +4880,45 @@
       "description": "color string in hexadecimal format (#ffc800)",
       "example": "#ffc800",
       "type": "string"
+    },
+    "experiences": {
+      "description": "user's experience",
+      "properties": {
+        "company": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "endDate": {
+          "description": "an iso-8601 date to indicate when the experience was ended",
+          "format": "datetime",
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "skills": {
+          "items": {
+            "properties": {
+              "_key": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "startDate": {
+          "description": "an iso-8601 date to indicate when the experience was started",
+          "format": "datetime",
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     },
     "externalId": {
       "description": "external resource identifier (if provided by your internal information system)",
@@ -4636,6 +4958,34 @@
         }
       },
       "type": "object"
+    },
+    "group": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "example": {
+        "_key": "G1",
+        "created": "2018-10-05T11:44:08.724Z",
+        "deleted": false,
+        "description": "Short description of the group",
+        "externalId": "EXTID1",
+        "kind": "users#group",
+        "name": "My Group 1",
+        "updated": "2018-10-05T11:44:08.724Z"
+      }
     },
     "image": {
       "description": "image urls",
@@ -5127,6 +5477,97 @@
       },
       "type": "object"
     },
+    "user": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        },
+        {
+          "properties": {
+            "active": {
+              "type": "boolean"
+            },
+            "custom_fields": {
+              "description": "list of custom fields you want to add on an user profile",
+              "type": "object"
+            },
+            "displayName": {
+              "type": "string"
+            },
+            "experiences": {
+              "$ref": "#/definitions/experiences"
+            },
+            "familyName": {
+              "type": "string"
+            },
+            "givenName": {
+              "type": "string"
+            },
+            "groups": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "image": {
+              "$ref": "#/definitions/image"
+            },
+            "last_login": {
+              "description": "an iso-8601 date to indicate when the qualifier was updated",
+              "format": "datetime",
+              "type": "string"
+            },
+            "roles": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "example": {
+        "_key": "U1",
+        "active": true,
+        "created": "2018-10-05T11:44:08.724Z",
+        "custom_fields": {
+          "my_custom_field": 1,
+          "my_custom_field2": "VALUE2"
+        },
+        "deleted": false,
+        "displayName": "GivenName 1 Family-Name",
+        "experiences": [
+          {
+            "company": "MyCompany",
+            "description": "Build developer-friendly APIs for customers",
+            "endDate": "2018-10-05T11:44:08.724Z",
+            "skills": [
+              {
+                "_key": "SKI1"
+              }
+            ],
+            "startDate": "2010-02-05T11:44:08.724Z",
+            "title": "Tech Lead @ MyCompany"
+          }
+        ],
+        "externalId": "EXTID1",
+        "familyName": "Family-Name",
+        "givenName": "GivenName 1",
+        "groups": [
+          "G1",
+          "G2",
+          "G3"
+        ],
+        "kind": "users#user",
+        "last_login": "2018-10-05T11:44:08.724Z",
+        "roles": [
+          "R1",
+          "R2"
+        ],
+        "updated": "2018-10-05T11:44:08.724Z"
+      }
+    },
     "user_pin": {
       "allOf": [
         {
@@ -5198,52 +5639,20 @@
   },
   "tags": [
     {
-      "description": "libraries, skills, qualifiers and skills profiles endpoints",
-      "name": "compose"
+      "description": "Identity and Access Management",
+      "name": "IAM"
     },
     {
-      "description": "powers, validations endpoints",
-      "name": "run"
+      "description": "libraries, skills, qualifiers and skills profiles endpoints",
+      "name": "COMPOSE"
+    },
+    {
+      "description": "powers, skill validation, pins endpoints",
+      "name": "RUN"
     },
     {
       "description": "search and analytics endpoints",
-      "name": "search"
-    },
-    {
-      "description": "users, groups, roles, applications endpoints",
-      "name": "admin"
-    },
-    {
-      "description": "libraries endpoints",
-      "name": "library"
-    },
-    {
-      "description": "skills endpoints",
-      "name": "skill"
-    },
-    {
-      "description": "qualifiers endpoints",
-      "name": "qualifier"
-    },
-    {
-      "description": "skills profiles endpoints",
-      "name": "skill profile"
-    },
-    {
-      "description": "powers endpoints",
-      "name": "power"
-    },
-    {
-      "description": "validations endpoints",
-      "name": "validation"
-    },
-    {
-      "description": "pins endpoints",
-      "name": "pin"
-    },
-    {
-      "description": "resources endpoints gather multiple information about a specific user resource",
-      "name": "resource"
+      "name": "SEARCH"
     }
   ],
   "x-components": {
@@ -5253,6 +5662,14 @@
         "in": "header",
         "name": "authorization",
         "required": true,
+        "type": "string"
+      },
+      "endDate_param": {
+        "description": "endDate to filter results on",
+        "format": "date",
+        "in": "query",
+        "name": "endDate",
+        "required": false,
         "type": "string"
       },
       "fields_param": {
@@ -5268,6 +5685,13 @@
         "name": "_key",
         "required": true,
         "type": "string"
+      },
+      "last_param": {
+        "description": "show temporal diff data",
+        "in": "query",
+        "name": "last",
+        "required": false,
+        "type": "boolean"
       },
       "offset_param": {
         "description": "number of items to skip",
@@ -5288,6 +5712,14 @@
           "format": "int32",
           "type": "integer"
         }
+      },
+      "startDate_param": {
+        "description": "startDate to filter results on",
+        "format": "date",
+        "in": "query",
+        "name": "startDate",
+        "required": false,
+        "type": "string"
       },
       "use_externalId_param": {
         "description": "boolean indicating if externalId must be used instead of eLamp identifier in order to fetch resource",
