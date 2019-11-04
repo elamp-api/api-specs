@@ -14,30 +14,14 @@ info:
 servers:
   - url: https://api.elamp.fr/v1
 tags:
-  - name: SEARCH
-    description: search and analytics endpoints
+  - name: IAM
+    description: Identity and Access Management
   - name: COMPOSE
     description: libraries, skills, qualifiers and skills profiles endpoints
   - name: RUN
     description: powers, skill validation, pins endpoints
-  - name: IAM
-    description: Identity and Access Management
-  - name: library
-    description: libraries endpoints
-  - name: skill
-    description: skills endpoints
-  - name: qualifier
-    description: qualifiers endpoints
-  - name: skill profile
-    description: skills profiles endpoints
-  - name: power
-    description: powers endpoints
-  - name: validation
-    description: validations endpoints
-  - name: pin
-    description: pins endpoints
-  - name: resource
-    description: resources endpoints gather multiple information about a specific user resource
+  - name: SEARCH
+    description: search and analytics endpoints
 components:
   securitySchemes:
       elamp_auth:
@@ -2651,7 +2635,7 @@ paths:
       summary: lists powers of user identified by <user_id>
       description: returns a list of **powers** object.
       tags:
-        - resource
+        - RUN
       parameters:
         - $ref: '#/components/parameters/user_id_param'
         - $ref: '#/components/parameters/auth_param'
@@ -2687,7 +2671,7 @@ paths:
       summary: lists validations of user identified by <user_id>
       description: returns a list of **validations** object.
       tags:
-        - resource
+        - RUN
       parameters:
         - $ref: '#/components/parameters/user_id_param'
         - $ref: '#/components/parameters/auth_param'
@@ -2723,7 +2707,7 @@ paths:
       summary: lists jobs pinned by user identified by <user_id>
       description: returns a list of **pinned jobs** object.
       tags:
-        - resource
+        - RUN
       parameters:
         - $ref: '#/components/parameters/user_id_param'
         - $ref: '#/components/parameters/auth_param'
@@ -2760,7 +2744,7 @@ paths:
       summary: lists trainings pinned by user identified by <user_id>
       description: returns a list of **pinned trainings** object.
       tags:
-        - resource
+        - RUN
       parameters:
         - $ref: '#/components/parameters/user_id_param'
         - $ref: '#/components/parameters/auth_param'
