@@ -1,10 +1,99 @@
 {
 	"info": {
-		"_postman_id": "0c7143b2-5735-403b-b25c-863f6bea496e",
-		"name": "eLamp Web API 1.0.1",
+		"_postman_id": "8f7e1127-b563-4ac9-8654-b50a99f6c865",
+		"name": "eLamp Web API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "groups",
+			"description": "Folder for groups",
+			"item": [
+				{
+					"name": "lists groups",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/groups?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						},
+						"description": "returns a list of **group** objects."
+					},
+					"response": []
+				},
+				{
+					"name": "get group by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/groups/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"groups",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns a single **group** object."
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "libraries",
 			"description": "Folder for libraries",
@@ -587,7 +676,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "https://api.elamp.fr/v1/powers?fields={{fields}}&user={{user}}",
+							"raw": "https://api.elamp.fr/v1/powers?fields={{fields}}&last={{last}}&startDate={{startDate}}&endDate={{endDate}}&user={{user}}",
 							"protocol": "https",
 							"host": [
 								"api",
@@ -602,6 +691,18 @@
 								{
 									"key": "fields",
 									"value": "{{fields}}"
+								},
+								{
+									"key": "last",
+									"value": "{{last}}"
+								},
+								{
+									"key": "startDate",
+									"value": "{{startDate}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{endDate}}"
 								},
 								{
 									"key": "user",
@@ -2036,7 +2137,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "https://api.elamp.fr/v1/skills?fields={{fields}}",
+							"raw": "https://api.elamp.fr/v1/skills?fields={{fields}}&last={{last}}&startDate={{startDate}}&endDate={{endDate}}",
 							"protocol": "https",
 							"host": [
 								"api",
@@ -2051,6 +2152,18 @@
 								{
 									"key": "fields",
 									"value": "{{fields}}"
+								},
+								{
+									"key": "last",
+									"value": "{{last}}"
+								},
+								{
+									"key": "startDate",
+									"value": "{{startDate}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{endDate}}"
 								}
 							]
 						},
@@ -2430,56 +2543,89 @@
 			]
 		},
 		{
-			"name": "authentication",
-			"description": "",
+			"name": "users",
+			"description": "Folder for users",
 			"item": [
 				{
-					"name": "JWT authentication",
+					"name": "lists users",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded"
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
 							}
 						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "grant_type",
-									"value": "urn:ietf:params:oauth:grant-type:jwt-bearer",
-									"description": "Indicates which grant flow is used (here JWT Bearer Flow)",
-									"type": "text"
-								},
-								{
-									"key": "client_id",
-									"value": "{{client_id}}",
-									"description": "Your client ID",
-									"type": "text"
-								},
-								{
-									"key": "assertion",
-									"value": "{{jwt_assertion}}",
-									"description": "Your JWT token signed with your private key",
-									"type": "text"
-								}
-							]
-						},
+						"body": {},
 						"url": {
-							"raw": "https://www.elamp.fr/oauth/token",
+							"raw": "https://api.elamp.fr/v1/users?fields={{fields}}",
 							"protocol": "https",
 							"host": [
-								"www",
+								"api",
 								"elamp",
 								"fr"
 							],
 							"path": [
-								"oauth",
-								"token"
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
 							]
 						},
-						"description": "How to authenticate with the JWT Bearer Flow"
+						"description": "returns a list of **user** objects."
+					},
+					"response": []
+				},
+				{
+					"name": "get user by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "{{authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.elamp.fr/v1/users/:_key?fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"elamp",
+								"fr"
+							],
+							"path": [
+								"v1",
+								"users",
+								":_key"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "_key",
+									"value": "{{_key}}"
+								}
+							]
+						},
+						"description": "returns an **user** object."
 					},
 					"response": []
 				}
