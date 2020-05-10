@@ -20,7 +20,6 @@ x-tagGroups:
     tags:
       - Users
       - Groups
-      - Roles
   - name: Compose
     tags:
       - Libraries
@@ -40,8 +39,6 @@ tags:
     description: Users Management
   - name: Groups
     description: Groups Management
-  - name: Roles
-    description: Roles Management
   - name: Libraries
     description: Libraries (skills's containers) endpoints
   - name: Skills
