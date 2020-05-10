@@ -52,6 +52,12 @@ tags:
     description: Jobs & Trainings definition
   - name: Powers
     description: Users' skills
+  - name: Validations
+    description: Users' skills validations
+  - name: Pins
+    description: Job & Trainings that users pin to their profile
+  - name: Resources
+    description: User-oriented endpoints
   - name: Search
     description: search and analytics endpoints
 components:
