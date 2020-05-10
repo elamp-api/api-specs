@@ -1,8 +1,10 @@
-openapi: '3.0.0'
+openapi: "3.0.0"
 info:
   title: eLamp Web API
-  x-logo: https://d13ohmdfxbevj9.cloudfront.net/assets/img/LOGO-SLOGAN-COLOR-ALPHA-SMALL.png
-  description: ''
+  x-logo:
+    url: https://d13ohmdfxbevj9.cloudfront.net/assets/img/LOGO-SLOGAN-COLOR-ALPHA-SMALL.png
+    altText: eLamp Web API
+  description: ""
   termsOfService: "https://www.elamp.fr/"
   version: "1.0.0"
   contact:
@@ -13,61 +15,91 @@ info:
     url: https://www.elamp.fr/
 servers:
   - url: https://api.elamp.fr/v1
+x-tagGroups:
+  - name: Identity & Access Management (IAM)
+    tags:
+      - Users
+      - Groups
+      - Roles
+  - name: Compose
+    tags:
+      - Libraries
+      - Skills
+      - Qualifiers
+      - Jobs & Trainings
+  - name: Run
+      - Powers
+      - Validations
+      - Pins
+      - Resources
+  - name: Search
+    tags:
+      - Search
 tags:
-  - name: IAM
-    description: Identity and Access Management
-  - name: COMPOSE
-    description: libraries, skills, qualifiers and skills profiles endpoints
-  - name: RUN
-    description: powers, skill validation, pins endpoints
-  - name: SEARCH
+  - name: Users
+    description: Users Management
+  - name: Groups
+    description: Groups Management
+  - name: Roles
+    description: Roles Management
+  - name: Libraries
+    description: Libraries (skills's containers) endpoints
+  - name: Skills
+    description: Skills definition endpoints
+  - name: Qualifiers
+    description: Qualifiers management
+  - name: Jobs & Trainings
+    description: Jobs & Trainings definition
+  - name: Powers
+    description: Users' skills
+  - name: Search
     description: search and analytics endpoints
 components:
   securitySchemes:
-      elamp_auth:
-        type: oauth2
-        flows:
-          authorizationCode:
-            authorizationUrl: https://elamp.fr/oauth/authorize
-            tokenUrl: https://elamp.fr/oauth/token
-            scopes:
-              skill.library.read: read your skill libraries
-              skill.library: read and manage your skill libraries
-              skill.skill.read: read your skills
-              skill.skill: read and manage your skills
-              skill.qualifier.read: read your qualifiers
-              skill.qualifier: read and manage your qualifiers
-              skill.profile.read: read your skills profiles
-              skill.profile: read and manage your skills profiles
-              power.read: read your powers (competencies)
-              power: read and manage your powers
-              skill.validation.read: read your power validations
-              skill.validation: read and manage your power validations
-              pin.read: read pins
-              pin: read and manage pins
+    elamp_auth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://elamp.fr/oauth/authorize
+          tokenUrl: https://elamp.fr/oauth/token
+          scopes:
+            skill.library.read: read your skill libraries
+            skill.library: read and manage your skill libraries
+            skill.skill.read: read your skills
+            skill.skill: read and manage your skills
+            skill.qualifier.read: read your qualifiers
+            skill.qualifier: read and manage your qualifiers
+            skill.profile.read: read your skills profiles
+            skill.profile: read and manage your skills profiles
+            power.read: read your powers (competencies)
+            power: read and manage your powers
+            skill.validation.read: read your power validations
+            skill.validation: read and manage your power validations
+            pin.read: read pins
+            pin: read and manage pins
 
-              search.search: execute search query
-              search.analyze: execute analytics query
+            search.search: execute search query
+            search.analyze: execute analytics query
   schemas:
     key_identifier:
       description: unique resource identifier
       type: string
-      example: 'KEY1'
+      example: "KEY1"
     externalId:
-      description: external resource identifier (if provided by your internal information system)
+      description: external resource identifier (if provided by your own internal information system)
       type: string
-      example: 'EXT1'
+      example: "EXT1"
     kind:
       description: kind of a model object
       type: string
     color:
       type: string
       description: color string in hexadecimal format (#ffc800)
-      example: '#ffc800'
+      example: "#ffc800"
     logo:
       type: string
       description: logo identifier (marketing)
-      example: 'marketing'
+      example: "marketing"
     image:
       description: image urls
       type: object
@@ -106,11 +138,11 @@ components:
       type: object
       properties:
         _key:
-          $ref: '#/components/schemas/key_identifier'
+          $ref: "#/components/schemas/key_identifier"
         externalId:
-          $ref: '#/components/schemas/externalId'
+          $ref: "#/components/schemas/externalId"
         kind:
-          $ref: '#/components/schemas/kind'
+          $ref: "#/components/schemas/kind"
         created:
           description: created date
           type: string
@@ -125,7 +157,7 @@ components:
           default: false
     skill_base_model:
       allOf:
-        - $ref: '#/components/schemas/base_model'
+        - $ref: "#/components/schemas/base_model"
         - type: object
           properties:
             name:
@@ -137,16 +169,16 @@ components:
               description: description of the resource
               example: my description
             color:
-              $ref: '#/components/schemas/color'
+              $ref: "#/components/schemas/color"
             logo:
-              $ref: '#/components/schemas/logo'
+              $ref: "#/components/schemas/logo"
     library:
       allOf:
-        - $ref: '#/components/schemas/skill_base_model'
+        - $ref: "#/components/schemas/skill_base_model"
         - type: object
           properties:
             image:
-              $ref: '#/components/schemas/image'
+              $ref: "#/components/schemas/image"
             family_tag:
               type: string
               description: library's family tag. used to group libraries in wider domains
@@ -159,21 +191,19 @@ components:
           "description": "library description",
           "color": "#ffc800",
           "logo": "marketing",
-          "image": {
-            "url": "my-photo-url.jpg"
-          },
+          "image": { "url": "my-photo-url.jpg" },
           "family_tag": "my domain",
           "created": "2018-10-05T11:44:08.724Z",
           "updated": "2018-10-05T11:44:08.724Z",
-          "deleted": false
+          "deleted": false,
         }
     skill:
       allOf:
-        - $ref: '#/components/schemas/skill_base_model'
+        - $ref: "#/components/schemas/skill_base_model"
         - type: object
           properties:
             image:
-              $ref: '#/components/schemas/image'
+              $ref: "#/components/schemas/image"
             custom_fields:
               type: object
               description: any custom fields defined on the skill
@@ -198,22 +228,18 @@ components:
           "description": "skill description",
           "color": "#ffc800",
           "logo": "marketing",
-          "image": {
-            "url": "my-photo-url.jpg"
-          },
-          "custom_fields": {
-            "criticity": 2
-          },
+          "image": { "url": "my-photo-url.jpg" },
+          "custom_fields": { "criticity": 2 },
           "library_context": "LIB1",
           "powerable": true,
           "validated": true,
           "created": "2018-10-05T11:44:08.724Z",
           "updated": "2018-10-05T11:44:08.724Z",
-          "deleted": false
+          "deleted": false,
         }
     qualifier:
       allOf:
-        - $ref: '#/components/schemas/skill_base_model'
+        - $ref: "#/components/schemas/skill_base_model"
         - type: object
           properties:
             custom_fields:
@@ -229,7 +255,7 @@ components:
             fields:
               type: array
               items:
-                $ref: '#/components/schemas/qualifier_field'
+                $ref: "#/components/schemas/qualifier_field"
     qualifier_field:
       description: qualifier's field definition
       type: object
@@ -256,34 +282,34 @@ components:
       description: qualifier data to add on a power, skill, skills profile, ...
       properties:
         _key:
-          $ref: '#/components/schemas/key_identifier'
+          $ref: "#/components/schemas/key_identifier"
         value:
-          $ref: '#/components/schemas/qualifier_value'
+          $ref: "#/components/schemas/qualifier_value"
         updated:
           type: string
           format: datetime
           description: an iso-8601 date to indicate when the qualifier was updated
     skill_profile:
       allOf:
-        - $ref: '#/components/schemas/skill_base_model'
+        - $ref: "#/components/schemas/skill_base_model"
         - type: object
           properties:
             custom_fields:
               type: object
               description: any custom fields defined on the skill profile
             pattern:
-              $ref: '#/components/schemas/search_pattern'
+              $ref: "#/components/schemas/search_pattern"
     power:
       allOf:
-        - $ref: '#/components/schemas/base_model'
+        - $ref: "#/components/schemas/base_model"
         - type: object
           properties:
             skill:
-              $ref: '#/components/schemas/skill'
+              $ref: "#/components/schemas/skill"
             qualifiers:
               type: array
               items:
-                $ref: '#/components/schemas/qualifier_input_data'
+                $ref: "#/components/schemas/qualifier_input_data"
             type:
               type: string
               enum:
@@ -300,11 +326,11 @@ components:
               description: indicates if the power is active or not
     validation:
       allOf:
-        - $ref: '#/components/schemas/base_model'
+        - $ref: "#/components/schemas/base_model"
         - type: object
           properties:
             author:
-              $ref: '#/components/schemas/resource'
+              $ref: "#/components/schemas/resource"
             comment:
               type: string
               description: validation's comment
@@ -316,7 +342,7 @@ components:
               description: indicates in which context the user was validated (on project, on a specific task, while analyzing conversations, ...)
     pin:
       allOf:
-        - $ref: '#/components/schemas/base_model'
+        - $ref: "#/components/schemas/base_model"
         - type: object
           properties:
             type:
@@ -327,26 +353,26 @@ components:
               description: pin object's data.
     user_pin:
       allOf:
-        - $ref: '#/components/schemas/base_model'
+        - $ref: "#/components/schemas/base_model"
         - type: object
           properties:
             activity:
-              $ref: '#/components/schemas/pin'
+              $ref: "#/components/schemas/pin"
     resource:
       type: object
       properties:
         _key:
-          $ref: '#/components/schemas/key_identifier'
+          $ref: "#/components/schemas/key_identifier"
         kind:
-          $ref: '#/components/schemas/kind'
+          $ref: "#/components/schemas/kind"
         displayName:
           type: string
           description: resource's display name
         image:
-          $ref: '#/components/schemas/image'
+          $ref: "#/components/schemas/image"
     user:
       allOf:
-        - $ref: '#/components/schemas/base_model'
+        - $ref: "#/components/schemas/base_model"
         - type: object
           properties:
             givenName:
@@ -356,9 +382,9 @@ components:
             displayName:
               type: string
             image:
-              $ref: '#/components/schemas/image'
+              $ref: "#/components/schemas/image"
             experiences:
-              $ref: '#/components/schemas/experiences'
+              $ref: "#/components/schemas/experiences"
             custom_fields:
               type: object
               description: list of custom fields you want to add on an user profile
@@ -384,33 +410,30 @@ components:
           "givenName": "GivenName 1",
           "familyName": "Family-Name",
           "displayName": "GivenName 1 Family-Name",
-          "custom_fields": {
-            "my_custom_field": 1,
-            "my_custom_field2": "VALUE2"
-          },
+          "custom_fields":
+            { "my_custom_field": 1, "my_custom_field2": "VALUE2" },
           "groups": ["G1", "G2", "G3"],
           "roles": ["R1", "R2"],
-          "experiences": [
-            {
-              "title": "Tech Lead @ MyCompany",
-              "description": "Build developer-friendly APIs for customers",
-              "company": "MyCompany",
-              "startDate": "2010-02-05T11:44:08.724Z",
-              "endDate": "2018-10-05T11:44:08.724Z",
-              "skills": [
-                {"_key": "SKI1"}  
-              ]
-            }
-          ],
+          "experiences":
+            [
+              {
+                "title": "Tech Lead @ MyCompany",
+                "description": "Build developer-friendly APIs for customers",
+                "company": "MyCompany",
+                "startDate": "2010-02-05T11:44:08.724Z",
+                "endDate": "2018-10-05T11:44:08.724Z",
+                "skills": [{ "_key": "SKI1" }],
+              },
+            ],
           "last_login": "2018-10-05T11:44:08.724Z",
           "created": "2018-10-05T11:44:08.724Z",
           "updated": "2018-10-05T11:44:08.724Z",
           "active": true,
-          "deleted": false
+          "deleted": false,
         }
     group:
       allOf:
-        - $ref: '#/components/schemas/base_model'
+        - $ref: "#/components/schemas/base_model"
         - type: object
           properties:
             name:
@@ -426,7 +449,7 @@ components:
           "description": "Short description of the group",
           "created": "2018-10-05T11:44:08.724Z",
           "updated": "2018-10-05T11:44:08.724Z",
-          "deleted": false
+          "deleted": false,
         }
 
     must_query_condition:
@@ -517,9 +540,9 @@ components:
       type: object
       properties:
         must:
-          $ref: '#/components/schemas/must_query_condition'
+          $ref: "#/components/schemas/must_query_condition"
         should:
-          $ref: '#/components/schemas/should_query_condition'
+          $ref: "#/components/schemas/should_query_condition"
     search_result:
       type: object
       properties:
@@ -530,12 +553,12 @@ components:
           example: 0.67
           description: matching score of the search result regarding the search query (between 0 and 1)
         resource:
-          $ref: '#/components/schemas/resource'
+          $ref: "#/components/schemas/resource"
         data:
           description: list of power data used in matching computation
           type: array
           items:
-            $ref: '#/components/schemas/power'
+            $ref: "#/components/schemas/power"
     invalid_schema:
       type: object
       properties:
@@ -589,7 +612,7 @@ components:
       required: true
       schema:
         type: string
-        example: 'Bearer <YOUR_TOKEN>'
+        example: "Bearer <YOUR_TOKEN>"
     key_param:
       name: _key
       in: path
@@ -611,7 +634,7 @@ components:
       required: false
       schema:
         type: string
-        example: '_key,name,created'
+        example: "_key,name,created"
     use_externalId_param:
       name: use_externalId
       in: query
@@ -675,11 +698,11 @@ components:
                 type: string
                 example: my description
               color:
-                $ref: '#/components/schemas/color'
+                $ref: "#/components/schemas/color"
               logo:
-                $ref: '#/components/schemas/logo'
+                $ref: "#/components/schemas/logo"
               image:
-                $ref: '#/components/schemas/image'
+                $ref: "#/components/schemas/image"
               family_tag:
                 type: string
                 description: library's family tag. used to group libraries in wider domains
@@ -700,11 +723,11 @@ components:
                 type: string
                 example: my description
               color:
-                $ref: '#/components/schemas/color'
+                $ref: "#/components/schemas/color"
               logo:
-                $ref: '#/components/schemas/logo'
+                $ref: "#/components/schemas/logo"
               image:
-                $ref: '#/components/schemas/image'
+                $ref: "#/components/schemas/image"
               family_tag:
                 type: string
                 description: library's family tag. used to group libraries in wider domains
@@ -723,11 +746,11 @@ components:
                 type: string
                 example: my description
               color:
-                $ref: '#/components/schemas/color'
+                $ref: "#/components/schemas/color"
               logo:
-                $ref: '#/components/schemas/logo'
+                $ref: "#/components/schemas/logo"
               image:
-                $ref: '#/components/schemas/image'
+                $ref: "#/components/schemas/image"
               custom_fields:
                 type: object
                 description: any custom fields that defines the skill
@@ -759,11 +782,11 @@ components:
                 type: string
                 example: my description
               color:
-                $ref: '#/components/schemas/color'
+                $ref: "#/components/schemas/color"
               logo:
-                $ref: '#/components/schemas/logo'
+                $ref: "#/components/schemas/logo"
               image:
-                $ref: '#/components/schemas/image'
+                $ref: "#/components/schemas/image"
               custom_fields:
                 type: object
                 description: any custom fields that defines the skill
@@ -800,9 +823,9 @@ components:
                 type: string
                 example: my description
               color:
-                $ref: '#/components/schemas/color'
+                $ref: "#/components/schemas/color"
               logo:
-                $ref: '#/components/schemas/logo'
+                $ref: "#/components/schemas/logo"
               custom_fields:
                 type: object
                 description: any custom fields that defines the qualifier
@@ -816,7 +839,7 @@ components:
               fields:
                 type: array
                 items:
-                  $ref: '#/components/schemas/qualifier_field'
+                  $ref: "#/components/schemas/qualifier_field"
     qualifier_update_body:
       description: data to update a qualifier object
       content:
@@ -831,9 +854,9 @@ components:
                 type: string
                 example: my description
               color:
-                $ref: '#/components/schemas/color'
+                $ref: "#/components/schemas/color"
               logo:
-                $ref: '#/components/schemas/logo'
+                $ref: "#/components/schemas/logo"
               custom_fields:
                 type: object
                 description: any custom fields that defines the qualifier
@@ -851,14 +874,14 @@ components:
                 type: string
                 example: my description
               color:
-                $ref: '#/components/schemas/color'
+                $ref: "#/components/schemas/color"
               logo:
-                $ref: '#/components/schemas/logo'
+                $ref: "#/components/schemas/logo"
               custom_fields:
                 type: object
                 description: any custom fields that defines the qualifier
               pattern:
-                $ref: '#/components/schemas/search_pattern'
+                $ref: "#/components/schemas/search_pattern"
             required:
               - name
     skill_profile_update_body:
@@ -875,14 +898,14 @@ components:
                 type: string
                 example: my description
               color:
-                $ref: '#/components/schemas/color'
+                $ref: "#/components/schemas/color"
               logo:
-                $ref: '#/components/schemas/logo'
+                $ref: "#/components/schemas/logo"
               custom_fields:
                 type: object
                 description: any custom fields that defines the qualifier
               pattern:
-                $ref: '#/components/schemas/search_pattern'
+                $ref: "#/components/schemas/search_pattern"
     search_query_body:
       description: search query
       content:
@@ -900,11 +923,11 @@ components:
                 type: boolean
                 default: false
               must:
-                $ref: '#/components/schemas/must_query_condition'
+                $ref: "#/components/schemas/must_query_condition"
               should:
-                $ref: '#/components/schemas/should_query_condition'
+                $ref: "#/components/schemas/should_query_condition"
               filters:
-                $ref: '#/components/schemas/filter_query_condition'
+                $ref: "#/components/schemas/filter_query_condition"
     power_create_body:
       description: data to create a power
       content:
@@ -928,7 +951,7 @@ components:
                 type: array
                 description: array of qualifier to include in the power
                 items:
-                  $ref: '#/components/schemas/qualifier_input_data'
+                  $ref: "#/components/schemas/qualifier_input_data"
               active:
                 type: boolean
                 description: indicates if a power is active or not
@@ -947,7 +970,7 @@ components:
                 type: array
                 description: array of qualifier to include in the power
                 items:
-                  $ref: '#/components/schemas/qualifier_input_data'
+                  $ref: "#/components/schemas/qualifier_input_data"
               active:
                 type: boolean
                 description: indicates if a power is active or not
@@ -962,7 +985,7 @@ components:
               qualifiers:
                 type: array
                 items:
-                  $ref: '#/components/schemas/qualifier_input_data'
+                  $ref: "#/components/schemas/qualifier_input_data"
     validation_create_body:
       description: data schema to create a validation
       content:
@@ -979,7 +1002,7 @@ components:
               qualifiers:
                 type: array
                 items:
-                  $ref: '#/components/schemas/qualifier_input_data'
+                  $ref: "#/components/schemas/qualifier_input_data"
               comment:
                 type: string
                 description: validation's comment
@@ -994,7 +1017,7 @@ components:
               qualifiers:
                 type: array
                 items:
-                  $ref: '#/components/schemas/qualifier_input_data'
+                  $ref: "#/components/schemas/qualifier_input_data"
               comment:
                 type: string
                 description: validation's comment
@@ -1034,31 +1057,31 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/invalid_schema'
+            $ref: "#/components/schemas/invalid_schema"
     not_found_error:
       description: the resource was not found.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/not_found'
+            $ref: "#/components/schemas/not_found"
     not_authed_error:
       description: you need to provide valid credentials to authenticate request.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/not_authed'
+            $ref: "#/components/schemas/not_authed"
     forbidden_error:
       description: you are not allowed to perform this action.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/forbidden'
+            $ref: "#/components/schemas/forbidden"
     unexpected_error:
       description: an unexpected error occured.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/unexpected_error'
+            $ref: "#/components/schemas/unexpected_error"
 
 paths:
   /libraries:
@@ -1067,12 +1090,12 @@ paths:
       summary: lists libraries
       description: returns a list of available **skills libraries**
       tags:
-        - COMPOSE
+        - Libraries
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a list of skills libraries
           content:
             application/json:
@@ -1085,40 +1108,39 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/library'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/library"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - skill.library.read
+            - skill.library.read
     post:
       operationId: skills.libraries.create
       summary: creates libraries
       description: creates a new **skills library**
       tags:
-        - COMPOSE
+        - Libraries
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/library_create_body'
+        $ref: "#/components/requestBodies/library_create_body"
       responses:
-        '200':
+        "200":
           description: the created skills library
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/library'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/library"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - skill.library
-
+            - skill.library
 
   /libraries/{_key}:
     get:
@@ -1126,29 +1148,29 @@ paths:
       summary: gets a library by key
       description: returns a **skills library** by key.
       tags:
-        - COMPOSE
+        - Libraries
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A **library** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/library'
+                $ref: "#/components/schemas/library"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.library.read
+            - skill.library.read
 
     patch:
       operationId: skills.libraries.update
@@ -1156,64 +1178,64 @@ paths:
       description: |
         returns the updated **library**.
       tags:
-        - COMPOSE
+        - Libraries
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/library_update_body'
+        $ref: "#/components/requestBodies/library_update_body"
       responses:
         200:
           description: The updated **library** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/library'
+                $ref: "#/components/schemas/library"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.library
+            - skill.library
     delete:
       operationId: skills.libraries.delete
       summary: deletes a library by key
       description: |
         returns the deleted **library**.
       tags:
-        - COMPOSE
+        - Libraries
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: The deleted **library** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/library'
+                $ref: "#/components/schemas/library"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.library
+            - skill.library
 
   /libraries/{_key}/subscribe:
     post:
@@ -1221,58 +1243,58 @@ paths:
       summary: subscribe to a library by key
       description: returns the subscribed **skills library**.
       tags:
-        - COMPOSE
+        - Libraries
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A **library** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/library'
+                $ref: "#/components/schemas/library"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.library
+            - skill.library
   /libraries/{_key}/unsubscribe:
     post:
       operationId: skills.libraries.unsubscribe
       summary: unsubscribe to a library by key
       description: returns the unsubscribed **skills library**.
       tags:
-        - COMPOSE
+        - Libraries
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A **library** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/library'
+                $ref: "#/components/schemas/library"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.library
+            - skill.library
 
   /skills:
     get:
@@ -1280,13 +1302,13 @@ paths:
       summary: list skills
       description: returns a list of **skills**.
       tags:
-        - COMPOSE
+        - Skills
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
-        - $ref: '#/components/parameters/last_param'
-        - $ref: '#/components/parameters/startDate_param'
-        - $ref: '#/components/parameters/endDate_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
+        - $ref: "#/components/parameters/last_param"
+        - $ref: "#/components/parameters/startDate_param"
+        - $ref: "#/components/parameters/endDate_param"
       responses:
         200:
           description: A list of **skill** objects.
@@ -1301,54 +1323,54 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/skill'
+                      $ref: "#/components/schemas/skill"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.skill.read
+            - skill.skill.read
     post:
       operationId: skills.skill.create
       summary: creates skills
       description: creates a new **skills**
       tags:
-        - COMPOSE
+        - Skills
       requestBody:
-        $ref: '#/components/requestBodies/skill_create_body'
+        $ref: "#/components/requestBodies/skill_create_body"
       responses:
-        '200':
+        "200":
           description: the created skill
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/skill"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - skill.skill
+            - skill.skill
   /skills/search:
     get:
       operationId: skills.skill.search
       summary: searches skill by name
       description: returns a list of **skill** objects.
       tags:
-        - COMPOSE
+        - Skills
       parameters:
         - name: q
           in: query
           schema:
             type: string
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A list of **skill** objects.
@@ -1363,18 +1385,18 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/skill'
+                      $ref: "#/components/schemas/skill"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.skill.read
+            - skill.skill.read
 
   /skills/{_key}:
     get:
@@ -1382,93 +1404,93 @@ paths:
       summary: gets a skill by key
       description: returns a **skill** by key.
       tags:
-        - COMPOSE
+        - Skills
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
-        - $ref: '#/components/parameters/use_externalId_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
+        - $ref: "#/components/parameters/use_externalId_param"
       responses:
         200:
           description: A **skill** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill'
+                $ref: "#/components/schemas/skill"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.skill.read
+            - skill.skill.read
 
     patch:
       operationId: skills.skill.update
       summary: updates a skill by key
       description: returns the updated **skill**.
       tags:
-        - COMPOSE
+        - Skills
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/skill_update_body'
+        $ref: "#/components/requestBodies/skill_update_body"
       responses:
         200:
           description: The updated **skill** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill'
+                $ref: "#/components/schemas/skill"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.skill
+            - skill.skill
     delete:
       operationId: skills.skill.delete
       summary: deletes a skill by key
       description: returns the deleted **skill**.
       tags:
-        - COMPOSE
+        - Skills
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: The updated **skill** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill'
+                $ref: "#/components/schemas/skill"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.skill
+            - skill.skill
 
   /skills/{_key}/qualifiers:
     get:
@@ -1476,11 +1498,11 @@ paths:
       summary: list qualifiers of a skill identified by key
       description: returns a list of **qualifier** objects for the requested skill.
       tags:
-        - COMPOSE
+        - Skills
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A list of **qualifier** objects.
@@ -1495,31 +1517,31 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/qualifier'
+                      $ref: "#/components/schemas/qualifier"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.skill.read
-          - skill.qualifier.read
+            - skill.skill.read
+            - skill.qualifier.read
     post:
       operationId: skills.skill.add_qualifiers
       summary: add qualifiers to a skill identified by key
       description: returns a list of **qualifier** objects for the requested skill.
       tags:
-        - COMPOSE
+        - Skills
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/skill_update_qualifiers_body'
+        $ref: "#/components/requestBodies/skill_update_qualifiers_body"
       responses:
         200:
           description: A list of **qualifier** objects.
@@ -1534,29 +1556,29 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/qualifier'
+                      $ref: "#/components/schemas/qualifier"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.skill
-          - skill.qualifier
+            - skill.skill
+            - skill.qualifier
     delete:
       operationId: skills.skill.remove_qualifiers
       summary: remove qualifiers from a skill identified by key
       description: returns a list of **qualifier** objects for the requested skill.
       tags:
-        - COMPOSE
+        - Skills
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A list of **qualifier** objects.
@@ -1571,19 +1593,19 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/qualifier'
+                      $ref: "#/components/schemas/qualifier"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.skill
-          - skill.qualifier
+            - skill.skill
+            - skill.qualifier
 
   /qualifiers:
     get:
@@ -1591,10 +1613,10 @@ paths:
       summary: list qualifiers
       description: returns a list of **qualifiers**.
       tags:
-        - COMPOSE
+        - Qualifiers
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A list of **qualifier** objects.
@@ -1609,40 +1631,40 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/qualifier'
+                      $ref: "#/components/schemas/qualifier"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.qualifier.read
+            - skill.qualifier.read
     post:
       operationId: skills.qualifier.create
       summary: creates qulaifier
       description: creates a new **qualifier**
       tags:
-        - COMPOSE
+        - Qualifiers
       requestBody:
-        $ref: '#/components/requestBodies/qualifier_create_body'
+        $ref: "#/components/requestBodies/qualifier_create_body"
       responses:
-        '200':
+        "200":
           description: the created skill
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/skill"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - skill.skill
+            - skill.skill
 
   /qualifiers/{_key}:
     get:
@@ -1650,103 +1672,103 @@ paths:
       summary: gets a qualifier by key
       description: returns a **qualifier** by key.
       tags:
-        - COMPOSE
+        - Qualifiers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A **qualifier** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/qualifier'
+                $ref: "#/components/schemas/qualifier"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.qualifier.read
+            - skill.qualifier.read
 
     patch:
       operationId: skills.qualifier.update
       summary: updates a qualifier by key
       description: returns the updated **qualifier**.
       tags:
-        - COMPOSE
+        - Qualifiers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/qualifier_update_body'
+        $ref: "#/components/requestBodies/qualifier_update_body"
       responses:
         200:
           description: The updated **qualifier** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/qualifier'
+                $ref: "#/components/schemas/qualifier"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.qualifier
+            - skill.qualifier
     delete:
       operationId: skills.qualifier.delete
       summary: deletes a qualifier by key
       description: returns the deleted **qualifier**.
       tags:
-        - COMPOSE
+        - Qualifiers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: The updated **qualifier** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/qualifier'
+                $ref: "#/components/schemas/qualifier"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.qualifier
+            - skill.qualifier
   /qualifiers/{_key}/skills:
     get:
       operationId: skills.qualifier.list_skills
       summary: lists skills associated to the qualifier identified by key
       description: returns a list of **skills** associated to the qualifier identified by key.
       tags:
-        - COMPOSE
+        - Qualifiers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A iist of **skill** objects.
@@ -1761,30 +1783,30 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/skill'
+                      $ref: "#/components/schemas/skill"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.qualifier.read
-          - skill.skill.read
+            - skill.qualifier.read
+            - skill.skill.read
   /qualifiers/{_key}/powers:
     get:
       operationId: skills.qualifier.list_powers
       summary: lists powers associated to the qualifier identified by key
       description: returns a list of **powers** associated to the qualifier identified by key.
       tags:
-        - COMPOSE
+        - Qualifiers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A iist of **power** objects.
@@ -1799,19 +1821,19 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/power'
+                      $ref: "#/components/schemas/power"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.qualifier.read
-          - power.read
+            - skill.qualifier.read
+            - power.read
 
   /profiles:
     get:
@@ -1819,10 +1841,10 @@ paths:
       summary: list profiles
       description: returns a list of **profiles**.
       tags:
-        - COMPOSE
+        - Jobs & Trainings
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A list of **skills profiles** objects.
@@ -1837,51 +1859,51 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/skill_profile'
+                      $ref: "#/components/schemas/skill_profile"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.profile.read
+            - skill.profile.read
     post:
       operationId: skills.profile.create
       summary: creates skills profile
       description: creates a new **skills profile**
       tags:
-        - COMPOSE
+        - Jobs & Trainings
       requestBody:
-        $ref: '#/components/requestBodies/skill_profile_create_body'
+        $ref: "#/components/requestBodies/skill_profile_create_body"
       responses:
-        '200':
+        "200":
           description: the created skill profile
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill_profile'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/skill_profile"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - skill.profile
+            - skill.profile
   /profiles/matching:
     get:
       operationId: skills.profile.matching
       summary: list profiles that match with an user
       description: returns a list of **profiles** that match with an user.
       tags:
-        - COMPOSE
+        - Jobs & Trainings
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
         - name: user
           description: requested user identifier. if not provided, execute matching against the current user
           in: query
@@ -1907,111 +1929,111 @@ paths:
                             score:
                               type: number
                               example: 0.56
-                        - $ref: '#/components/schemas/skill_profile'
+                        - $ref: "#/components/schemas/skill_profile"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.profile.read
+            - skill.profile.read
   /profiles/{_key}:
     get:
       operationId: skills.profile.get
       summary: gets a skills profile  by key
       description: returns a **skills profile** by key.
       tags:
-        - COMPOSE
+        - Jobs & Trainings
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
-        - $ref: '#/components/parameters/use_externalId_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
+        - $ref: "#/components/parameters/use_externalId_param"
       responses:
         200:
           description: A **skills profile** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill_profile'
+                $ref: "#/components/schemas/skill_profile"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.profile.read
+            - skill.profile.read
 
     patch:
       operationId: skills.profile.update
       summary: updates a skills profile by key
       description: returns the updated **skills profile**.
       tags:
-        - COMPOSE
+        - Jobs & Trainings
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/skill_profile_update_body'
+        $ref: "#/components/requestBodies/skill_profile_update_body"
       responses:
         200:
           description: The updated **skills profile** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill_profile'
+                $ref: "#/components/schemas/skill_profile"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.profile
+            - skill.profile
     delete:
       operationId: skills.profile.delete
       summary: deletes a skills profile by key
       description: returns the deleted **skills profile**.
       tags:
-        - COMPOSE
+        - Jobs & Trainings
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: The updated **skills profile** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/skill_profile'
+                $ref: "#/components/schemas/skill_profile"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.profile
+            - skill.profile
 
   /search:
     post:
@@ -2019,14 +2041,14 @@ paths:
       summary: execute search query
       description: execute search query
       tags:
-        - SEARCH
+        - Search
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/search_query_body'
+        $ref: "#/components/requestBodies/search_query_body"
       responses:
-        '200':
+        "200":
           description: a list of **resource** objects that match the search query.
           content:
             application/json:
@@ -2040,14 +2062,14 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/search_result'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/search_result"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - search.search
+            - search.search
 
   /powers:
     get:
@@ -2055,13 +2077,13 @@ paths:
       summary: list powers of an user
       description: returns a list of **power** objects for an user
       tags:
-        - RUN
+        - Powers
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
-        - $ref: '#/components/parameters/last_param'
-        - $ref: '#/components/parameters/startDate_param'
-        - $ref: '#/components/parameters/endDate_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
+        - $ref: "#/components/parameters/last_param"
+        - $ref: "#/components/parameters/startDate_param"
+        - $ref: "#/components/parameters/endDate_param"
         - name: user
           description: user identifier. if not provided, returns powers of the current user
           in: query
@@ -2070,7 +2092,7 @@ paths:
             type: string
             description: user identifier
       responses:
-        '200':
+        "200":
           description: a list of **power** objects for the user
           content:
             application/json:
@@ -2084,131 +2106,131 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/power'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/power"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - power.read
+            - power.read
     post:
       operationId: powers.create
       summary: create power for an user
       description: creates a **power** object for an user
       tags:
-        - RUN
+        - Powers
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/power_create_body'
+        $ref: "#/components/requestBodies/power_create_body"
       responses:
-        '200':
+        "200":
           description: return the created **power** object for the user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/power'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/power"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - power
+            - power
   /powers/{_key}:
     get:
       operationId: powers.get
       summary: gets a power  by key
       description: returns a **power** object by key.
       tags:
-        - RUN
+        - Powers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A **power** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/power'
+                $ref: "#/components/schemas/power"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - power.read
+            - power.read
 
     patch:
       operationId: powers.update
       summary: updates a power by key
       description: returns the updated **power**.
       tags:
-        - RUN
+        - Powers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/power_update_body'
+        $ref: "#/components/requestBodies/power_update_body"
       responses:
         200:
           description: The updated **power** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/power'
+                $ref: "#/components/schemas/power"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - power
+            - power
     delete:
       operationId: powers.delete
       summary: deletes a power by key
       description: returns the deleted **power**.
       tags:
-        - RUN
+        - Powers
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: The updated **power** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/power'
+                $ref: "#/components/schemas/power"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - power
+            - power
 
   /powers/{_key}/qualifiers:
     get:
@@ -2216,90 +2238,90 @@ paths:
       summary: lists qualifiers for a power identified by key
       description: returns a list of **qualifier with value** object for the power identified by key.
       tags:
-        - RUN
+        - Powers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A list of **qualifier with value** objects.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/power'
+                $ref: "#/components/schemas/power"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - power.read
-          - skill.qualifier.read
+            - power.read
+            - skill.qualifier.read
     post:
       operationId: powers.add_qualifiers
       summary: adds qualifiers for a power identified by key
       description: returns the **power** object identified by key.
       tags:
-        - RUN
+        - Powers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/qualifier_values_body'
+        $ref: "#/components/requestBodies/qualifier_values_body"
       responses:
         200:
           description: power object identified by key.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/power'
+                $ref: "#/components/schemas/power"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - power
-          - skill.qualifier
+            - power
+            - skill.qualifier
     delete:
       operationId: powers.remove_qualifiers
       summary: removes qualifiers for a power identified by key
       description: returns the **power** object identified by key.
       tags:
-        - RUN
+        - Powers
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: power object identified by key.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/power'
+                $ref: "#/components/schemas/power"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - power
-          - skill.qualifier
+            - power
+            - skill.qualifier
 
   /skill.validations:
     get:
@@ -2307,10 +2329,10 @@ paths:
       summary: list skills validations of an user
       description: returns a list of **validations** objects for an user
       tags:
-        - RUN
+        - Validations
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
         - name: user
           description: user identifier. if not provided, returns validations of the current user
           in: query
@@ -2326,7 +2348,7 @@ paths:
             type: string
             description: skill identifier
       responses:
-        '200':
+        "200":
           description: a list of **validation** objects for the user
           content:
             application/json:
@@ -2340,141 +2362,141 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/validation'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/validation"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - skill.validation.read
+            - skill.validation.read
     post:
       operationId: skills.validation.create
       summary: create a validation for an user
       description: creates a **validation** object for an user
       tags:
-        - RUN
+        - Validations
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/validation_create_body'
+        $ref: "#/components/requestBodies/validation_create_body"
       responses:
-        '200':
+        "200":
           description: return the created **validation** object for the user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/validation'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/validation"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - skill.validation
+            - skill.validation
   /skill.validations/{_key}:
     get:
       operationId: skills.validations.get
       summary: gets a validation by key
       description: returns a **validation** object by key.
       tags:
-        - RUN
+        - Validations
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A **validation** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/validation'
+                $ref: "#/components/schemas/validation"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.validation.read
+            - skill.validation.read
 
     patch:
       operationId: skills.validations.update
       summary: updates a validation by key
       description: returns the updated **validation**.
       tags:
-        - RUN
+        - Validations
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/validation_update_body'
+        $ref: "#/components/requestBodies/validation_update_body"
       responses:
         200:
           description: The updated **validation** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/validation'
+                $ref: "#/components/schemas/validation"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.validation
+            - skill.validation
     delete:
       operationId: skills.validations.delete
       summary: deletes a validation by key
       description: returns the deleted **validation**.
       tags:
-        - RUN
+        - Validations
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: The updated **validation** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/power'
+                $ref: "#/components/schemas/power"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - skill.validation
+            - skill.validation
   /pins:
     get:
       operationId: pins.list
       summary: list pins of an user
       description: returns a list of **pin** objects for an user
       tags:
-        - RUN
+        - Pins
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
         - name: user
           description: user identifier. if not provided, returns pins of the current user
           in: query
@@ -2490,7 +2512,7 @@ paths:
             type: string
             description: entity identifier
       responses:
-        '200':
+        "200":
           description: a list of **pin** objects for the user
           content:
             application/json:
@@ -2504,144 +2526,144 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/pin'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/pin"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - pin.read
+            - pin.read
     post:
       operationId: pins.create
       summary: create a pin for an user
       description: creates a **pin** object for an user
       tags:
-        - RUN
+        - Pins
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/pin_create_body'
+        $ref: "#/components/requestBodies/pin_create_body"
       responses:
-        '200':
+        "200":
           description: return the created **pin** object for the user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/pin'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/pin"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
       security:
         - elamp_auth:
-          - pin
+            - pin
   /pins/{_key}:
     get:
       operationId: pins.get
       summary: gets a pin by key
       description: returns a **pin** object by key.
       tags:
-        - RUN
+        - Pins
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: A **pin** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/pin'
+                $ref: "#/components/schemas/pin"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - pin.read
+            - pin.read
 
     patch:
       operationId: pins.update
       summary: updates a pin by key
       description: returns the updated **pin**.
       tags:
-        - RUN
+        - Pins
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: '#/components/requestBodies/pin_update_body'
+        $ref: "#/components/requestBodies/pin_update_body"
       responses:
         200:
           description: The updated **pin** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/pin'
+                $ref: "#/components/schemas/pin"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - pin
+            - pin
     delete:
       operationId: pins.delete
       summary: deletes a pin by key
       description: returns the deleted **pin**.
       tags:
-        - RUN
+        - Pins
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
         200:
           description: The updated **pin** object.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/pin'
+                $ref: "#/components/schemas/pin"
         400:
-          $ref: '#/components/responses/invalid_schema_error'
+          $ref: "#/components/responses/invalid_schema_error"
         401:
-          $ref: '#/components/responses/not_authed_error'
+          $ref: "#/components/responses/not_authed_error"
         403:
-          $ref: '#/components/responses/forbidden_error'
+          $ref: "#/components/responses/forbidden_error"
         404:
-          $ref: '#/components/responses/not_found_error'
+          $ref: "#/components/responses/not_found_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - pin
+            - pin
   /resources/{user_id}/powers:
     get:
       operationId: resources.powers.list
       summary: lists powers of user identified by <user_id>
       description: returns a list of **powers** object.
       tags:
-        - RUN
+        - Resources
       parameters:
-        - $ref: '#/components/parameters/user_id_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/user_id_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a list of **powers** objects
           content:
             application/json:
@@ -2655,29 +2677,29 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/power'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/power"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - power.read
+            - power.read
   /resources/{user_id}/skill.validations:
     get:
       operationId: resources.skill_validations.list
       summary: lists validations of user identified by <user_id>
       description: returns a list of **validations** object.
       tags:
-        - RUN
+        - Resources
       parameters:
-        - $ref: '#/components/parameters/user_id_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/user_id_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a list of **validations** objects
           content:
             application/json:
@@ -2691,29 +2713,29 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/validation'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/validation"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - validation.read
+            - validation.read
   /resources/{user_id}/pins/jobs:
     get:
       operationId: resources.job_pins.list
       summary: lists jobs pinned by user identified by <user_id>
       description: returns a list of **pinned jobs** object.
       tags:
-        - RUN
+        - Resources
       parameters:
-        - $ref: '#/components/parameters/user_id_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/user_id_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a list of **pinned jobs** objects
           content:
             application/json:
@@ -2727,30 +2749,30 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/user_pin'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/user_pin"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - profile.read
-          - pin.read
+            - profile.read
+            - pin.read
   /resources/{user_id}/pins/trainings:
     get:
       operationId: resources.training_pins.list
       summary: lists trainings pinned by user identified by <user_id>
       description: returns a list of **pinned trainings** object.
       tags:
-        - RUN
+        - Resources
       parameters:
-        - $ref: '#/components/parameters/user_id_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/user_id_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a list of **pinned trainings** objects
           content:
             application/json:
@@ -2764,30 +2786,30 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/user_pin'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/user_pin"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - profile.read
-          - pin.read
-  
+            - profile.read
+            - pin.read
+
   /users:
     get:
       operationId: iam.users.list
       summary: lists users
       description: returns a list of **user** objects.
       tags:
-        - IAM
+        - Users
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a list of **user** objects
           content:
             application/json:
@@ -2801,16 +2823,16 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/user'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/user"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - user.read
+            - user.read
 
   /users/{_key}:
     get:
@@ -2818,27 +2840,27 @@ paths:
       summary: get user by id
       description: returns an **user** object.
       tags:
-        - IAM
+        - Users
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a single **user** object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/user"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - user.read
+            - user.read
 
   /groups:
     get:
@@ -2846,12 +2868,12 @@ paths:
       summary: lists groups
       description: returns a list of **group** objects.
       tags:
-        - IAM
+        - Groups
       parameters:
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a list of **group** objects
           content:
             application/json:
@@ -2865,16 +2887,16 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/group'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                      $ref: "#/components/schemas/group"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - group.read
+            - group.read
 
   /groups/{_key}:
     get:
@@ -2882,24 +2904,24 @@ paths:
       summary: get group by id
       description: returns a single **group** object.
       tags:
-        - IAM
+        - Groups
       parameters:
-        - $ref: '#/components/parameters/key_param'
-        - $ref: '#/components/parameters/auth_param'
-        - $ref: '#/components/parameters/fields_param'
+        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
       responses:
-        '200':
+        "200":
           description: a single **group** object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group'
-        '401':
-          $ref: '#/components/responses/not_authed_error'
-        '403':
-          $ref: '#/components/responses/forbidden_error'
+                $ref: "#/components/schemas/group"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
         default:
-          $ref: '#/components/responses/unexpected_error'
+          $ref: "#/components/responses/unexpected_error"
       security:
         - elamp_auth:
-          - group.read
+            - group.read
