@@ -2,7 +2,7 @@ openapi: "3.0.0"
 info:
   title: eLamp Web API
   x-logo:
-    url: https://d13ohmdfxbevj9.cloudfront.net/assets/img/LOGO-SLOGAN-COLOR-ALPHA-SMALL.png
+    url: https://d13ohmdfxbevj9.cloudfront.net/assets/img/eLampAPI.png
     altText: eLamp Web API
   description: ""
   termsOfService: "https://www.elamp.fr/"
