@@ -27,6 +27,7 @@ x-tagGroups:
       - Qualifiers
       - Jobs & Trainings
   - name: Run
+    tags:
       - Powers
       - Validations
       - Pins
