@@ -25,7 +25,7 @@ x-tagGroups:
       - Libraries
       - Skills
       - Qualifiers
-      - Jobs & Trainings
+      - Jobs
   - name: Run
     tags:
       - Powers
@@ -46,8 +46,8 @@ tags:
     description: Skills definition endpoints
   - name: Qualifiers
     description: Qualifiers management
-  - name: Jobs & Trainings
-    description: Jobs & Trainings definition
+  - name: Jobs
+    description: Jobs definition
   - name: Powers
     description: Users' skills
   - name: Validations
@@ -1845,7 +1845,7 @@ paths:
       summary: list profiles
       description: returns a list of **profiles**.
       tags:
-        - Jobs & Trainings
+        - Jobs
       parameters:
         - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
@@ -1880,7 +1880,7 @@ paths:
       summary: creates skills profile
       description: creates a new **skills profile**
       tags:
-        - Jobs & Trainings
+        - Jobs
       requestBody:
         $ref: "#/components/requestBodies/skill_profile_create_body"
       responses:
@@ -1903,7 +1903,7 @@ paths:
       summary: list profiles that match with an user
       description: returns a list of **profiles** that match with an user.
       tags:
-        - Jobs & Trainings
+        - Jobs
       parameters:
         - $ref: "#/components/parameters/key_param"
         - $ref: "#/components/parameters/auth_param"
@@ -1951,7 +1951,7 @@ paths:
       summary: gets a skills profile  by key
       description: returns a **skills profile** by key.
       tags:
-        - Jobs & Trainings
+        - Jobs
       parameters:
         - $ref: "#/components/parameters/key_param"
         - $ref: "#/components/parameters/auth_param"
@@ -1981,7 +1981,7 @@ paths:
       summary: updates a skills profile by key
       description: returns the updated **skills profile**.
       tags:
-        - Jobs & Trainings
+        - Jobs
       parameters:
         - $ref: "#/components/parameters/key_param"
         - $ref: "#/components/parameters/auth_param"
@@ -2013,7 +2013,7 @@ paths:
       summary: deletes a skills profile by key
       description: returns the deleted **skills profile**.
       tags:
-        - Jobs & Trainings
+        - Jobs
       parameters:
         - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/key_param"
