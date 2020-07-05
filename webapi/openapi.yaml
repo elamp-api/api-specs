@@ -58,9 +58,15 @@ tags:
     description: User-oriented endpoints
   - name: Search
     description: search and analytics endpoints
+security:
+  - bearerAuth: []
 components:
   securitySchemes:
-    elamp_auth:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oAuth2:
       type: oauth2
       flows:
         authorizationCode:
@@ -85,6 +91,10 @@ components:
             search.search: execute search query
             search.analyze: execute analytics query
   schemas:
+    identifier:
+      description: unique resource identifier
+      type: string
+      example: "ID12432"
     key_identifier:
       description: unique resource identifier
       type: string
@@ -141,6 +151,8 @@ components:
     base_model:
       type: object
       properties:
+        id:
+          $ref: "#/components/schemas/identifier"
         _key:
           $ref: "#/components/schemas/key_identifier"
         externalId:
@@ -224,6 +236,7 @@ components:
               default: true
       example:
         {
+          "id": "SKI1",
           "_key": "SKI1",
           "externalId": "EXTID1",
           "kind": "skills#skill",
@@ -408,6 +421,7 @@ components:
               type: boolean
       example:
         {
+          "id": "U1",
           "_key": "U1",
           "externalId": "EXTID1",
           "kind": "users#user",
@@ -446,6 +460,7 @@ components:
               type: string
       example:
         {
+          "id": "G1",
           "_key": "G1",
           "externalId": "EXTID1",
           "kind": "users#group",
@@ -617,8 +632,8 @@ components:
       schema:
         type: string
         example: "Bearer <YOUR_TOKEN>"
-    key_param:
-      name: _key
+    id_param:
+      name: id
       in: path
       description: unique resource identifier
       required: true
@@ -687,374 +702,7 @@ components:
       schema:
         type: boolean
         example: true
-  requestBodies:
-    library_create_body:
-      description: library data to create a library
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: my name
-              description:
-                type: string
-                example: my description
-              color:
-                $ref: "#/components/schemas/color"
-              logo:
-                $ref: "#/components/schemas/logo"
-              image:
-                $ref: "#/components/schemas/image"
-              family_tag:
-                type: string
-                description: library's family tag. used to group libraries in wider domains
-                example: my domain
-            required:
-              - name
-    library_update_body:
-      description: library data to update a library
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: my name
-              description:
-                type: string
-                example: my description
-              color:
-                $ref: "#/components/schemas/color"
-              logo:
-                $ref: "#/components/schemas/logo"
-              image:
-                $ref: "#/components/schemas/image"
-              family_tag:
-                type: string
-                description: library's family tag. used to group libraries in wider domains
-                example: my domain
-    skill_create_body:
-      description: data to create a skill
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: my name
-              description:
-                type: string
-                example: my description
-              color:
-                $ref: "#/components/schemas/color"
-              logo:
-                $ref: "#/components/schemas/logo"
-              image:
-                $ref: "#/components/schemas/image"
-              custom_fields:
-                type: object
-                description: any custom fields that defines the skill
-              parents:
-                type: array
-                items:
-                  type: string
-                  description: library or skill identifier
-                  example: LIB1
-              inherit_qualifiers:
-                type: boolean
-                description: indicates if the new skill should inherit qualifiers from its parents
-              powerable:
-                type: boolean
-                description: indicates if the new skill can be added by an user as a power.
-            required:
-              - name
-    skill_update_body:
-      description: data to update a skill
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: my name
-              description:
-                type: string
-                example: my description
-              color:
-                $ref: "#/components/schemas/color"
-              logo:
-                $ref: "#/components/schemas/logo"
-              image:
-                $ref: "#/components/schemas/image"
-              custom_fields:
-                type: object
-                description: any custom fields that defines the skill
-              inherit_qualifiers:
-                type: boolean
-                description: indicates if the new skill should inherit qualifiers from its parents
-              powerable:
-                type: boolean
-                description: indicates if the new skill can be added by an user as a power.
-    skill_update_qualifiers_body:
-      description: data to update skill qualifier
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              qualifiers:
-                description: list of qualifier's identifiers
-                type: array
-                items:
-                  type: string
-                  description: qualifier's identifier
-    qualifier_create_body:
-      description: data to create a qualifier object
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: my name
-              description:
-                type: string
-                example: my description
-              color:
-                $ref: "#/components/schemas/color"
-              logo:
-                $ref: "#/components/schemas/logo"
-              custom_fields:
-                type: object
-                description: any custom fields that defines the qualifier
-              field_type:
-                type: string
-                enum:
-                  - TEXT
-                  - NUMERIC
-                  - MULTIVALUES
-                description: field type.
-              fields:
-                type: array
-                items:
-                  $ref: "#/components/schemas/qualifier_field"
-    qualifier_update_body:
-      description: data to update a qualifier object
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: my name
-              description:
-                type: string
-                example: my description
-              color:
-                $ref: "#/components/schemas/color"
-              logo:
-                $ref: "#/components/schemas/logo"
-              custom_fields:
-                type: object
-                description: any custom fields that defines the qualifier
-    skill_profile_create_body:
-      description: data to create a skills profile object
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: my name
-              description:
-                type: string
-                example: my description
-              color:
-                $ref: "#/components/schemas/color"
-              logo:
-                $ref: "#/components/schemas/logo"
-              custom_fields:
-                type: object
-                description: any custom fields that defines the qualifier
-              pattern:
-                $ref: "#/components/schemas/search_pattern"
-            required:
-              - name
-    skill_profile_update_body:
-      description: data to update a skills profile object
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                example: my name
-              description:
-                type: string
-                example: my description
-              color:
-                $ref: "#/components/schemas/color"
-              logo:
-                $ref: "#/components/schemas/logo"
-              custom_fields:
-                type: object
-                description: any custom fields that defines the qualifier
-              pattern:
-                $ref: "#/components/schemas/search_pattern"
-    search_query_body:
-      description: search query
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              kind:
-                description: kind of resource to search on.
-                type: string
-                enum:
-                  - resource
-              suggests:
-                description: include suggestions or not
-                type: boolean
-                default: false
-              must:
-                $ref: "#/components/schemas/must_query_condition"
-              should:
-                $ref: "#/components/schemas/should_query_condition"
-              filters:
-                $ref: "#/components/schemas/filter_query_condition"
-    power_create_body:
-      description: data to create a power
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - resource
-              - skill
-            properties:
-              resource:
-                type: string
-                description: user identifier
-              skill:
-                type: string
-                description: skill identifier
-              description:
-                type: string
-                description: power's details
-              qualifiers:
-                type: array
-                description: array of qualifier to include in the power
-                items:
-                  $ref: "#/components/schemas/qualifier_input_data"
-              active:
-                type: boolean
-                description: indicates if a power is active or not
-                default: true
-    power_update_body:
-      description: data to update a power
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              description:
-                type: string
-                description: power's details
-              qualifiers:
-                type: array
-                description: array of qualifier to include in the power
-                items:
-                  $ref: "#/components/schemas/qualifier_input_data"
-              active:
-                type: boolean
-                description: indicates if a power is active or not
-                default: true
-    qualifier_values_body:
-      description: data to update a qualifier value
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              qualifiers:
-                type: array
-                items:
-                  $ref: "#/components/schemas/qualifier_input_data"
-    validation_create_body:
-      description: data schema to create a validation
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              user:
-                type: string
-                description: user's identifier to validate
-              skill:
-                type: string
-                description: skill's identifier to validate
-              qualifiers:
-                type: array
-                items:
-                  $ref: "#/components/schemas/qualifier_input_data"
-              comment:
-                type: string
-                description: validation's comment
-                example: my comment about the current validation
-    validation_update_body:
-      description: data schema to update a validation
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              qualifiers:
-                type: array
-                items:
-                  $ref: "#/components/schemas/qualifier_input_data"
-              comment:
-                type: string
-                description: validation's comment
-                example: my comment about the current validation
-    pin_create_body:
-      description: data schema to create a pin object
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              user:
-                type: string
-                description: user identifier
-              entity:
-                type: string
-                description: entity to pin to the user. Can be a skills profile (job or training)
-              type:
-                type: string
-                description: pin object's type. Can be either profile.pin_job or profile.pin_training
-              data:
-                type: object
-                description: pin object's data
-    pin_update_body:
-      description: data schema to update a pin object
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                description: pin object's data
+
   responses:
     invalid_schema_error:
       description: invalid schema.
@@ -1096,7 +744,6 @@ paths:
       tags:
         - Libraries
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -1118,8 +765,7 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - skill.library.read
+        - bearerAuth: []
     post:
       operationId: skills.libraries.create
       summary: creates libraries
@@ -1127,10 +773,32 @@ paths:
       tags:
         - Libraries
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/library_create_body"
+        description: library data to create a library
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: my name
+                description:
+                  type: string
+                  example: my description
+                color:
+                  $ref: "#/components/schemas/color"
+                logo:
+                  $ref: "#/components/schemas/logo"
+                image:
+                  $ref: "#/components/schemas/image"
+                family_tag:
+                  type: string
+                  description: library's family tag. used to group libraries in wider domains
+                  example: my domain
+              required:
+                - name
       responses:
         "200":
           description: the created skills library
@@ -1143,10 +811,9 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - skill.library
+        - bearerAuth: []
 
-  /libraries/{_key}:
+  /libraries/{id}:
     get:
       operationId: skills.libraries.get
       summary: gets a library by key
@@ -1154,8 +821,7 @@ paths:
       tags:
         - Libraries
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1173,8 +839,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.library.read
+        - bearerAuth: []
 
     patch:
       operationId: skills.libraries.update
@@ -1184,11 +849,31 @@ paths:
       tags:
         - Libraries
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/library_update_body"
+        description: library data to update a library
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: my name
+                description:
+                  type: string
+                  example: my description
+                color:
+                  $ref: "#/components/schemas/color"
+                logo:
+                  $ref: "#/components/schemas/logo"
+                image:
+                  $ref: "#/components/schemas/image"
+                family_tag:
+                  type: string
+                  description: library's family tag. used to group libraries in wider domains
+                  example: my domain
       responses:
         200:
           description: The updated **library** object.
@@ -1207,8 +892,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.library
+        - bearerAuth: []
     delete:
       operationId: skills.libraries.delete
       summary: deletes a library by key
@@ -1217,8 +901,7 @@ paths:
       tags:
         - Libraries
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1238,10 +921,9 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.library
+        - bearerAuth: []
 
-  /libraries/{_key}/subscribe:
+  /libraries/{id}/subscribe:
     post:
       operationId: skills.libraries.subscribe
       summary: subscribe to a library by key
@@ -1249,8 +931,7 @@ paths:
       tags:
         - Libraries
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1268,9 +949,8 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.library
-  /libraries/{_key}/unsubscribe:
+        - bearerAuth: []
+  /libraries/{id}/unsubscribe:
     post:
       operationId: skills.libraries.unsubscribe
       summary: unsubscribe to a library by key
@@ -1278,8 +958,7 @@ paths:
       tags:
         - Libraries
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1297,8 +976,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.library
+        - bearerAuth: []
 
   /skills:
     get:
@@ -1308,7 +986,6 @@ paths:
       tags:
         - Skills
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
         - $ref: "#/components/parameters/last_param"
         - $ref: "#/components/parameters/startDate_param"
@@ -1337,8 +1014,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.skill.read
+        - bearerAuth: []
     post:
       operationId: skills.skill.create
       summary: creates skills
@@ -1346,7 +1022,41 @@ paths:
       tags:
         - Skills
       requestBody:
-        $ref: "#/components/requestBodies/skill_create_body"
+        description: data to create a skill
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: my name
+                description:
+                  type: string
+                  example: my description
+                color:
+                  $ref: "#/components/schemas/color"
+                logo:
+                  $ref: "#/components/schemas/logo"
+                image:
+                  $ref: "#/components/schemas/image"
+                custom_fields:
+                  type: object
+                  description: any custom fields that defines the skill
+                parents:
+                  type: array
+                  items:
+                    type: string
+                    description: library or skill identifier
+                    example: LIB1
+                inherit_qualifiers:
+                  type: boolean
+                  description: indicates if the new skill should inherit qualifiers from its parents
+                powerable:
+                  type: boolean
+                  description: indicates if the new skill can be added by an user as a power.
+              required:
+                - name
       responses:
         "200":
           description: the created skill
@@ -1359,8 +1069,7 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - skill.skill
+        - bearerAuth: []
   /skills/search:
     get:
       operationId: skills.skill.search
@@ -1373,7 +1082,6 @@ paths:
           in: query
           schema:
             type: string
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1399,10 +1107,9 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.skill.read
+        - bearerAuth: []
 
-  /skills/{_key}:
+  /skills/{id}:
     get:
       operationId: skills.skill.get
       summary: gets a skill by key
@@ -1410,8 +1117,7 @@ paths:
       tags:
         - Skills
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
         - $ref: "#/components/parameters/use_externalId_param"
       responses:
@@ -1430,8 +1136,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.skill.read
+        - bearerAuth: []
 
     patch:
       operationId: skills.skill.update
@@ -1440,11 +1145,36 @@ paths:
       tags:
         - Skills
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/skill_update_body"
+        description: data to update a skill
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: my name
+                description:
+                  type: string
+                  example: my description
+                color:
+                  $ref: "#/components/schemas/color"
+                logo:
+                  $ref: "#/components/schemas/logo"
+                image:
+                  $ref: "#/components/schemas/image"
+                custom_fields:
+                  type: object
+                  description: any custom fields that defines the skill
+                inherit_qualifiers:
+                  type: boolean
+                  description: indicates if the new skill should inherit qualifiers from its parents
+                powerable:
+                  type: boolean
+                  description: indicates if the new skill can be added by an user as a power.
       responses:
         200:
           description: The updated **skill** object.
@@ -1463,8 +1193,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.skill
+        - bearerAuth: []
     delete:
       operationId: skills.skill.delete
       summary: deletes a skill by key
@@ -1472,8 +1201,7 @@ paths:
       tags:
         - Skills
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1493,10 +1221,9 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.skill
+        - bearerAuth: []
 
-  /skills/{_key}/qualifiers:
+  /skills/{id}/qualifiers:
     get:
       operationId: skills.skill.list_qualifiers
       summary: list qualifiers of a skill identified by key
@@ -1504,8 +1231,7 @@ paths:
       tags:
         - Skills
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1531,9 +1257,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.skill.read
-            - skill.qualifier.read
+        - bearerAuth: []
     post:
       operationId: skills.skill.add_qualifiers
       summary: add qualifiers to a skill identified by key
@@ -1541,11 +1265,21 @@ paths:
       tags:
         - Skills
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/skill_update_qualifiers_body"
+        description: data to update skill qualifier
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                qualifiers:
+                  description: list of qualifier's identifiers
+                  type: array
+                  items:
+                    type: string
+                    description: qualifier's identifier
       responses:
         200:
           description: A list of **qualifier** objects.
@@ -1570,9 +1304,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.skill
-            - skill.qualifier
+        - bearerAuth: []
     delete:
       operationId: skills.skill.remove_qualifiers
       summary: remove qualifiers from a skill identified by key
@@ -1580,8 +1312,7 @@ paths:
       tags:
         - Skills
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1607,19 +1338,15 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.skill
-            - skill.qualifier
-
+        - bearerAuth: []
   /qualifiers:
     get:
-      operationId: skills.qualifiers.list
+      operationId: qualifiers.list
       summary: list qualifiers
       description: returns a list of **qualifiers**.
       tags:
         - Qualifiers
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1645,16 +1372,46 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.qualifier.read
+        - bearerAuth: []
     post:
-      operationId: skills.qualifier.create
-      summary: creates qulaifier
+      operationId: qualifiers.create
+      summary: creates qualifier
       description: creates a new **qualifier**
       tags:
         - Qualifiers
       requestBody:
-        $ref: "#/components/requestBodies/qualifier_create_body"
+        description: create qualifier schema
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: my name
+                description:
+                  type: string
+                  example: my description
+                color:
+                  $ref: "#/components/schemas/color"
+                logo:
+                  $ref: "#/components/schemas/logo"
+                custom_fields:
+                  type: object
+                  description: any custom fields that defines the qualifier
+                field_type:
+                  type: string
+                  enum:
+                    - TEXT
+                    - NUMERIC
+                    - BOOLEAN
+                    - MULTIVALUES
+                    - EXPIRATION
+                  description: field type.
+                fields:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/qualifier_field"
       responses:
         "200":
           description: the created skill
@@ -1667,19 +1424,17 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - skill.skill
+        - bearerAuth: []
 
-  /qualifiers/{_key}:
+  /qualifiers/{id}:
     get:
-      operationId: skills.qualifier.get
+      operationId: qualifiers.get
       summary: gets a qualifier by key
       description: returns a **qualifier** by key.
       tags:
         - Qualifiers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1697,21 +1452,37 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.qualifier.read
+        - bearerAuth: []
 
     patch:
-      operationId: skills.qualifier.update
+      operationId: qualifiers.update
       summary: updates a qualifier by key
       description: returns the updated **qualifier**.
       tags:
         - Qualifiers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/qualifier_update_body"
+        description: update qualifier schema
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: my name
+                description:
+                  type: string
+                  example: my description
+                color:
+                  $ref: "#/components/schemas/color"
+                logo:
+                  $ref: "#/components/schemas/logo"
+                custom_fields:
+                  type: object
+                  description: any custom fields that defines the qualifier
       responses:
         200:
           description: The updated **qualifier** object.
@@ -1730,17 +1501,15 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.qualifier
+        - bearerAuth: []
     delete:
-      operationId: skills.qualifier.delete
+      operationId: qualifiers.delete
       summary: deletes a qualifier by key
       description: returns the deleted **qualifier**.
       tags:
         - Qualifiers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1760,9 +1529,8 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.qualifier
-  /qualifiers/{_key}/skills:
+        - bearerAuth: []
+  /qualifiers/{id}/skills:
     get:
       operationId: skills.qualifier.list_skills
       summary: lists skills associated to the qualifier identified by key
@@ -1770,8 +1538,7 @@ paths:
       tags:
         - Qualifiers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1797,10 +1564,8 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.qualifier.read
-            - skill.skill.read
-  /qualifiers/{_key}/powers:
+        - bearerAuth: []
+  /qualifiers/{id}/powers:
     get:
       operationId: skills.qualifier.list_powers
       summary: lists powers associated to the qualifier identified by key
@@ -1808,8 +1573,7 @@ paths:
       tags:
         - Qualifiers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1835,10 +1599,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.qualifier.read
-            - power.read
-
+        - bearerAuth: []
   /profiles:
     get:
       operationId: skills.profile.list
@@ -1847,7 +1608,6 @@ paths:
       tags:
         - Jobs
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -1873,8 +1633,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.profile.read
+        - bearerAuth: []
     post:
       operationId: skills.profile.create
       summary: creates skills profile
@@ -1882,7 +1641,29 @@ paths:
       tags:
         - Jobs
       requestBody:
-        $ref: "#/components/requestBodies/skill_profile_create_body"
+        description: data to create a skills profile object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: my name
+                description:
+                  type: string
+                  example: my description
+                color:
+                  $ref: "#/components/schemas/color"
+                logo:
+                  $ref: "#/components/schemas/logo"
+                custom_fields:
+                  type: object
+                  description: any custom fields that defines the qualifier
+                pattern:
+                  $ref: "#/components/schemas/search_pattern"
+              required:
+                - name
       responses:
         "200":
           description: the created skill profile
@@ -1895,8 +1676,7 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - skill.profile
+        - bearerAuth: []
   /profiles/matching:
     get:
       operationId: skills.profile.matching
@@ -1905,8 +1685,7 @@ paths:
       tags:
         - Jobs
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
         - name: user
           description: requested user identifier. if not provided, execute matching against the current user
@@ -1943,9 +1722,8 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.profile.read
-  /profiles/{_key}:
+        - bearerAuth: []
+  /profiles/{id}:
     get:
       operationId: skills.profile.get
       summary: gets a skills profile  by key
@@ -1953,8 +1731,7 @@ paths:
       tags:
         - Jobs
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
         - $ref: "#/components/parameters/use_externalId_param"
       responses:
@@ -1973,8 +1750,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.profile.read
+        - bearerAuth: []
 
     patch:
       operationId: skills.profile.update
@@ -1983,11 +1759,30 @@ paths:
       tags:
         - Jobs
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/skill_profile_update_body"
+        description: data to update a skills profile object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: my name
+                description:
+                  type: string
+                  example: my description
+                color:
+                  $ref: "#/components/schemas/color"
+                logo:
+                  $ref: "#/components/schemas/logo"
+                custom_fields:
+                  type: object
+                  description: any custom fields that defines the qualifier
+                pattern:
+                  $ref: "#/components/schemas/search_pattern"
       responses:
         200:
           description: The updated **skills profile** object.
@@ -2006,8 +1801,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.profile
+        - bearerAuth: []
     delete:
       operationId: skills.profile.delete
       summary: deletes a skills profile by key
@@ -2015,8 +1809,7 @@ paths:
       tags:
         - Jobs
       parameters:
-        - $ref: "#/components/parameters/auth_param"
-        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2036,8 +1829,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.profile
+        - bearerAuth: []
 
   /search:
     post:
@@ -2047,10 +1839,29 @@ paths:
       tags:
         - Search
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/search_query_body"
+        description: search query
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kind:
+                  description: kind of resource to search on.
+                  type: string
+                  enum:
+                    - resource
+                suggests:
+                  description: include suggestions or not
+                  type: boolean
+                  default: false
+                must:
+                  $ref: "#/components/schemas/must_query_condition"
+                should:
+                  $ref: "#/components/schemas/should_query_condition"
+                filters:
+                  $ref: "#/components/schemas/filter_query_condition"
       responses:
         "200":
           description: a list of **resource** objects that match the search query.
@@ -2072,8 +1883,7 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - search.search
+        - bearerAuth: []
 
   /powers:
     get:
@@ -2083,7 +1893,6 @@ paths:
       tags:
         - Powers
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
         - $ref: "#/components/parameters/last_param"
         - $ref: "#/components/parameters/startDate_param"
@@ -2116,8 +1925,7 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - power.read
+        - bearerAuth: []
     post:
       operationId: powers.create
       summary: create power for an user
@@ -2125,10 +1933,35 @@ paths:
       tags:
         - Powers
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/power_create_body"
+        description: data to create a power
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - resource
+                - skill
+              properties:
+                resource:
+                  type: string
+                  description: user identifier
+                skill:
+                  type: string
+                  description: skill identifier
+                description:
+                  type: string
+                  description: power's details
+                qualifiers:
+                  type: array
+                  description: array of qualifier to include in the power
+                  items:
+                    $ref: "#/components/schemas/qualifier_input_data"
+                active:
+                  type: boolean
+                  description: indicates if a power is active or not
+                  default: true
       responses:
         "200":
           description: return the created **power** object for the user
@@ -2141,9 +1974,8 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - power
-  /powers/{_key}:
+        - bearerAuth: []
+  /powers/{id}:
     get:
       operationId: powers.get
       summary: gets a power  by key
@@ -2151,8 +1983,7 @@ paths:
       tags:
         - Powers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2170,8 +2001,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - power.read
+        - bearerAuth: []
 
     patch:
       operationId: powers.update
@@ -2180,11 +2010,27 @@ paths:
       tags:
         - Powers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/power_update_body"
+        description: data to update a power
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  description: power's details
+                qualifiers:
+                  type: array
+                  description: array of qualifier to include in the power
+                  items:
+                    $ref: "#/components/schemas/qualifier_input_data"
+                active:
+                  type: boolean
+                  description: indicates if a power is active or not
+                  default: true
       responses:
         200:
           description: The updated **power** object.
@@ -2203,8 +2049,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - power
+        - bearerAuth: []
     delete:
       operationId: powers.delete
       summary: deletes a power by key
@@ -2212,8 +2057,7 @@ paths:
       tags:
         - Powers
       parameters:
-        - $ref: "#/components/parameters/auth_param"
-        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2233,10 +2077,9 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - power
+        - bearerAuth: []
 
-  /powers/{_key}/qualifiers:
+  /powers/{id}/qualifiers:
     get:
       operationId: powers.list_qualifiers
       summary: lists qualifiers for a power identified by key
@@ -2244,8 +2087,7 @@ paths:
       tags:
         - Powers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2263,9 +2105,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - power.read
-            - skill.qualifier.read
+        - bearerAuth: []
     post:
       operationId: powers.add_qualifiers
       summary: adds qualifiers for a power identified by key
@@ -2273,11 +2113,19 @@ paths:
       tags:
         - Powers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/qualifier_values_body"
+        description: data to update a qualifier value
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                qualifiers:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/qualifier_input_data"
       responses:
         200:
           description: power object identified by key.
@@ -2294,9 +2142,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - power
-            - skill.qualifier
+        - bearerAuth: []
     delete:
       operationId: powers.remove_qualifiers
       summary: removes qualifiers for a power identified by key
@@ -2304,8 +2150,7 @@ paths:
       tags:
         - Powers
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2323,10 +2168,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - power
-            - skill.qualifier
-
+        - bearerAuth: []
   /skill.validations:
     get:
       operationId: skills.validations.list
@@ -2335,7 +2177,6 @@ paths:
       tags:
         - Validations
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
         - name: user
           description: user identifier. if not provided, returns validations of the current user
@@ -2372,8 +2213,7 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - skill.validation.read
+        - bearerAuth: []
     post:
       operationId: skills.validation.create
       summary: create a validation for an user
@@ -2381,10 +2221,28 @@ paths:
       tags:
         - Validations
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/validation_create_body"
+        description: data schema to create a validation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  description: user's identifier to validate
+                skill:
+                  type: string
+                  description: skill's identifier to validate
+                qualifiers:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/qualifier_input_data"
+                comment:
+                  type: string
+                  description: validation's comment
+                  example: my comment about the current validation
       responses:
         "200":
           description: return the created **validation** object for the user
@@ -2397,9 +2255,8 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - skill.validation
-  /skill.validations/{_key}:
+        - bearerAuth: []
+  /skill.validations/{id}:
     get:
       operationId: skills.validations.get
       summary: gets a validation by key
@@ -2407,8 +2264,7 @@ paths:
       tags:
         - Validations
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2426,8 +2282,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.validation.read
+        - bearerAuth: []
 
     patch:
       operationId: skills.validations.update
@@ -2436,11 +2291,23 @@ paths:
       tags:
         - Validations
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/validation_update_body"
+        description: data schema to update a validation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                qualifiers:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/qualifier_input_data"
+                comment:
+                  type: string
+                  description: validation's comment
+                  example: my comment about the current validation
       responses:
         200:
           description: The updated **validation** object.
@@ -2459,8 +2326,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.validation
+        - bearerAuth: []
     delete:
       operationId: skills.validations.delete
       summary: deletes a validation by key
@@ -2468,8 +2334,7 @@ paths:
       tags:
         - Validations
       parameters:
-        - $ref: "#/components/parameters/auth_param"
-        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2489,8 +2354,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - skill.validation
+        - bearerAuth: []
   /pins:
     get:
       operationId: pins.list
@@ -2499,7 +2363,6 @@ paths:
       tags:
         - Pins
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
         - name: user
           description: user identifier. if not provided, returns pins of the current user
@@ -2536,8 +2399,7 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - pin.read
+        - bearerAuth: []
     post:
       operationId: pins.create
       summary: create a pin for an user
@@ -2545,10 +2407,26 @@ paths:
       tags:
         - Pins
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/pin_create_body"
+        description: data schema to create a pin object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  description: user identifier
+                entity:
+                  type: string
+                  description: entity to pin to the user. Can be a skills profile (job or training)
+                type:
+                  type: string
+                  description: pin object's type. Can be either profile.pin_job or profile.pin_training
+                data:
+                  type: object
+                  description: pin object's data
       responses:
         "200":
           description: return the created **pin** object for the user
@@ -2561,9 +2439,8 @@ paths:
         "403":
           $ref: "#/components/responses/forbidden_error"
       security:
-        - elamp_auth:
-            - pin
-  /pins/{_key}:
+        - bearerAuth: []
+  /pins/{id}:
     get:
       operationId: pins.get
       summary: gets a pin by key
@@ -2571,8 +2448,7 @@ paths:
       tags:
         - Pins
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2590,8 +2466,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - pin.read
+        - bearerAuth: []
 
     patch:
       operationId: pins.update
@@ -2600,11 +2475,18 @@ paths:
       tags:
         - Pins
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       requestBody:
-        $ref: "#/components/requestBodies/pin_update_body"
+        description: data schema to update a pin object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  description: pin object's data
       responses:
         200:
           description: The updated **pin** object.
@@ -2623,8 +2505,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - pin
+        - bearerAuth: []
     delete:
       operationId: pins.delete
       summary: deletes a pin by key
@@ -2632,8 +2513,7 @@ paths:
       tags:
         - Pins
       parameters:
-        - $ref: "#/components/parameters/auth_param"
-        - $ref: "#/components/parameters/key_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         200:
@@ -2653,8 +2533,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - pin
+        - bearerAuth: []
   /resources/{user_id}/powers:
     get:
       operationId: resources.powers.list
@@ -2664,7 +2543,6 @@ paths:
         - Resources
       parameters:
         - $ref: "#/components/parameters/user_id_param"
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -2689,8 +2567,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - power.read
+        - bearerAuth: []
   /resources/{user_id}/skill.validations:
     get:
       operationId: resources.skill_validations.list
@@ -2700,7 +2577,6 @@ paths:
         - Resources
       parameters:
         - $ref: "#/components/parameters/user_id_param"
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -2725,8 +2601,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - validation.read
+        - bearerAuth: []
   /resources/{user_id}/pins/jobs:
     get:
       operationId: resources.job_pins.list
@@ -2736,7 +2611,6 @@ paths:
         - Resources
       parameters:
         - $ref: "#/components/parameters/user_id_param"
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -2761,9 +2635,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - profile.read
-            - pin.read
+        - bearerAuth: []
   /resources/{user_id}/pins/trainings:
     get:
       operationId: resources.training_pins.list
@@ -2773,7 +2645,6 @@ paths:
         - Resources
       parameters:
         - $ref: "#/components/parameters/user_id_param"
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -2798,10 +2669,7 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - profile.read
-            - pin.read
-
+        - bearerAuth: []
   /users:
     get:
       operationId: iam.users.list
@@ -2810,7 +2678,6 @@ paths:
       tags:
         - Users
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -2835,19 +2702,73 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - user.read
-
-  /users/{_key}:
-    get:
-      operationId: iam.users.get
-      summary: get user by id
+        - bearerAuth: []
+    post:
+      operationId: iam.users.create
+      summary: creates an user
       description: returns an **user** object.
       tags:
         - Users
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/fields_param"
+      requestBody:
+        description: create an user schema
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                externalId:
+                  type: string
+                  description: external identifier (usually identifier from an external system)
+                email:
+                  type: string
+                  description: user email address
+                givenName:
+                  type: string
+                familyName:
+                  type: string
+                image:
+                  $ref: "#/components/schemas/image"
+                title:
+                  type: string
+                healdine:
+                  type: string
+                phoneNumber:
+                  type: string
+                  description: business phone number
+                locale:
+                  type: string
+                  description: user's language
+              required:
+                - email
+                - givenName
+                - familyName
+      responses:
+        "200":
+          description: a single **user** object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
+        default:
+          $ref: "#/components/responses/unexpected_error"
+      security:
+        - bearerAuth: []
+
+  /users/{id}:
+    get:
+      operationId: iam.users.get
+      summary: gets user by id
+      description: returns an **user** object.
+      tags:
+        - Users
+      parameters:
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -2863,9 +2784,84 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - user.read
-
+        - bearerAuth: []
+    patch:
+      operationId: iam.users.update
+      summary: updates an user by id
+      description: returns an **user** object.
+      tags:
+        - Users
+      parameters:
+        - $ref: "#/components/parameters/id_param"
+        - $ref: "#/components/parameters/fields_param"
+      requestBody:
+        description: update an user schema
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                externalId:
+                  type: string
+                  description: external identifier (usually identifier from an external system)
+                email:
+                  type: string
+                  description: user email address
+                givenName:
+                  type: string
+                familyName:
+                  type: string
+                image:
+                  $ref: "#/components/schemas/image"
+                title:
+                  type: string
+                healdine:
+                  type: string
+                phoneNumber:
+                  type: string
+                  description: business phone number
+                locale:
+                  type: string
+                  description: user's language
+      responses:
+        "200":
+          description: a single **user** object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
+        default:
+          $ref: "#/components/responses/unexpected_error"
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: iam.users.delete
+      summary: deletes an user by id
+      description: returns an **user** object.
+      tags:
+        - Users
+      parameters:
+        - $ref: "#/components/parameters/id_param"
+        - $ref: "#/components/parameters/fields_param"
+      responses:
+        "200":
+          description: a single **user** object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
+        default:
+          $ref: "#/components/responses/unexpected_error"
+      security:
+        - bearerAuth: []
   /groups:
     get:
       operationId: iam.groups.list
@@ -2874,7 +2870,6 @@ paths:
       tags:
         - Groups
       parameters:
-        - $ref: "#/components/parameters/auth_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -2899,19 +2894,66 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - group.read
+        - bearerAuth: []
+    post:
+      operationId: iam.groups.create
+      summary: creates a group
+      description: returns a **group** object.
+      tags:
+        - Groups
+      parameters:
+        - $ref: "#/components/parameters/fields_param"
+      requestBody:
+        description: create group schema
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                externalId:
+                  type: string
+                  description: external identifier (usually identifier from an external system)
+                  example: "23909"
+                name:
+                  type: string
+                  example: group's name
+                description:
+                  type: string
+                  example: group's description
+                code:
+                  type: string
+                  example: "GRP1"
+                parent:
+                  type: string
+                  description: parent group's identifier (default to root if parent is not provided)
+                  example: "G1234"
+              required:
+                - name
+      responses:
+        "200":
+          description: a single **group** object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/group"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
+        default:
+          $ref: "#/components/responses/unexpected_error"
+      security:
+        - bearerAuth: []
 
-  /groups/{_key}:
+  /groups/{id}:
     get:
       operationId: iam.groups.get
-      summary: get group by id
+      summary: gets group by id
       description: returns a single **group** object.
       tags:
         - Groups
       parameters:
-        - $ref: "#/components/parameters/key_param"
-        - $ref: "#/components/parameters/auth_param"
+        - $ref: "#/components/parameters/id_param"
         - $ref: "#/components/parameters/fields_param"
       responses:
         "200":
@@ -2927,5 +2969,76 @@ paths:
         default:
           $ref: "#/components/responses/unexpected_error"
       security:
-        - elamp_auth:
-            - group.read
+        - bearerAuth: []
+    patch:
+      operationId: iam.groups.update
+      summary: updates a group by id
+      description: returns an **group** object.
+      tags:
+        - Groups
+      parameters:
+        - $ref: "#/components/parameters/id_param"
+        - $ref: "#/components/parameters/fields_param"
+      requestBody:
+        description: update group schema
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                externalId:
+                  type: string
+                  description: external identifier (usually identifier from an external system)
+                  example: "23909"
+                name:
+                  type: string
+                  example: group's name
+                description:
+                  type: string
+                  example: group's description
+                code:
+                  type: string
+                  example: "GRP1"
+                parent:
+                  type: string
+                  description: parent group's identifier (default to root if parent is not provided)
+                  example: "G1234"
+      responses:
+        "200":
+          description: a single **group** object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/group"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
+        default:
+          $ref: "#/components/responses/unexpected_error"
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: iam.groups.delete
+      summary: deletes a group by id
+      description: returns a **group** object.
+      tags:
+        - Groups
+      parameters:
+        - $ref: "#/components/parameters/id_param"
+        - $ref: "#/components/parameters/fields_param"
+      responses:
+        "200":
+          description: a single **group** object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/group"
+        "401":
+          $ref: "#/components/responses/not_authed_error"
+        "403":
+          $ref: "#/components/responses/forbidden_error"
+        default:
+          $ref: "#/components/responses/unexpected_error"
+      security:
+        - bearerAuth: []
