@@ -13,7 +13,10 @@
     "termsOfService": "https://www.elamp.fr/",
     "title": "eLamp Web API",
     "version": "1.0.0",
-    "x-logo": "https://d13ohmdfxbevj9.cloudfront.net/assets/img/LOGO-SLOGAN-COLOR-ALPHA-SMALL.png"
+    "x-logo": {
+      "altText": "eLamp Web API",
+      "url": "https://d13ohmdfxbevj9.cloudfront.net/assets/img/eLampAPI.png"
+    }
   },
   "servers": [
     {
@@ -24,9 +27,6 @@
     "/groups": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -67,27 +67,98 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "group.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "IAM"
+          "Groups"
         ],
         "description": "returns a list of **group** objects.",
         "operationId": "iam.groups.list",
         "summary": "lists groups"
-      }
-    },
-    "/groups/{_key}": {
-      "get": {
+      },
+      "post": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group"
+                }
+              }
+            },
+            "description": "a single **group** object"
           },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
           {
-            "$ref": "#/components/parameters/auth_param"
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Groups"
+        ],
+        "description": "returns a **group** object.",
+        "operationId": "iam.groups.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "code": {
+                    "example": "GRP1",
+                    "type": "string"
+                  },
+                  "description": {
+                    "example": "group's description",
+                    "type": "string"
+                  },
+                  "externalId": {
+                    "description": "external identifier (usually identifier from an external system)",
+                    "example": "23909",
+                    "type": "string"
+                  },
+                  "name": {
+                    "example": "group's name",
+                    "type": "string"
+                  },
+                  "parent": {
+                    "description": "parent group's identifier (default to root if parent is not provided)",
+                    "example": "G1234",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "create group schema"
+        },
+        "summary": "creates a group"
+      }
+    },
+    "/groups/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -116,25 +187,138 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "group.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "IAM"
+          "Groups"
+        ],
+        "description": "returns a **group** object.",
+        "operationId": "iam.groups.delete",
+        "summary": "deletes a group by id"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group"
+                }
+              }
+            },
+            "description": "a single **group** object"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Groups"
         ],
         "description": "returns a single **group** object.",
         "operationId": "iam.groups.get",
-        "summary": "get group by id"
+        "summary": "gets group by id"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group"
+                }
+              }
+            },
+            "description": "a single **group** object"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Groups"
+        ],
+        "description": "returns an **group** object.",
+        "operationId": "iam.groups.update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "code": {
+                    "example": "GRP1",
+                    "type": "string"
+                  },
+                  "description": {
+                    "example": "group's description",
+                    "type": "string"
+                  },
+                  "externalId": {
+                    "description": "external identifier (usually identifier from an external system)",
+                    "example": "23909",
+                    "type": "string"
+                  },
+                  "name": {
+                    "example": "group's name",
+                    "type": "string"
+                  },
+                  "parent": {
+                    "description": "parent group's identifier (default to root if parent is not provided)",
+                    "example": "G1234",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "update group schema"
+        },
+        "summary": "updates a group by id"
       }
     },
     "/libraries": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -171,13 +355,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.library.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Libraries"
         ],
         "description": "returns a list of available **skills libraries**",
         "operationId": "skills.libraries.list",
@@ -185,9 +367,6 @@
       },
       "post": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -212,30 +391,59 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.library"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Libraries"
         ],
         "description": "creates a new **skills library**",
         "operationId": "skills.libraries.create",
         "requestBody": {
-          "$ref": "#/components/requestBodies/library_create_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "$ref": "#/components/schemas/color"
+                  },
+                  "description": {
+                    "example": "my description",
+                    "type": "string"
+                  },
+                  "family_tag": {
+                    "description": "library's family tag. used to group libraries in wider domains",
+                    "example": "my domain",
+                    "type": "string"
+                  },
+                  "image": {
+                    "$ref": "#/components/schemas/image"
+                  },
+                  "logo": {
+                    "$ref": "#/components/schemas/logo"
+                  },
+                  "name": {
+                    "example": "my name",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "library data to create a library"
         },
         "summary": "creates libraries"
       }
     },
-    "/libraries/{_key}": {
+    "/libraries/{id}": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -270,13 +478,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.library"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Libraries"
         ],
         "description": "returns the deleted **library**.\n",
         "operationId": "skills.libraries.delete",
@@ -285,10 +491,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -320,13 +523,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.library.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Libraries"
         ],
         "description": "returns a **skills library** by key.",
         "operationId": "skills.libraries.get",
@@ -335,10 +536,7 @@
       "patch": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -373,30 +571,56 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.library"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Libraries"
         ],
         "description": "returns the updated **library**.\n",
         "operationId": "skills.libraries.update",
         "requestBody": {
-          "$ref": "#/components/requestBodies/library_update_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "$ref": "#/components/schemas/color"
+                  },
+                  "description": {
+                    "example": "my description",
+                    "type": "string"
+                  },
+                  "family_tag": {
+                    "description": "library's family tag. used to group libraries in wider domains",
+                    "example": "my domain",
+                    "type": "string"
+                  },
+                  "image": {
+                    "$ref": "#/components/schemas/image"
+                  },
+                  "logo": {
+                    "$ref": "#/components/schemas/logo"
+                  },
+                  "name": {
+                    "example": "my name",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "library data to update a library"
         },
         "summary": "updates a library by key"
       }
     },
-    "/libraries/{_key}/subscribe": {
+    "/libraries/{id}/subscribe": {
       "post": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -428,27 +652,22 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.library"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Libraries"
         ],
         "description": "returns the subscribed **skills library**.",
         "operationId": "skills.libraries.subscribe",
         "summary": "subscribe to a library by key"
       }
     },
-    "/libraries/{_key}/unsubscribe": {
+    "/libraries/{id}/unsubscribe": {
       "post": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -480,13 +699,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.library"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Libraries"
         ],
         "description": "returns the unsubscribed **skills library**.",
         "operationId": "skills.libraries.unsubscribe",
@@ -496,9 +713,6 @@
     "/pins": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           },
@@ -556,13 +770,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "pin.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Pins"
         ],
         "description": "returns a list of **pin** objects for an user",
         "operationId": "pins.list",
@@ -570,9 +782,6 @@
       },
       "post": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -597,30 +806,50 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "pin"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Pins"
         ],
         "description": "creates a **pin** object for an user",
         "operationId": "pins.create",
         "requestBody": {
-          "$ref": "#/components/requestBodies/pin_create_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "data": {
+                    "description": "pin object's data",
+                    "type": "object"
+                  },
+                  "entity": {
+                    "description": "entity to pin to the user. Can be a skills profile (job or training)",
+                    "type": "string"
+                  },
+                  "type": {
+                    "description": "pin object's type. Can be either profile.pin_job or profile.pin_training",
+                    "type": "string"
+                  },
+                  "user": {
+                    "description": "user identifier",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data schema to create a pin object"
         },
         "summary": "create a pin for an user"
       }
     },
-    "/pins/{_key}": {
+    "/pins/{id}": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/auth_param"
-          },
-          {
-            "$ref": "#/components/parameters/key_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -655,13 +884,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "pin"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Pins"
         ],
         "description": "returns the deleted **pin**.",
         "operationId": "pins.delete",
@@ -670,10 +897,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -705,13 +929,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "pin.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Pins"
         ],
         "description": "returns a **pin** object by key.",
         "operationId": "pins.get",
@@ -720,10 +942,7 @@
       "patch": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -758,18 +977,29 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "pin"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Pins"
         ],
         "description": "returns the updated **pin**.",
         "operationId": "pins.update",
         "requestBody": {
-          "$ref": "#/components/requestBodies/pin_update_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "data": {
+                    "description": "pin object's data",
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data schema to update a pin object"
         },
         "summary": "updates a pin by key"
       }
@@ -777,9 +1007,6 @@
     "/powers": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           },
@@ -836,13 +1063,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Powers"
         ],
         "description": "returns a list of **power** objects for an user",
         "operationId": "powers.list",
@@ -850,9 +1075,6 @@
       },
       "post": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -877,30 +1099,62 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Powers"
         ],
         "description": "creates a **power** object for an user",
         "operationId": "powers.create",
         "requestBody": {
-          "$ref": "#/components/requestBodies/power_create_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "active": {
+                    "default": true,
+                    "description": "indicates if a power is active or not",
+                    "type": "boolean"
+                  },
+                  "description": {
+                    "description": "power's details",
+                    "type": "string"
+                  },
+                  "qualifiers": {
+                    "description": "array of qualifier to include in the power",
+                    "items": {
+                      "$ref": "#/components/schemas/qualifier_input_data"
+                    },
+                    "type": "array"
+                  },
+                  "resource": {
+                    "description": "user identifier",
+                    "type": "string"
+                  },
+                  "skill": {
+                    "description": "skill identifier",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "resource",
+                  "skill"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "data to create a power"
         },
         "summary": "create power for an user"
       }
     },
-    "/powers/{_key}": {
+    "/powers/{id}": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/auth_param"
-          },
-          {
-            "$ref": "#/components/parameters/key_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -935,13 +1189,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Powers"
         ],
         "description": "returns the deleted **power**.",
         "operationId": "powers.delete",
@@ -950,10 +1202,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -985,13 +1234,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Powers"
         ],
         "description": "returns a **power** object by key.",
         "operationId": "powers.get",
@@ -1000,10 +1247,7 @@
       "patch": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1038,30 +1282,50 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Powers"
         ],
         "description": "returns the updated **power**.",
         "operationId": "powers.update",
         "requestBody": {
-          "$ref": "#/components/requestBodies/power_update_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "active": {
+                    "default": true,
+                    "description": "indicates if a power is active or not",
+                    "type": "boolean"
+                  },
+                  "description": {
+                    "description": "power's details",
+                    "type": "string"
+                  },
+                  "qualifiers": {
+                    "description": "array of qualifier to include in the power",
+                    "items": {
+                      "$ref": "#/components/schemas/qualifier_input_data"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data to update a power"
         },
         "summary": "updates a power by key"
       }
     },
-    "/powers/{_key}/qualifiers": {
+    "/powers/{id}/qualifiers": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1093,14 +1357,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power",
-              "skill.qualifier"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Powers"
         ],
         "description": "returns the **power** object identified by key.",
         "operationId": "powers.remove_qualifiers",
@@ -1109,10 +1370,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1144,14 +1402,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power.read",
-              "skill.qualifier.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Powers"
         ],
         "description": "returns a list of **qualifier with value** object for the power identified by key.",
         "operationId": "powers.list_qualifiers",
@@ -1160,10 +1415,7 @@
       "post": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1195,19 +1447,31 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power",
-              "skill.qualifier"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Powers"
         ],
         "description": "returns the **power** object identified by key.",
         "operationId": "powers.add_qualifiers",
         "requestBody": {
-          "$ref": "#/components/requestBodies/qualifier_values_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "qualifiers": {
+                    "items": {
+                      "$ref": "#/components/schemas/qualifier_input_data"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data to update a qualifier value"
         },
         "summary": "adds qualifiers for a power identified by key"
       }
@@ -1215,9 +1479,6 @@
     "/profiles": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -1260,13 +1521,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.profile.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Jobs"
         ],
         "description": "returns a list of **profiles**.",
         "operationId": "skills.profile.list",
@@ -1293,18 +1552,49 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.profile"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Jobs"
         ],
         "description": "creates a new **skills profile**",
         "operationId": "skills.profile.create",
         "requestBody": {
-          "$ref": "#/components/requestBodies/skill_profile_create_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "$ref": "#/components/schemas/color"
+                  },
+                  "custom_fields": {
+                    "description": "any custom fields that defines the qualifier",
+                    "type": "object"
+                  },
+                  "description": {
+                    "example": "my description",
+                    "type": "string"
+                  },
+                  "logo": {
+                    "$ref": "#/components/schemas/logo"
+                  },
+                  "name": {
+                    "example": "my name",
+                    "type": "string"
+                  },
+                  "pattern": {
+                    "$ref": "#/components/schemas/search_pattern"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "data to create a skills profile object"
         },
         "summary": "creates skills profile"
       }
@@ -1313,10 +1603,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1381,27 +1668,22 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.profile.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Jobs"
         ],
         "description": "returns a list of **profiles** that match with an user.",
         "operationId": "skills.profile.matching",
         "summary": "list profiles that match with an user"
       }
     },
-    "/profiles/{_key}": {
+    "/profiles/{id}": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/auth_param"
-          },
-          {
-            "$ref": "#/components/parameters/key_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1436,13 +1718,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.profile"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Jobs"
         ],
         "description": "returns the deleted **skills profile**.",
         "operationId": "skills.profile.delete",
@@ -1451,10 +1731,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1489,13 +1766,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.profile.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Jobs"
         ],
         "description": "returns a **skills profile** by key.",
         "operationId": "skills.profile.get",
@@ -1504,10 +1779,7 @@
       "patch": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1542,18 +1814,46 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.profile"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Jobs"
         ],
         "description": "returns the updated **skills profile**.",
         "operationId": "skills.profile.update",
         "requestBody": {
-          "$ref": "#/components/requestBodies/skill_profile_update_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "$ref": "#/components/schemas/color"
+                  },
+                  "custom_fields": {
+                    "description": "any custom fields that defines the qualifier",
+                    "type": "object"
+                  },
+                  "description": {
+                    "example": "my description",
+                    "type": "string"
+                  },
+                  "logo": {
+                    "$ref": "#/components/schemas/logo"
+                  },
+                  "name": {
+                    "example": "my name",
+                    "type": "string"
+                  },
+                  "pattern": {
+                    "$ref": "#/components/schemas/search_pattern"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data to update a skills profile object"
         },
         "summary": "updates a skills profile by key"
       }
@@ -1561,9 +1861,6 @@
     "/qualifiers": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -1606,16 +1903,14 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.qualifier.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Qualifiers"
         ],
         "description": "returns a list of **qualifiers**.",
-        "operationId": "skills.qualifiers.list",
+        "operationId": "qualifiers.list",
         "summary": "list qualifiers"
       },
       "post": {
@@ -1639,30 +1934,69 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Qualifiers"
         ],
         "description": "creates a new **qualifier**",
-        "operationId": "skills.qualifier.create",
+        "operationId": "qualifiers.create",
         "requestBody": {
-          "$ref": "#/components/requestBodies/qualifier_create_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "$ref": "#/components/schemas/color"
+                  },
+                  "custom_fields": {
+                    "description": "any custom fields that defines the qualifier",
+                    "type": "object"
+                  },
+                  "description": {
+                    "example": "my description",
+                    "type": "string"
+                  },
+                  "field_type": {
+                    "description": "field type.",
+                    "enum": [
+                      "TEXT",
+                      "NUMERIC",
+                      "BOOLEAN",
+                      "MULTIVALUES",
+                      "EXPIRATION"
+                    ],
+                    "type": "string"
+                  },
+                  "fields": {
+                    "items": {
+                      "$ref": "#/components/schemas/qualifier_field"
+                    },
+                    "type": "array"
+                  },
+                  "logo": {
+                    "$ref": "#/components/schemas/logo"
+                  },
+                  "name": {
+                    "example": "my name",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "create qualifier schema"
         },
-        "summary": "creates qulaifier"
+        "summary": "creates qualifier"
       }
     },
-    "/qualifiers/{_key}": {
+    "/qualifiers/{id}": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1697,25 +2031,20 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.qualifier"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Qualifiers"
         ],
         "description": "returns the deleted **qualifier**.",
-        "operationId": "skills.qualifier.delete",
+        "operationId": "qualifiers.delete",
         "summary": "deletes a qualifier by key"
       },
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1747,25 +2076,20 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.qualifier.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Qualifiers"
         ],
         "description": "returns a **qualifier** by key.",
-        "operationId": "skills.qualifier.get",
+        "operationId": "qualifiers.get",
         "summary": "gets a qualifier by key"
       },
       "patch": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1800,30 +2124,52 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.qualifier"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Qualifiers"
         ],
         "description": "returns the updated **qualifier**.",
-        "operationId": "skills.qualifier.update",
+        "operationId": "qualifiers.update",
         "requestBody": {
-          "$ref": "#/components/requestBodies/qualifier_update_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "$ref": "#/components/schemas/color"
+                  },
+                  "custom_fields": {
+                    "description": "any custom fields that defines the qualifier",
+                    "type": "object"
+                  },
+                  "description": {
+                    "example": "my description",
+                    "type": "string"
+                  },
+                  "logo": {
+                    "$ref": "#/components/schemas/logo"
+                  },
+                  "name": {
+                    "example": "my name",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "update qualifier schema"
         },
         "summary": "updates a qualifier by key"
       }
     },
-    "/qualifiers/{_key}/powers": {
+    "/qualifiers/{id}/powers": {
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1867,28 +2213,22 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.qualifier.read",
-              "power.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Qualifiers"
         ],
         "description": "returns a list of **powers** associated to the qualifier identified by key.",
         "operationId": "skills.qualifier.list_powers",
         "summary": "lists powers associated to the qualifier identified by key"
       }
     },
-    "/qualifiers/{_key}/skills": {
+    "/qualifiers/{id}/skills": {
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1932,14 +2272,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.qualifier.read",
-              "skill.skill.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Qualifiers"
         ],
         "description": "returns a list of **skills** associated to the qualifier identified by key.",
         "operationId": "skills.qualifier.list_skills",
@@ -1951,9 +2288,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/user_id_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -1995,14 +2329,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "profile.read",
-              "pin.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Resources"
         ],
         "description": "returns a list of **pinned jobs** object.",
         "operationId": "resources.job_pins.list",
@@ -2014,9 +2345,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/user_id_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2058,14 +2386,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "profile.read",
-              "pin.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Resources"
         ],
         "description": "returns a list of **pinned trainings** object.",
         "operationId": "resources.training_pins.list",
@@ -2077,9 +2402,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/user_id_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2121,13 +2443,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "power.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Resources"
         ],
         "description": "returns a list of **powers** object.",
         "operationId": "resources.powers.list",
@@ -2139,9 +2459,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/user_id_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2183,13 +2500,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "validation.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Resources"
         ],
         "description": "returns a list of **validations** object.",
         "operationId": "resources.skill_validations.list",
@@ -2199,9 +2514,6 @@
     "/search": {
       "post": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -2239,18 +2551,43 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "search.search"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "SEARCH"
+          "Search"
         ],
         "description": "execute search query",
         "operationId": "search.search",
         "requestBody": {
-          "$ref": "#/components/requestBodies/search_query_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "filters": {
+                    "$ref": "#/components/schemas/filter_query_condition"
+                  },
+                  "kind": {
+                    "description": "kind of resource to search on.",
+                    "enum": [
+                      "resource"
+                    ],
+                    "type": "string"
+                  },
+                  "must": {
+                    "$ref": "#/components/schemas/must_query_condition"
+                  },
+                  "suggests": {
+                    "default": false,
+                    "description": "include suggestions or not",
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "search query"
         },
         "summary": "execute search query"
       }
@@ -2258,9 +2595,6 @@
     "/skill.validations": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           },
@@ -2318,13 +2652,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.validation.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Validations"
         ],
         "description": "returns a list of **validations** objects for an user",
         "operationId": "skills.validations.list",
@@ -2332,9 +2664,6 @@
       },
       "post": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -2359,30 +2688,53 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.validation"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Validations"
         ],
         "description": "creates a **validation** object for an user",
         "operationId": "skills.validation.create",
         "requestBody": {
-          "$ref": "#/components/requestBodies/validation_create_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "comment": {
+                    "description": "validation's comment",
+                    "example": "my comment about the current validation",
+                    "type": "string"
+                  },
+                  "qualifiers": {
+                    "items": {
+                      "$ref": "#/components/schemas/qualifier_input_data"
+                    },
+                    "type": "array"
+                  },
+                  "skill": {
+                    "description": "skill's identifier to validate",
+                    "type": "string"
+                  },
+                  "user": {
+                    "description": "user's identifier to validate",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data schema to create a validation"
         },
         "summary": "create a validation for an user"
       }
     },
-    "/skill.validations/{_key}": {
+    "/skill.validations/{id}": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/auth_param"
-          },
-          {
-            "$ref": "#/components/parameters/key_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2417,13 +2769,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.validation"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Validations"
         ],
         "description": "returns the deleted **validation**.",
         "operationId": "skills.validations.delete",
@@ -2432,10 +2782,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2467,13 +2814,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.validation.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Validations"
         ],
         "description": "returns a **validation** object by key.",
         "operationId": "skills.validations.get",
@@ -2482,10 +2827,7 @@
       "patch": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2520,18 +2862,36 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.validation"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "RUN"
+          "Validations"
         ],
         "description": "returns the updated **validation**.",
         "operationId": "skills.validations.update",
         "requestBody": {
-          "$ref": "#/components/requestBodies/validation_update_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "comment": {
+                    "description": "validation's comment",
+                    "example": "my comment about the current validation",
+                    "type": "string"
+                  },
+                  "qualifiers": {
+                    "items": {
+                      "$ref": "#/components/schemas/qualifier_input_data"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data schema to update a validation"
         },
         "summary": "updates a validation by key"
       }
@@ -2539,9 +2899,6 @@
     "/skills": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           },
@@ -2593,13 +2950,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "returns a list of **skills**.",
         "operationId": "skills.skills.list",
@@ -2626,18 +2981,65 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "creates a new **skills**",
         "operationId": "skills.skill.create",
         "requestBody": {
-          "$ref": "#/components/requestBodies/skill_create_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "$ref": "#/components/schemas/color"
+                  },
+                  "custom_fields": {
+                    "description": "any custom fields that defines the skill",
+                    "type": "object"
+                  },
+                  "description": {
+                    "example": "my description",
+                    "type": "string"
+                  },
+                  "image": {
+                    "$ref": "#/components/schemas/image"
+                  },
+                  "inherit_qualifiers": {
+                    "description": "indicates if the new skill should inherit qualifiers from its parents",
+                    "type": "boolean"
+                  },
+                  "logo": {
+                    "$ref": "#/components/schemas/logo"
+                  },
+                  "name": {
+                    "example": "my name",
+                    "type": "string"
+                  },
+                  "parents": {
+                    "items": {
+                      "description": "library or skill identifier",
+                      "example": "LIB1",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "powerable": {
+                    "description": "indicates if the new skill can be added by an user as a power.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "data to create a skill"
         },
         "summary": "creates skills"
       }
@@ -2651,9 +3053,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2697,27 +3096,22 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "returns a list of **skill** objects.",
         "operationId": "skills.skill.search",
         "summary": "searches skill by name"
       }
     },
-    "/skills/{_key}": {
+    "/skills/{id}": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2752,13 +3146,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "returns the deleted **skill**.",
         "operationId": "skills.skill.delete",
@@ -2767,10 +3159,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2805,13 +3194,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "returns a **skill** by key.",
         "operationId": "skills.skill.get",
@@ -2820,10 +3207,7 @@
       "patch": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2858,30 +3242,63 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "returns the updated **skill**.",
         "operationId": "skills.skill.update",
         "requestBody": {
-          "$ref": "#/components/requestBodies/skill_update_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "$ref": "#/components/schemas/color"
+                  },
+                  "custom_fields": {
+                    "description": "any custom fields that defines the skill",
+                    "type": "object"
+                  },
+                  "description": {
+                    "example": "my description",
+                    "type": "string"
+                  },
+                  "image": {
+                    "$ref": "#/components/schemas/image"
+                  },
+                  "inherit_qualifiers": {
+                    "description": "indicates if the new skill should inherit qualifiers from its parents",
+                    "type": "boolean"
+                  },
+                  "logo": {
+                    "$ref": "#/components/schemas/logo"
+                  },
+                  "name": {
+                    "example": "my name",
+                    "type": "string"
+                  },
+                  "powerable": {
+                    "description": "indicates if the new skill can be added by an user as a power.",
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data to update a skill"
         },
         "summary": "updates a skill by key"
       }
     },
-    "/skills/{_key}/qualifiers": {
+    "/skills/{id}/qualifiers": {
       "delete": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2925,14 +3342,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill",
-              "skill.qualifier"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "returns a list of **qualifier** objects for the requested skill.",
         "operationId": "skills.skill.remove_qualifiers",
@@ -2941,10 +3355,7 @@
       "get": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -2988,14 +3399,11 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill.read",
-              "skill.qualifier.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "returns a list of **qualifier** objects for the requested skill.",
         "operationId": "skills.skill.list_qualifiers",
@@ -3004,10 +3412,7 @@
       "post": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
-          },
-          {
-            "$ref": "#/components/parameters/auth_param"
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -3051,19 +3456,33 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "skill.skill",
-              "skill.qualifier"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "COMPOSE"
+          "Skills"
         ],
         "description": "returns a list of **qualifier** objects for the requested skill.",
         "operationId": "skills.skill.add_qualifiers",
         "requestBody": {
-          "$ref": "#/components/requestBodies/skill_update_qualifiers_body"
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "qualifiers": {
+                    "description": "list of qualifier's identifiers",
+                    "items": {
+                      "description": "qualifier's identifier",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "data to update skill qualifier"
         },
         "summary": "add qualifiers to a skill identified by key"
       }
@@ -3071,9 +3490,6 @@
     "/users": {
       "get": {
         "parameters": [
-          {
-            "$ref": "#/components/parameters/auth_param"
-          },
           {
             "$ref": "#/components/parameters/fields_param"
           }
@@ -3114,27 +3530,109 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "user.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "IAM"
+          "Users"
         ],
         "description": "returns a list of **user** objects.",
         "operationId": "iam.users.list",
         "summary": "lists users"
-      }
-    },
-    "/users/{_key}": {
-      "get": {
+      },
+      "post": {
         "parameters": [
           {
-            "$ref": "#/components/parameters/key_param"
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            },
+            "description": "a single **user** object"
           },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
           {
-            "$ref": "#/components/parameters/auth_param"
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "description": "returns an **user** object.",
+        "operationId": "iam.users.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "description": "user email address",
+                    "type": "string"
+                  },
+                  "externalId": {
+                    "description": "external identifier (usually identifier from an external system)",
+                    "type": "string"
+                  },
+                  "familyName": {
+                    "type": "string"
+                  },
+                  "givenName": {
+                    "type": "string"
+                  },
+                  "healdine": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "$ref": "#/components/schemas/image"
+                  },
+                  "locale": {
+                    "description": "user's language",
+                    "type": "string"
+                  },
+                  "phoneNumber": {
+                    "description": "business phone number",
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "givenName",
+                  "familyName"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "create an user schema"
+        },
+        "summary": "creates an user"
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id_param"
           },
           {
             "$ref": "#/components/parameters/fields_param"
@@ -3163,17 +3661,142 @@
         },
         "security": [
           {
-            "elamp_auth": [
-              "user.read"
-            ]
+            "bearerAuth": []
           }
         ],
         "tags": [
-          "IAM"
+          "Users"
+        ],
+        "description": "returns an **user** object.",
+        "operationId": "iam.users.delete",
+        "summary": "deletes an user by id"
+      },
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            },
+            "description": "a single **user** object"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
         ],
         "description": "returns an **user** object.",
         "operationId": "iam.users.get",
-        "summary": "get user by id"
+        "summary": "gets user by id"
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id_param"
+          },
+          {
+            "$ref": "#/components/parameters/fields_param"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            },
+            "description": "a single **user** object"
+          },
+          "401": {
+            "$ref": "#/components/responses/not_authed_error"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden_error"
+          },
+          "default": {
+            "$ref": "#/components/responses/unexpected_error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "description": "returns an **user** object.",
+        "operationId": "iam.users.update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "description": "user email address",
+                    "type": "string"
+                  },
+                  "externalId": {
+                    "description": "external identifier (usually identifier from an external system)",
+                    "type": "string"
+                  },
+                  "familyName": {
+                    "type": "string"
+                  },
+                  "givenName": {
+                    "type": "string"
+                  },
+                  "healdine": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "$ref": "#/components/schemas/image"
+                  },
+                  "locale": {
+                    "description": "user's language",
+                    "type": "string"
+                  },
+                  "phoneNumber": {
+                    "description": "business phone number",
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "update an user schema"
+        },
+        "summary": "updates an user by id"
       }
     }
   },
@@ -3209,10 +3832,10 @@
           "type": "string"
         }
       },
-      "key_param": {
+      "id_param": {
         "description": "unique resource identifier",
         "in": "path",
-        "name": "_key",
+        "name": "id",
         "required": true,
         "schema": {
           "type": "string"
@@ -3330,550 +3953,6 @@
         "description": "an unexpected error occured."
       }
     },
-    "requestBodies": {
-      "library_create_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "color": {
-                  "$ref": "#/components/schemas/color"
-                },
-                "description": {
-                  "example": "my description",
-                  "type": "string"
-                },
-                "family_tag": {
-                  "description": "library's family tag. used to group libraries in wider domains",
-                  "example": "my domain",
-                  "type": "string"
-                },
-                "image": {
-                  "$ref": "#/components/schemas/image"
-                },
-                "logo": {
-                  "$ref": "#/components/schemas/logo"
-                },
-                "name": {
-                  "example": "my name",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "name"
-              ],
-              "type": "object"
-            }
-          }
-        },
-        "description": "library data to create a library"
-      },
-      "library_update_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "color": {
-                  "$ref": "#/components/schemas/color"
-                },
-                "description": {
-                  "example": "my description",
-                  "type": "string"
-                },
-                "family_tag": {
-                  "description": "library's family tag. used to group libraries in wider domains",
-                  "example": "my domain",
-                  "type": "string"
-                },
-                "image": {
-                  "$ref": "#/components/schemas/image"
-                },
-                "logo": {
-                  "$ref": "#/components/schemas/logo"
-                },
-                "name": {
-                  "example": "my name",
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "library data to update a library"
-      },
-      "pin_create_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "data": {
-                  "description": "pin object's data",
-                  "type": "object"
-                },
-                "entity": {
-                  "description": "entity to pin to the user. Can be a skills profile (job or training)",
-                  "type": "string"
-                },
-                "type": {
-                  "description": "pin object's type. Can be either profile.pin_job or profile.pin_training",
-                  "type": "string"
-                },
-                "user": {
-                  "description": "user identifier",
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data schema to create a pin object"
-      },
-      "pin_update_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "data": {
-                  "description": "pin object's data",
-                  "type": "object"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data schema to update a pin object"
-      },
-      "power_create_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "active": {
-                  "default": true,
-                  "description": "indicates if a power is active or not",
-                  "type": "boolean"
-                },
-                "description": {
-                  "description": "power's details",
-                  "type": "string"
-                },
-                "qualifiers": {
-                  "description": "array of qualifier to include in the power",
-                  "items": {
-                    "$ref": "#/components/schemas/qualifier_input_data"
-                  },
-                  "type": "array"
-                },
-                "resource": {
-                  "description": "user identifier",
-                  "type": "string"
-                },
-                "skill": {
-                  "description": "skill identifier",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "resource",
-                "skill"
-              ],
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to create a power"
-      },
-      "power_update_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "active": {
-                  "default": true,
-                  "description": "indicates if a power is active or not",
-                  "type": "boolean"
-                },
-                "description": {
-                  "description": "power's details",
-                  "type": "string"
-                },
-                "qualifiers": {
-                  "description": "array of qualifier to include in the power",
-                  "items": {
-                    "$ref": "#/components/schemas/qualifier_input_data"
-                  },
-                  "type": "array"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to update a power"
-      },
-      "qualifier_create_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "color": {
-                  "$ref": "#/components/schemas/color"
-                },
-                "custom_fields": {
-                  "description": "any custom fields that defines the qualifier",
-                  "type": "object"
-                },
-                "description": {
-                  "example": "my description",
-                  "type": "string"
-                },
-                "field_type": {
-                  "description": "field type.",
-                  "enum": [
-                    "TEXT",
-                    "NUMERIC",
-                    "MULTIVALUES"
-                  ],
-                  "type": "string"
-                },
-                "fields": {
-                  "items": {
-                    "$ref": "#/components/schemas/qualifier_field"
-                  },
-                  "type": "array"
-                },
-                "logo": {
-                  "$ref": "#/components/schemas/logo"
-                },
-                "name": {
-                  "example": "my name",
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to create a qualifier object"
-      },
-      "qualifier_update_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "color": {
-                  "$ref": "#/components/schemas/color"
-                },
-                "custom_fields": {
-                  "description": "any custom fields that defines the qualifier",
-                  "type": "object"
-                },
-                "description": {
-                  "example": "my description",
-                  "type": "string"
-                },
-                "logo": {
-                  "$ref": "#/components/schemas/logo"
-                },
-                "name": {
-                  "example": "my name",
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to update a qualifier object"
-      },
-      "qualifier_values_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "qualifiers": {
-                  "items": {
-                    "$ref": "#/components/schemas/qualifier_input_data"
-                  },
-                  "type": "array"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to update a qualifier value"
-      },
-      "search_query_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "filters": {
-                  "$ref": "#/components/schemas/filter_query_condition"
-                },
-                "kind": {
-                  "description": "kind of resource to search on.",
-                  "enum": [
-                    "resource"
-                  ],
-                  "type": "string"
-                },
-                "must": {
-                  "$ref": "#/components/schemas/must_query_condition"
-                },
-                "suggests": {
-                  "default": false,
-                  "description": "include suggestions or not",
-                  "type": "boolean"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "search query"
-      },
-      "skill_create_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "color": {
-                  "$ref": "#/components/schemas/color"
-                },
-                "custom_fields": {
-                  "description": "any custom fields that defines the skill",
-                  "type": "object"
-                },
-                "description": {
-                  "example": "my description",
-                  "type": "string"
-                },
-                "image": {
-                  "$ref": "#/components/schemas/image"
-                },
-                "inherit_qualifiers": {
-                  "description": "indicates if the new skill should inherit qualifiers from its parents",
-                  "type": "boolean"
-                },
-                "logo": {
-                  "$ref": "#/components/schemas/logo"
-                },
-                "name": {
-                  "example": "my name",
-                  "type": "string"
-                },
-                "parents": {
-                  "items": {
-                    "description": "library or skill identifier",
-                    "example": "LIB1",
-                    "type": "string"
-                  },
-                  "type": "array"
-                },
-                "powerable": {
-                  "description": "indicates if the new skill can be added by an user as a power.",
-                  "type": "boolean"
-                }
-              },
-              "required": [
-                "name"
-              ],
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to create a skill"
-      },
-      "skill_profile_create_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "color": {
-                  "$ref": "#/components/schemas/color"
-                },
-                "custom_fields": {
-                  "description": "any custom fields that defines the qualifier",
-                  "type": "object"
-                },
-                "description": {
-                  "example": "my description",
-                  "type": "string"
-                },
-                "logo": {
-                  "$ref": "#/components/schemas/logo"
-                },
-                "name": {
-                  "example": "my name",
-                  "type": "string"
-                },
-                "pattern": {
-                  "$ref": "#/components/schemas/search_pattern"
-                }
-              },
-              "required": [
-                "name"
-              ],
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to create a skills profile object"
-      },
-      "skill_profile_update_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "color": {
-                  "$ref": "#/components/schemas/color"
-                },
-                "custom_fields": {
-                  "description": "any custom fields that defines the qualifier",
-                  "type": "object"
-                },
-                "description": {
-                  "example": "my description",
-                  "type": "string"
-                },
-                "logo": {
-                  "$ref": "#/components/schemas/logo"
-                },
-                "name": {
-                  "example": "my name",
-                  "type": "string"
-                },
-                "pattern": {
-                  "$ref": "#/components/schemas/search_pattern"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to update a skills profile object"
-      },
-      "skill_update_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "color": {
-                  "$ref": "#/components/schemas/color"
-                },
-                "custom_fields": {
-                  "description": "any custom fields that defines the skill",
-                  "type": "object"
-                },
-                "description": {
-                  "example": "my description",
-                  "type": "string"
-                },
-                "image": {
-                  "$ref": "#/components/schemas/image"
-                },
-                "inherit_qualifiers": {
-                  "description": "indicates if the new skill should inherit qualifiers from its parents",
-                  "type": "boolean"
-                },
-                "logo": {
-                  "$ref": "#/components/schemas/logo"
-                },
-                "name": {
-                  "example": "my name",
-                  "type": "string"
-                },
-                "powerable": {
-                  "description": "indicates if the new skill can be added by an user as a power.",
-                  "type": "boolean"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to update a skill"
-      },
-      "skill_update_qualifiers_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "qualifiers": {
-                  "description": "list of qualifier's identifiers",
-                  "items": {
-                    "description": "qualifier's identifier",
-                    "type": "string"
-                  },
-                  "type": "array"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data to update skill qualifier"
-      },
-      "validation_create_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "comment": {
-                  "description": "validation's comment",
-                  "example": "my comment about the current validation",
-                  "type": "string"
-                },
-                "qualifiers": {
-                  "items": {
-                    "$ref": "#/components/schemas/qualifier_input_data"
-                  },
-                  "type": "array"
-                },
-                "skill": {
-                  "description": "skill's identifier to validate",
-                  "type": "string"
-                },
-                "user": {
-                  "description": "user's identifier to validate",
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data schema to create a validation"
-      },
-      "validation_update_body": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "comment": {
-                  "description": "validation's comment",
-                  "example": "my comment about the current validation",
-                  "type": "string"
-                },
-                "qualifiers": {
-                  "items": {
-                    "$ref": "#/components/schemas/qualifier_input_data"
-                  },
-                  "type": "array"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "description": "data schema to update a validation"
-      }
-    },
     "schemas": {
       "base_model": {
         "properties": {
@@ -3892,6 +3971,9 @@
           },
           "externalId": {
             "$ref": "#/components/schemas/externalId"
+          },
+          "id": {
+            "$ref": "#/components/schemas/identifier"
           },
           "kind": {
             "$ref": "#/components/schemas/kind"
@@ -3949,7 +4031,7 @@
         "type": "object"
       },
       "externalId": {
-        "description": "external resource identifier (if provided by your internal information system)",
+        "description": "external resource identifier (if provided by your own internal information system)",
         "example": "EXT1",
         "type": "string"
       },
@@ -4010,10 +4092,16 @@
           "deleted": false,
           "description": "Short description of the group",
           "externalId": "EXTID1",
+          "id": "G1",
           "kind": "users#group",
           "name": "My Group 1",
           "updated": "2018-10-05T11:44:08.724Z"
         }
+      },
+      "identifier": {
+        "description": "unique resource identifier",
+        "example": "ID12432",
+        "type": "string"
       },
       "image": {
         "description": "image urls",
@@ -4432,6 +4520,7 @@
           "deleted": false,
           "description": "skill description",
           "externalId": "EXTID1",
+          "id": "SKI1",
           "image": {
             "url": "my-photo-url.jpg"
           },
@@ -4587,6 +4676,7 @@
             "G2",
             "G3"
           ],
+          "id": "U1",
           "kind": "users#user",
           "last_login": "2018-10-05T11:44:08.724Z",
           "roles": [
@@ -4640,7 +4730,12 @@
       }
     },
     "securitySchemes": {
-      "elamp_auth": {
+      "bearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      },
+      "oAuth2": {
         "flows": {
           "authorizationCode": {
             "authorizationUrl": "https://elamp.fr/oauth/authorize",
@@ -4669,22 +4764,88 @@
       }
     }
   },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "tags": [
     {
-      "description": "Identity and Access Management",
-      "name": "IAM"
+      "description": "Users Management",
+      "name": "Users"
     },
     {
-      "description": "libraries, skills, qualifiers and skills profiles endpoints",
-      "name": "COMPOSE"
+      "description": "Groups Management",
+      "name": "Groups"
     },
     {
-      "description": "powers, skill validation, pins endpoints",
-      "name": "RUN"
+      "description": "Libraries (skills's containers) endpoints",
+      "name": "Libraries"
+    },
+    {
+      "description": "Skills definition endpoints",
+      "name": "Skills"
+    },
+    {
+      "description": "Qualifiers management",
+      "name": "Qualifiers"
+    },
+    {
+      "description": "Jobs definition",
+      "name": "Jobs"
+    },
+    {
+      "description": "Users' skills",
+      "name": "Powers"
+    },
+    {
+      "description": "Users' skills validations",
+      "name": "Validations"
+    },
+    {
+      "description": "Job & Trainings that users pin to their profile",
+      "name": "Pins"
+    },
+    {
+      "description": "User-oriented endpoints",
+      "name": "Resources"
     },
     {
       "description": "search and analytics endpoints",
-      "name": "SEARCH"
+      "name": "Search"
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "tags": [
+        "Users",
+        "Groups"
+      ],
+      "name": "Identity & Access Management (IAM)"
+    },
+    {
+      "tags": [
+        "Libraries",
+        "Skills",
+        "Qualifiers",
+        "Jobs"
+      ],
+      "name": "Compose"
+    },
+    {
+      "tags": [
+        "Powers",
+        "Validations",
+        "Pins",
+        "Resources"
+      ],
+      "name": "Run"
+    },
+    {
+      "tags": [
+        "Search"
+      ],
+      "name": "Search"
     }
   ]
 }
